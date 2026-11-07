@@ -1,0 +1,1259 @@
+{
+  "schemaVersion": 1,
+  "id": "ja_basics_en",
+  "title": "Japanese Basics",
+  "targetLanguage": "Japanese",
+  "nativeLanguage": "English",
+  "words": [
+    {
+      "id": "ja_hello",
+      "text": "こんにちは",
+      "translation": "hello",
+      "example": "こんにちは、せんせい。",
+      "exampleTranslation": "Hello, teacher.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_good_morning",
+      "text": "おはよう",
+      "translation": "good morning",
+      "example": "おはよう、みんな。",
+      "exampleTranslation": "Good morning, everyone.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_good_evening",
+      "text": "こんばんは",
+      "translation": "good evening",
+      "example": "こんばんは、せんせい。",
+      "exampleTranslation": "Good evening, teacher.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_thank_you",
+      "text": "ありがとう",
+      "translation": "thank you",
+      "example": "ありがとう、たすかりました。",
+      "exampleTranslation": "Thank you, that helped.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_excuse_me",
+      "text": "すみません",
+      "translation": "excuse me",
+      "example": "すみません、えきは どこですか。",
+      "exampleTranslation": "Excuse me, where is the station?",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_yes",
+      "text": "はい",
+      "translation": "yes",
+      "example": "はい、そうです。",
+      "exampleTranslation": "Yes, that is right.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_no",
+      "text": "いいえ",
+      "translation": "no",
+      "example": "いいえ、ちがいます。",
+      "exampleTranslation": "No, that is incorrect.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_goodbye",
+      "text": "さようなら",
+      "translation": "goodbye",
+      "example": "さようなら、せんせい。",
+      "exampleTranslation": "Goodbye, teacher.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_see_you",
+      "text": "またね",
+      "translation": "see you",
+      "example": "またね、あした。",
+      "exampleTranslation": "See you tomorrow.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_good_night",
+      "text": "おやすみ",
+      "translation": "good night",
+      "example": "おやすみ、また あした。",
+      "exampleTranslation": "Good night, see you tomorrow.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "ja_i",
+      "text": "わたし",
+      "translation": "I",
+      "example": "わたしは がくせいです。",
+      "exampleTranslation": "I am a student.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_you",
+      "text": "あなた",
+      "translation": "you",
+      "example": "あなたの なまえは なんですか。",
+      "exampleTranslation": "What is your name?",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_friend",
+      "text": "ともだち",
+      "translation": "friend",
+      "example": "ともだちと はなします。",
+      "exampleTranslation": "I talk with a friend.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_family",
+      "text": "かぞく",
+      "translation": "family",
+      "example": "かぞくと ごはんを たべます。",
+      "exampleTranslation": "I eat a meal with my family.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_mother",
+      "text": "はは",
+      "translation": "my mother",
+      "example": "ははは いえに います。",
+      "exampleTranslation": "My mother is at home.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_father",
+      "text": "ちち",
+      "translation": "my father",
+      "example": "ちちは ほんを よみます。",
+      "exampleTranslation": "My father reads a book.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_teacher",
+      "text": "せんせい",
+      "translation": "teacher",
+      "example": "せんせいに ききます。",
+      "exampleTranslation": "I ask the teacher.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_student",
+      "text": "がくせい",
+      "translation": "student",
+      "example": "わたしは がくせいです。",
+      "exampleTranslation": "I am a student.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_child",
+      "text": "こども",
+      "translation": "child",
+      "example": "こどもが こうえんに います。",
+      "exampleTranslation": "A child is in the park.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_name",
+      "text": "なまえ",
+      "translation": "name",
+      "example": "なまえを かいてください。",
+      "exampleTranslation": "Please write your name.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "ja_one",
+      "text": "いち",
+      "translation": "one",
+      "example": "いちと いってください。",
+      "exampleTranslation": "Please say one.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_two",
+      "text": "に",
+      "translation": "two",
+      "example": "にと いってください。",
+      "exampleTranslation": "Please say two.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_three",
+      "text": "さん",
+      "translation": "three",
+      "example": "さんと いってください。",
+      "exampleTranslation": "Please say three.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_four",
+      "text": "よん",
+      "translation": "four",
+      "example": "よんと いってください。",
+      "exampleTranslation": "Please say four.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_five",
+      "text": "ご",
+      "translation": "five",
+      "example": "ごと いってください。",
+      "exampleTranslation": "Please say five.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_six",
+      "text": "ろく",
+      "translation": "six",
+      "example": "ろくと いってください。",
+      "exampleTranslation": "Please say six.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_seven",
+      "text": "なな",
+      "translation": "seven",
+      "example": "ななと いってください。",
+      "exampleTranslation": "Please say seven.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_eight",
+      "text": "はち",
+      "translation": "eight",
+      "example": "はちと いってください。",
+      "exampleTranslation": "Please say eight.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_nine",
+      "text": "きゅう",
+      "translation": "nine",
+      "example": "きゅうと いってください。",
+      "exampleTranslation": "Please say nine.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_ten",
+      "text": "じゅう",
+      "translation": "ten",
+      "example": "じゅうと いってください。",
+      "exampleTranslation": "Please say ten.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "ja_water",
+      "text": "みず",
+      "translation": "water",
+      "example": "みずを のみます。",
+      "exampleTranslation": "I drink water.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_tea",
+      "text": "おちゃ",
+      "translation": "tea",
+      "example": "おちゃを のみます。",
+      "exampleTranslation": "I drink tea.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_rice",
+      "text": "ごはん",
+      "translation": "rice or meal",
+      "example": "ごはんを たべます。",
+      "exampleTranslation": "I eat rice.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_bread",
+      "text": "パン",
+      "translation": "bread",
+      "example": "パンを かいます。",
+      "exampleTranslation": "I buy bread.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_apple",
+      "text": "りんご",
+      "translation": "apple",
+      "example": "りんごを たべます。",
+      "exampleTranslation": "I eat an apple.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_fish",
+      "text": "さかな",
+      "translation": "fish",
+      "example": "さかなが すきです。",
+      "exampleTranslation": "I like fish.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_meat",
+      "text": "にく",
+      "translation": "meat",
+      "example": "にくを たべます。",
+      "exampleTranslation": "I eat meat.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_vegetables",
+      "text": "やさい",
+      "translation": "vegetables",
+      "example": "やさいを かいます。",
+      "exampleTranslation": "I buy vegetables.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_egg",
+      "text": "たまご",
+      "translation": "egg",
+      "example": "たまごを たべます。",
+      "exampleTranslation": "I eat an egg.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_milk",
+      "text": "ぎゅうにゅう",
+      "translation": "milk",
+      "example": "ぎゅうにゅうを のみます。",
+      "exampleTranslation": "I drink milk.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "ja_home",
+      "text": "いえ",
+      "translation": "house or home",
+      "example": "いえに かえります。",
+      "exampleTranslation": "I return home.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_school",
+      "text": "がっこう",
+      "translation": "school",
+      "example": "がっこうに いきます。",
+      "exampleTranslation": "I go to school.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_station",
+      "text": "えき",
+      "translation": "station",
+      "example": "えきは どこですか。",
+      "exampleTranslation": "Where is the station?",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_shop",
+      "text": "みせ",
+      "translation": "shop",
+      "example": "みせで パンを かいます。",
+      "exampleTranslation": "I buy bread at the shop.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_hospital",
+      "text": "びょういん",
+      "translation": "hospital",
+      "example": "びょういんに いきます。",
+      "exampleTranslation": "I go to the hospital.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_library",
+      "text": "としょかん",
+      "translation": "library",
+      "example": "としょかんで ほんを よみます。",
+      "exampleTranslation": "I read a book at the library.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_park",
+      "text": "こうえん",
+      "translation": "park",
+      "example": "こうえんを さんぽします。",
+      "exampleTranslation": "I take a walk in the park.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_room",
+      "text": "へや",
+      "translation": "room",
+      "example": "へやに います。",
+      "exampleTranslation": "I am in the room.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_restroom",
+      "text": "トイレ",
+      "translation": "restroom",
+      "example": "トイレは どこですか。",
+      "exampleTranslation": "Where is the restroom?",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_restaurant",
+      "text": "レストラン",
+      "translation": "restaurant",
+      "example": "レストランで たべます。",
+      "exampleTranslation": "I eat at a restaurant.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "ja_eat",
+      "text": "たべる",
+      "translation": "to eat",
+      "example": "パンを たべる。",
+      "exampleTranslation": "I eat bread.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_drink",
+      "text": "のむ",
+      "translation": "to drink",
+      "example": "みずを のむ。",
+      "exampleTranslation": "I drink water.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_go",
+      "text": "いく",
+      "translation": "to go",
+      "example": "がっこうに いく。",
+      "exampleTranslation": "I go to school.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_come",
+      "text": "くる",
+      "translation": "to come",
+      "example": "ともだちが くる。",
+      "exampleTranslation": "A friend comes.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_see",
+      "text": "みる",
+      "translation": "to see or watch",
+      "example": "テレビを みる。",
+      "exampleTranslation": "I watch television.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_listen",
+      "text": "きく",
+      "translation": "to listen or ask",
+      "example": "おんがくを きく。",
+      "exampleTranslation": "I listen to music.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_speak",
+      "text": "はなす",
+      "translation": "to speak",
+      "example": "にほんごを はなす。",
+      "exampleTranslation": "I speak Japanese.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_read",
+      "text": "よむ",
+      "translation": "to read",
+      "example": "ほんを よむ。",
+      "exampleTranslation": "I read a book.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_write",
+      "text": "かく",
+      "translation": "to write",
+      "example": "なまえを かく。",
+      "exampleTranslation": "I write my name.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "ja_sleep",
+      "text": "ねる",
+      "translation": "to sleep",
+      "example": "よるに ねる。",
+      "exampleTranslation": "I sleep at night.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    }
+  ],
+  "units": [
+    {
+      "id": "ja_first_steps",
+      "title": "First steps",
+      "lessons": [
+        {
+          "id": "ja_greetings",
+          "title": "Greetings and courtesy",
+          "wordIds": [
+            "ja_hello",
+            "ja_good_morning",
+            "ja_good_evening",
+            "ja_thank_you",
+            "ja_excuse_me",
+            "ja_yes",
+            "ja_no",
+            "ja_goodbye",
+            "ja_see_you",
+            "ja_good_night"
+          ],
+          "exercises": [
+            {
+              "id": "ja_greetings_01",
+              "type": "multipleChoice",
+              "prompt": "What does こんにちは mean?",
+              "options": [
+                "hello",
+                "good morning",
+                "good evening"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "ja_greetings_02",
+              "type": "multipleChoice",
+              "prompt": "Choose the Japanese for: good morning",
+              "options": [
+                "ありがとう",
+                "こんにちは",
+                "おはよう"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "ja_greetings_03",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "こんばんは",
+                  "right": "good evening"
+                },
+                {
+                  "left": "ありがとう",
+                  "right": "thank you"
+                },
+                {
+                  "left": "すみません",
+                  "right": "excuse me"
+                },
+                {
+                  "left": "はい",
+                  "right": "yes"
+                },
+                {
+                  "left": "おやすみ",
+                  "right": "good night"
+                }
+              ]
+            },
+            {
+              "id": "ja_greetings_04",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___、ちがいます。 (No, that is incorrect.)",
+              "answer": "いいえ",
+              "choices": [
+                "はい",
+                "いいえ",
+                "さようなら"
+              ]
+            },
+            {
+              "id": "ja_greetings_05",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___、せんせい。 (Goodbye, teacher.)",
+              "answer": "さようなら",
+              "choices": [
+                "さようなら",
+                "またね",
+                "おやすみ"
+              ]
+            },
+            {
+              "id": "ja_greetings_06",
+              "type": "typeTranslation",
+              "prompt": "Translate into Japanese: see you",
+              "acceptedAnswers": [
+                "またね"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ja_people",
+          "title": "People and family",
+          "wordIds": [
+            "ja_i",
+            "ja_you",
+            "ja_friend",
+            "ja_family",
+            "ja_mother",
+            "ja_father",
+            "ja_teacher",
+            "ja_student",
+            "ja_child",
+            "ja_name"
+          ],
+          "exercises": [
+            {
+              "id": "ja_people_01",
+              "type": "multipleChoice",
+              "prompt": "What does わたし mean?",
+              "options": [
+                "I",
+                "you",
+                "friend"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "ja_people_02",
+              "type": "multipleChoice",
+              "prompt": "Choose the Japanese for: you",
+              "options": [
+                "かぞく",
+                "わたし",
+                "あなた"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "ja_people_03",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "ともだち",
+                  "right": "friend"
+                },
+                {
+                  "left": "かぞく",
+                  "right": "family"
+                },
+                {
+                  "left": "はは",
+                  "right": "my mother"
+                },
+                {
+                  "left": "ちち",
+                  "right": "my father"
+                },
+                {
+                  "left": "なまえ",
+                  "right": "name"
+                }
+              ]
+            },
+            {
+              "id": "ja_people_04",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___に ききます。 (I ask the teacher.)",
+              "answer": "せんせい",
+              "choices": [
+                "ちち",
+                "せんせい",
+                "がくせい"
+              ]
+            },
+            {
+              "id": "ja_people_05",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "わたしは ___です。 (I am a student.)",
+              "answer": "がくせい",
+              "choices": [
+                "がくせい",
+                "こども",
+                "なまえ"
+              ]
+            },
+            {
+              "id": "ja_people_06",
+              "type": "typeTranslation",
+              "prompt": "Translate into Japanese: child",
+              "acceptedAnswers": [
+                "こども"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ja_numbers",
+          "title": "Numbers one to ten",
+          "wordIds": [
+            "ja_one",
+            "ja_two",
+            "ja_three",
+            "ja_four",
+            "ja_five",
+            "ja_six",
+            "ja_seven",
+            "ja_eight",
+            "ja_nine",
+            "ja_ten"
+          ],
+          "exercises": [
+            {
+              "id": "ja_numbers_01",
+              "type": "multipleChoice",
+              "prompt": "What does いち mean?",
+              "options": [
+                "one",
+                "two",
+                "three"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "ja_numbers_02",
+              "type": "multipleChoice",
+              "prompt": "Choose the Japanese for: two",
+              "options": [
+                "よん",
+                "いち",
+                "に"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "ja_numbers_03",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "さん",
+                  "right": "three"
+                },
+                {
+                  "left": "よん",
+                  "right": "four"
+                },
+                {
+                  "left": "ご",
+                  "right": "five"
+                },
+                {
+                  "left": "ろく",
+                  "right": "six"
+                },
+                {
+                  "left": "じゅう",
+                  "right": "ten"
+                }
+              ]
+            },
+            {
+              "id": "ja_numbers_04",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___と いってください。 (Please say seven.)",
+              "answer": "なな",
+              "choices": [
+                "ろく",
+                "なな",
+                "はち"
+              ]
+            },
+            {
+              "id": "ja_numbers_05",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___と いってください。 (Please say eight.)",
+              "answer": "はち",
+              "choices": [
+                "はち",
+                "きゅう",
+                "じゅう"
+              ]
+            },
+            {
+              "id": "ja_numbers_06",
+              "type": "typeTranslation",
+              "prompt": "Translate into Japanese: nine",
+              "acceptedAnswers": [
+                "きゅう"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ja_daily_life",
+      "title": "Daily life",
+      "lessons": [
+        {
+          "id": "ja_food",
+          "title": "Food and drinks",
+          "wordIds": [
+            "ja_water",
+            "ja_tea",
+            "ja_rice",
+            "ja_bread",
+            "ja_apple",
+            "ja_fish",
+            "ja_meat",
+            "ja_vegetables",
+            "ja_egg",
+            "ja_milk"
+          ],
+          "exercises": [
+            {
+              "id": "ja_food_01",
+              "type": "multipleChoice",
+              "prompt": "What does みず mean?",
+              "options": [
+                "water",
+                "tea",
+                "rice or meal"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "ja_food_02",
+              "type": "multipleChoice",
+              "prompt": "Choose the Japanese for: tea",
+              "options": [
+                "パン",
+                "みず",
+                "おちゃ"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "ja_food_03",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "ごはん",
+                  "right": "rice or meal"
+                },
+                {
+                  "left": "パン",
+                  "right": "bread"
+                },
+                {
+                  "left": "りんご",
+                  "right": "apple"
+                },
+                {
+                  "left": "さかな",
+                  "right": "fish"
+                },
+                {
+                  "left": "ぎゅうにゅう",
+                  "right": "milk"
+                }
+              ]
+            },
+            {
+              "id": "ja_food_04",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___を たべます。 (I eat meat.)",
+              "answer": "にく",
+              "choices": [
+                "さかな",
+                "にく",
+                "やさい"
+              ]
+            },
+            {
+              "id": "ja_food_05",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___を かいます。 (I buy vegetables.)",
+              "answer": "やさい",
+              "choices": [
+                "やさい",
+                "たまご",
+                "ぎゅうにゅう"
+              ]
+            },
+            {
+              "id": "ja_food_06",
+              "type": "typeTranslation",
+              "prompt": "Translate into Japanese: egg",
+              "acceptedAnswers": [
+                "たまご"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ja_places",
+          "title": "Places around town",
+          "wordIds": [
+            "ja_home",
+            "ja_school",
+            "ja_station",
+            "ja_shop",
+            "ja_hospital",
+            "ja_library",
+            "ja_park",
+            "ja_room",
+            "ja_restroom",
+            "ja_restaurant"
+          ],
+          "exercises": [
+            {
+              "id": "ja_places_01",
+              "type": "multipleChoice",
+              "prompt": "What does いえ mean?",
+              "options": [
+                "house or home",
+                "school",
+                "station"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "ja_places_02",
+              "type": "multipleChoice",
+              "prompt": "Choose the Japanese for: school",
+              "options": [
+                "みせ",
+                "いえ",
+                "がっこう"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "ja_places_03",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "えき",
+                  "right": "station"
+                },
+                {
+                  "left": "みせ",
+                  "right": "shop"
+                },
+                {
+                  "left": "びょういん",
+                  "right": "hospital"
+                },
+                {
+                  "left": "としょかん",
+                  "right": "library"
+                },
+                {
+                  "left": "レストラン",
+                  "right": "restaurant"
+                }
+              ]
+            },
+            {
+              "id": "ja_places_04",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___を さんぽします。 (I take a walk in the park.)",
+              "answer": "こうえん",
+              "choices": [
+                "としょかん",
+                "こうえん",
+                "へや"
+              ]
+            },
+            {
+              "id": "ja_places_05",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___に います。 (I am in the room.)",
+              "answer": "へや",
+              "choices": [
+                "へや",
+                "トイレ",
+                "レストラン"
+              ]
+            },
+            {
+              "id": "ja_places_06",
+              "type": "typeTranslation",
+              "prompt": "Translate into Japanese: restroom",
+              "acceptedAnswers": [
+                "トイレ"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ja_actions",
+          "title": "Everyday actions",
+          "wordIds": [
+            "ja_eat",
+            "ja_drink",
+            "ja_go",
+            "ja_come",
+            "ja_see",
+            "ja_listen",
+            "ja_speak",
+            "ja_read",
+            "ja_write",
+            "ja_sleep"
+          ],
+          "exercises": [
+            {
+              "id": "ja_actions_01",
+              "type": "multipleChoice",
+              "prompt": "What does たべる mean?",
+              "options": [
+                "to eat",
+                "to drink",
+                "to go"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "ja_actions_02",
+              "type": "multipleChoice",
+              "prompt": "Choose the Japanese for: to drink",
+              "options": [
+                "くる",
+                "たべる",
+                "のむ"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "ja_actions_03",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "いく",
+                  "right": "to go"
+                },
+                {
+                  "left": "くる",
+                  "right": "to come"
+                },
+                {
+                  "left": "みる",
+                  "right": "to see or watch"
+                },
+                {
+                  "left": "きく",
+                  "right": "to listen or ask"
+                },
+                {
+                  "left": "ねる",
+                  "right": "to sleep"
+                }
+              ]
+            },
+            {
+              "id": "ja_actions_04",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "にほんごを ___。 (I speak Japanese.)",
+              "answer": "はなす",
+              "choices": [
+                "きく",
+                "はなす",
+                "よむ"
+              ]
+            },
+            {
+              "id": "ja_actions_05",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "ほんを ___。 (I read a book.)",
+              "answer": "よむ",
+              "choices": [
+                "よむ",
+                "かく",
+                "ねる"
+              ]
+            },
+            {
+              "id": "ja_actions_06",
+              "type": "typeTranslation",
+              "prompt": "Translate into Japanese: to write",
+              "acceptedAnswers": [
+                "かく"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
