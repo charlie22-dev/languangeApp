@@ -58,12 +58,39 @@ class $LessonProgressTable extends LessonProgress
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     lessonId,
     completed,
     bestScore,
     completedAt,
+    updatedAt,
+    dirty,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -106,6 +133,18 @@ class $LessonProgressTable extends LessonProgress
         ),
       );
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
     return context;
   }
 
@@ -131,6 +170,14 @@ class $LessonProgressTable extends LessonProgress
         DriftSqlType.dateTime,
         data['${effectivePrefix}completed_at'],
       ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
     );
   }
 
@@ -146,11 +193,15 @@ class LessonProgressRow extends DataClass
   final bool completed;
   final int bestScore;
   final DateTime? completedAt;
+  final int updatedAt;
+  final bool dirty;
   const LessonProgressRow({
     required this.lessonId,
     required this.completed,
     required this.bestScore,
     this.completedAt,
+    required this.updatedAt,
+    required this.dirty,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -161,6 +212,8 @@ class LessonProgressRow extends DataClass
     if (!nullToAbsent || completedAt != null) {
       map['completed_at'] = Variable<DateTime>(completedAt);
     }
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['dirty'] = Variable<bool>(dirty);
     return map;
   }
 
@@ -172,6 +225,8 @@ class LessonProgressRow extends DataClass
       completedAt: completedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(completedAt),
+      updatedAt: Value(updatedAt),
+      dirty: Value(dirty),
     );
   }
 
@@ -185,6 +240,8 @@ class LessonProgressRow extends DataClass
       completed: serializer.fromJson<bool>(json['completed']),
       bestScore: serializer.fromJson<int>(json['bestScore']),
       completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
     );
   }
   @override
@@ -195,6 +252,8 @@ class LessonProgressRow extends DataClass
       'completed': serializer.toJson<bool>(completed),
       'bestScore': serializer.toJson<int>(bestScore),
       'completedAt': serializer.toJson<DateTime?>(completedAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'dirty': serializer.toJson<bool>(dirty),
     };
   }
 
@@ -203,11 +262,15 @@ class LessonProgressRow extends DataClass
     bool? completed,
     int? bestScore,
     Value<DateTime?> completedAt = const Value.absent(),
+    int? updatedAt,
+    bool? dirty,
   }) => LessonProgressRow(
     lessonId: lessonId ?? this.lessonId,
     completed: completed ?? this.completed,
     bestScore: bestScore ?? this.bestScore,
     completedAt: completedAt.present ? completedAt.value : this.completedAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    dirty: dirty ?? this.dirty,
   );
   LessonProgressRow copyWithCompanion(LessonProgressCompanion data) {
     return LessonProgressRow(
@@ -217,6 +280,8 @@ class LessonProgressRow extends DataClass
       completedAt: data.completedAt.present
           ? data.completedAt.value
           : this.completedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
     );
   }
 
@@ -226,13 +291,22 @@ class LessonProgressRow extends DataClass
           ..write('lessonId: $lessonId, ')
           ..write('completed: $completed, ')
           ..write('bestScore: $bestScore, ')
-          ..write('completedAt: $completedAt')
+          ..write('completedAt: $completedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(lessonId, completed, bestScore, completedAt);
+  int get hashCode => Object.hash(
+    lessonId,
+    completed,
+    bestScore,
+    completedAt,
+    updatedAt,
+    dirty,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -240,7 +314,9 @@ class LessonProgressRow extends DataClass
           other.lessonId == this.lessonId &&
           other.completed == this.completed &&
           other.bestScore == this.bestScore &&
-          other.completedAt == this.completedAt);
+          other.completedAt == this.completedAt &&
+          other.updatedAt == this.updatedAt &&
+          other.dirty == this.dirty);
 }
 
 class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
@@ -248,12 +324,16 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
   final Value<bool> completed;
   final Value<int> bestScore;
   final Value<DateTime?> completedAt;
+  final Value<int> updatedAt;
+  final Value<bool> dirty;
   final Value<int> rowid;
   const LessonProgressCompanion({
     this.lessonId = const Value.absent(),
     this.completed = const Value.absent(),
     this.bestScore = const Value.absent(),
     this.completedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   LessonProgressCompanion.insert({
@@ -261,6 +341,8 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
     this.completed = const Value.absent(),
     this.bestScore = const Value.absent(),
     this.completedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : lessonId = Value(lessonId);
   static Insertable<LessonProgressRow> custom({
@@ -268,6 +350,8 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
     Expression<bool>? completed,
     Expression<int>? bestScore,
     Expression<DateTime>? completedAt,
+    Expression<int>? updatedAt,
+    Expression<bool>? dirty,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -275,6 +359,8 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
       if (completed != null) 'completed': completed,
       if (bestScore != null) 'best_score': bestScore,
       if (completedAt != null) 'completed_at': completedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (dirty != null) 'dirty': dirty,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -284,6 +370,8 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
     Value<bool>? completed,
     Value<int>? bestScore,
     Value<DateTime?>? completedAt,
+    Value<int>? updatedAt,
+    Value<bool>? dirty,
     Value<int>? rowid,
   }) {
     return LessonProgressCompanion(
@@ -291,6 +379,8 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
       completed: completed ?? this.completed,
       bestScore: bestScore ?? this.bestScore,
       completedAt: completedAt ?? this.completedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      dirty: dirty ?? this.dirty,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -310,6 +400,12 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
     if (completedAt.present) {
       map['completed_at'] = Variable<DateTime>(completedAt.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -323,6 +419,8 @@ class LessonProgressCompanion extends UpdateCompanion<LessonProgressRow> {
           ..write('completed: $completed, ')
           ..write('bestScore: $bestScore, ')
           ..write('completedAt: $completedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -391,6 +489,31 @@ class $WordProgressTable extends WordProgress
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     wordId,
@@ -398,6 +521,8 @@ class $WordProgressTable extends WordProgress
     intervalDays,
     repetitions,
     dueDate,
+    updatedAt,
+    dirty,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -451,6 +576,18 @@ class $WordProgressTable extends WordProgress
     } else if (isInserting) {
       context.missing(_dueDateMeta);
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
     return context;
   }
 
@@ -480,6 +617,14 @@ class $WordProgressTable extends WordProgress
         DriftSqlType.dateTime,
         data['${effectivePrefix}due_date'],
       )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
     );
   }
 
@@ -495,12 +640,16 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
   final int intervalDays;
   final int repetitions;
   final DateTime dueDate;
+  final int updatedAt;
+  final bool dirty;
   const WordProgressRow({
     required this.wordId,
     required this.easeFactor,
     required this.intervalDays,
     required this.repetitions,
     required this.dueDate,
+    required this.updatedAt,
+    required this.dirty,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -510,6 +659,8 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
     map['interval_days'] = Variable<int>(intervalDays);
     map['repetitions'] = Variable<int>(repetitions);
     map['due_date'] = Variable<DateTime>(dueDate);
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['dirty'] = Variable<bool>(dirty);
     return map;
   }
 
@@ -520,6 +671,8 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
       intervalDays: Value(intervalDays),
       repetitions: Value(repetitions),
       dueDate: Value(dueDate),
+      updatedAt: Value(updatedAt),
+      dirty: Value(dirty),
     );
   }
 
@@ -534,6 +687,8 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
       intervalDays: serializer.fromJson<int>(json['intervalDays']),
       repetitions: serializer.fromJson<int>(json['repetitions']),
       dueDate: serializer.fromJson<DateTime>(json['dueDate']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
     );
   }
   @override
@@ -545,6 +700,8 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
       'intervalDays': serializer.toJson<int>(intervalDays),
       'repetitions': serializer.toJson<int>(repetitions),
       'dueDate': serializer.toJson<DateTime>(dueDate),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'dirty': serializer.toJson<bool>(dirty),
     };
   }
 
@@ -554,12 +711,16 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
     int? intervalDays,
     int? repetitions,
     DateTime? dueDate,
+    int? updatedAt,
+    bool? dirty,
   }) => WordProgressRow(
     wordId: wordId ?? this.wordId,
     easeFactor: easeFactor ?? this.easeFactor,
     intervalDays: intervalDays ?? this.intervalDays,
     repetitions: repetitions ?? this.repetitions,
     dueDate: dueDate ?? this.dueDate,
+    updatedAt: updatedAt ?? this.updatedAt,
+    dirty: dirty ?? this.dirty,
   );
   WordProgressRow copyWithCompanion(WordProgressCompanion data) {
     return WordProgressRow(
@@ -574,6 +735,8 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
           ? data.repetitions.value
           : this.repetitions,
       dueDate: data.dueDate.present ? data.dueDate.value : this.dueDate,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
     );
   }
 
@@ -584,14 +747,23 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
           ..write('easeFactor: $easeFactor, ')
           ..write('intervalDays: $intervalDays, ')
           ..write('repetitions: $repetitions, ')
-          ..write('dueDate: $dueDate')
+          ..write('dueDate: $dueDate, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(wordId, easeFactor, intervalDays, repetitions, dueDate);
+  int get hashCode => Object.hash(
+    wordId,
+    easeFactor,
+    intervalDays,
+    repetitions,
+    dueDate,
+    updatedAt,
+    dirty,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -600,7 +772,9 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
           other.easeFactor == this.easeFactor &&
           other.intervalDays == this.intervalDays &&
           other.repetitions == this.repetitions &&
-          other.dueDate == this.dueDate);
+          other.dueDate == this.dueDate &&
+          other.updatedAt == this.updatedAt &&
+          other.dirty == this.dirty);
 }
 
 class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
@@ -609,6 +783,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
   final Value<int> intervalDays;
   final Value<int> repetitions;
   final Value<DateTime> dueDate;
+  final Value<int> updatedAt;
+  final Value<bool> dirty;
   final Value<int> rowid;
   const WordProgressCompanion({
     this.wordId = const Value.absent(),
@@ -616,6 +792,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     this.intervalDays = const Value.absent(),
     this.repetitions = const Value.absent(),
     this.dueDate = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   WordProgressCompanion.insert({
@@ -624,6 +802,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     this.intervalDays = const Value.absent(),
     this.repetitions = const Value.absent(),
     required DateTime dueDate,
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : wordId = Value(wordId),
        dueDate = Value(dueDate);
@@ -633,6 +813,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     Expression<int>? intervalDays,
     Expression<int>? repetitions,
     Expression<DateTime>? dueDate,
+    Expression<int>? updatedAt,
+    Expression<bool>? dirty,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -641,6 +823,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
       if (intervalDays != null) 'interval_days': intervalDays,
       if (repetitions != null) 'repetitions': repetitions,
       if (dueDate != null) 'due_date': dueDate,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (dirty != null) 'dirty': dirty,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -651,6 +835,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     Value<int>? intervalDays,
     Value<int>? repetitions,
     Value<DateTime>? dueDate,
+    Value<int>? updatedAt,
+    Value<bool>? dirty,
     Value<int>? rowid,
   }) {
     return WordProgressCompanion(
@@ -659,6 +845,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
       intervalDays: intervalDays ?? this.intervalDays,
       repetitions: repetitions ?? this.repetitions,
       dueDate: dueDate ?? this.dueDate,
+      updatedAt: updatedAt ?? this.updatedAt,
+      dirty: dirty ?? this.dirty,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -681,6 +869,12 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     if (dueDate.present) {
       map['due_date'] = Variable<DateTime>(dueDate.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -695,6 +889,8 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
           ..write('intervalDays: $intervalDays, ')
           ..write('repetitions: $repetitions, ')
           ..write('dueDate: $dueDate, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -749,8 +945,40 @@ class $UserStatsTable extends UserStats
         type: DriftSqlType.dateTime,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, xp, streak, lastActiveDate];
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    xp,
+    streak,
+    lastActiveDate,
+    updatedAt,
+    dirty,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -784,6 +1012,18 @@ class $UserStatsTable extends UserStats
         ),
       );
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
     return context;
   }
 
@@ -809,6 +1049,14 @@ class $UserStatsTable extends UserStats
         DriftSqlType.dateTime,
         data['${effectivePrefix}last_active_date'],
       ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
     );
   }
 
@@ -823,11 +1071,15 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
   final int xp;
   final int streak;
   final DateTime? lastActiveDate;
+  final int updatedAt;
+  final bool dirty;
   const UserStatsRow({
     required this.id,
     required this.xp,
     required this.streak,
     this.lastActiveDate,
+    required this.updatedAt,
+    required this.dirty,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -838,6 +1090,8 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
     if (!nullToAbsent || lastActiveDate != null) {
       map['last_active_date'] = Variable<DateTime>(lastActiveDate);
     }
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['dirty'] = Variable<bool>(dirty);
     return map;
   }
 
@@ -849,6 +1103,8 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       lastActiveDate: lastActiveDate == null && nullToAbsent
           ? const Value.absent()
           : Value(lastActiveDate),
+      updatedAt: Value(updatedAt),
+      dirty: Value(dirty),
     );
   }
 
@@ -862,6 +1118,8 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       xp: serializer.fromJson<int>(json['xp']),
       streak: serializer.fromJson<int>(json['streak']),
       lastActiveDate: serializer.fromJson<DateTime?>(json['lastActiveDate']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
     );
   }
   @override
@@ -872,6 +1130,8 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       'xp': serializer.toJson<int>(xp),
       'streak': serializer.toJson<int>(streak),
       'lastActiveDate': serializer.toJson<DateTime?>(lastActiveDate),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'dirty': serializer.toJson<bool>(dirty),
     };
   }
 
@@ -880,6 +1140,8 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
     int? xp,
     int? streak,
     Value<DateTime?> lastActiveDate = const Value.absent(),
+    int? updatedAt,
+    bool? dirty,
   }) => UserStatsRow(
     id: id ?? this.id,
     xp: xp ?? this.xp,
@@ -887,6 +1149,8 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
     lastActiveDate: lastActiveDate.present
         ? lastActiveDate.value
         : this.lastActiveDate,
+    updatedAt: updatedAt ?? this.updatedAt,
+    dirty: dirty ?? this.dirty,
   );
   UserStatsRow copyWithCompanion(UserStatsCompanion data) {
     return UserStatsRow(
@@ -896,6 +1160,8 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       lastActiveDate: data.lastActiveDate.present
           ? data.lastActiveDate.value
           : this.lastActiveDate,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
     );
   }
 
@@ -905,13 +1171,16 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
           ..write('id: $id, ')
           ..write('xp: $xp, ')
           ..write('streak: $streak, ')
-          ..write('lastActiveDate: $lastActiveDate')
+          ..write('lastActiveDate: $lastActiveDate, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, xp, streak, lastActiveDate);
+  int get hashCode =>
+      Object.hash(id, xp, streak, lastActiveDate, updatedAt, dirty);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -919,7 +1188,9 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
           other.id == this.id &&
           other.xp == this.xp &&
           other.streak == this.streak &&
-          other.lastActiveDate == this.lastActiveDate);
+          other.lastActiveDate == this.lastActiveDate &&
+          other.updatedAt == this.updatedAt &&
+          other.dirty == this.dirty);
 }
 
 class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
@@ -927,29 +1198,39 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
   final Value<int> xp;
   final Value<int> streak;
   final Value<DateTime?> lastActiveDate;
+  final Value<int> updatedAt;
+  final Value<bool> dirty;
   const UserStatsCompanion({
     this.id = const Value.absent(),
     this.xp = const Value.absent(),
     this.streak = const Value.absent(),
     this.lastActiveDate = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
   });
   UserStatsCompanion.insert({
     this.id = const Value.absent(),
     this.xp = const Value.absent(),
     this.streak = const Value.absent(),
     this.lastActiveDate = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
   });
   static Insertable<UserStatsRow> custom({
     Expression<int>? id,
     Expression<int>? xp,
     Expression<int>? streak,
     Expression<DateTime>? lastActiveDate,
+    Expression<int>? updatedAt,
+    Expression<bool>? dirty,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (xp != null) 'xp': xp,
       if (streak != null) 'streak': streak,
       if (lastActiveDate != null) 'last_active_date': lastActiveDate,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (dirty != null) 'dirty': dirty,
     });
   }
 
@@ -958,12 +1239,16 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
     Value<int>? xp,
     Value<int>? streak,
     Value<DateTime?>? lastActiveDate,
+    Value<int>? updatedAt,
+    Value<bool>? dirty,
   }) {
     return UserStatsCompanion(
       id: id ?? this.id,
       xp: xp ?? this.xp,
       streak: streak ?? this.streak,
       lastActiveDate: lastActiveDate ?? this.lastActiveDate,
+      updatedAt: updatedAt ?? this.updatedAt,
+      dirty: dirty ?? this.dirty,
     );
   }
 
@@ -982,6 +1267,12 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
     if (lastActiveDate.present) {
       map['last_active_date'] = Variable<DateTime>(lastActiveDate.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
     return map;
   }
 
@@ -991,7 +1282,218 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
           ..write('id: $id, ')
           ..write('xp: $xp, ')
           ..write('streak: $streak, ')
-          ..write('lastActiveDate: $lastActiveDate')
+          ..write('lastActiveDate: $lastActiveDate, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SyncMetadataTable extends SyncMetadata
+    with TableInfo<$SyncMetadataTable, SyncMetadataData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncMetadataTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _keyMeta = const VerificationMeta('key');
+  @override
+  late final GeneratedColumn<String> key = GeneratedColumn<String>(
+    'key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _valueMeta = const VerificationMeta('value');
+  @override
+  late final GeneratedColumn<String> value = GeneratedColumn<String>(
+    'value',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [key, value];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_metadata';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncMetadataData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('key')) {
+      context.handle(
+        _keyMeta,
+        key.isAcceptableOrUnknown(data['key']!, _keyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    if (data.containsKey('value')) {
+      context.handle(
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_valueMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {key};
+  @override
+  SyncMetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncMetadataData(
+      key: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncMetadataTable createAlias(String alias) {
+    return $SyncMetadataTable(attachedDatabase, alias);
+  }
+}
+
+class SyncMetadataData extends DataClass
+    implements Insertable<SyncMetadataData> {
+  final String key;
+  final String value;
+  const SyncMetadataData({required this.key, required this.value});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['key'] = Variable<String>(key);
+    map['value'] = Variable<String>(value);
+    return map;
+  }
+
+  SyncMetadataCompanion toCompanion(bool nullToAbsent) {
+    return SyncMetadataCompanion(key: Value(key), value: Value(value));
+  }
+
+  factory SyncMetadataData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncMetadataData(
+      key: serializer.fromJson<String>(json['key']),
+      value: serializer.fromJson<String>(json['value']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'key': serializer.toJson<String>(key),
+      'value': serializer.toJson<String>(value),
+    };
+  }
+
+  SyncMetadataData copyWith({String? key, String? value}) =>
+      SyncMetadataData(key: key ?? this.key, value: value ?? this.value);
+  SyncMetadataData copyWithCompanion(SyncMetadataCompanion data) {
+    return SyncMetadataData(
+      key: data.key.present ? data.key.value : this.key,
+      value: data.value.present ? data.value.value : this.value,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncMetadataData(')
+          ..write('key: $key, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(key, value);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncMetadataData &&
+          other.key == this.key &&
+          other.value == this.value);
+}
+
+class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataData> {
+  final Value<String> key;
+  final Value<String> value;
+  final Value<int> rowid;
+  const SyncMetadataCompanion({
+    this.key = const Value.absent(),
+    this.value = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncMetadataCompanion.insert({
+    required String key,
+    required String value,
+    this.rowid = const Value.absent(),
+  }) : key = Value(key),
+       value = Value(value);
+  static Insertable<SyncMetadataData> custom({
+    Expression<String>? key,
+    Expression<String>? value,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (key != null) 'key': key,
+      if (value != null) 'value': value,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncMetadataCompanion copyWith({
+    Value<String>? key,
+    Value<String>? value,
+    Value<int>? rowid,
+  }) {
+    return SyncMetadataCompanion(
+      key: key ?? this.key,
+      value: value ?? this.value,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (key.present) {
+      map['key'] = Variable<String>(key.value);
+    }
+    if (value.present) {
+      map['value'] = Variable<String>(value.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncMetadataCompanion(')
+          ..write('key: $key, ')
+          ..write('value: $value, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -1003,6 +1505,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $LessonProgressTable lessonProgress = $LessonProgressTable(this);
   late final $WordProgressTable wordProgress = $WordProgressTable(this);
   late final $UserStatsTable userStats = $UserStatsTable(this);
+  late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1011,6 +1514,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     lessonProgress,
     wordProgress,
     userStats,
+    syncMetadata,
   ];
 }
 
@@ -1020,6 +1524,8 @@ typedef $$LessonProgressTableCreateCompanionBuilder =
       Value<bool> completed,
       Value<int> bestScore,
       Value<DateTime?> completedAt,
+      Value<int> updatedAt,
+      Value<bool> dirty,
       Value<int> rowid,
     });
 typedef $$LessonProgressTableUpdateCompanionBuilder =
@@ -1028,6 +1534,8 @@ typedef $$LessonProgressTableUpdateCompanionBuilder =
       Value<bool> completed,
       Value<int> bestScore,
       Value<DateTime?> completedAt,
+      Value<int> updatedAt,
+      Value<bool> dirty,
       Value<int> rowid,
     });
 
@@ -1057,6 +1565,16 @@ class $$LessonProgressTableFilterComposer
 
   ColumnFilters<DateTime> get completedAt => $composableBuilder(
     column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1089,6 +1607,16 @@ class $$LessonProgressTableOrderingComposer
     column: $table.completedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$LessonProgressTableAnnotationComposer
@@ -1113,6 +1641,12 @@ class $$LessonProgressTableAnnotationComposer
     column: $table.completedAt,
     builder: (column) => column,
   );
+
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
 }
 
 class $$LessonProgressTableTableManager
@@ -1156,12 +1690,16 @@ class $$LessonProgressTableTableManager
                 Value<bool> completed = const Value.absent(),
                 Value<int> bestScore = const Value.absent(),
                 Value<DateTime?> completedAt = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => LessonProgressCompanion(
                 lessonId: lessonId,
                 completed: completed,
                 bestScore: bestScore,
                 completedAt: completedAt,
+                updatedAt: updatedAt,
+                dirty: dirty,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1170,12 +1708,16 @@ class $$LessonProgressTableTableManager
                 Value<bool> completed = const Value.absent(),
                 Value<int> bestScore = const Value.absent(),
                 Value<DateTime?> completedAt = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => LessonProgressCompanion.insert(
                 lessonId: lessonId,
                 completed: completed,
                 bestScore: bestScore,
                 completedAt: completedAt,
+                updatedAt: updatedAt,
+                dirty: dirty,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -1219,6 +1761,8 @@ typedef $$WordProgressTableCreateCompanionBuilder =
       Value<int> intervalDays,
       Value<int> repetitions,
       required DateTime dueDate,
+      Value<int> updatedAt,
+      Value<bool> dirty,
       Value<int> rowid,
     });
 typedef $$WordProgressTableUpdateCompanionBuilder =
@@ -1228,6 +1772,8 @@ typedef $$WordProgressTableUpdateCompanionBuilder =
       Value<int> intervalDays,
       Value<int> repetitions,
       Value<DateTime> dueDate,
+      Value<int> updatedAt,
+      Value<bool> dirty,
       Value<int> rowid,
     });
 
@@ -1262,6 +1808,16 @@ class $$WordProgressTableFilterComposer
 
   ColumnFilters<DateTime> get dueDate => $composableBuilder(
     column: $table.dueDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1299,6 +1855,16 @@ class $$WordProgressTableOrderingComposer
     column: $table.dueDate,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$WordProgressTableAnnotationComposer
@@ -1330,6 +1896,12 @@ class $$WordProgressTableAnnotationComposer
 
   GeneratedColumn<DateTime> get dueDate =>
       $composableBuilder(column: $table.dueDate, builder: (column) => column);
+
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
 }
 
 class $$WordProgressTableTableManager
@@ -1368,6 +1940,8 @@ class $$WordProgressTableTableManager
                 Value<int> intervalDays = const Value.absent(),
                 Value<int> repetitions = const Value.absent(),
                 Value<DateTime> dueDate = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WordProgressCompanion(
                 wordId: wordId,
@@ -1375,6 +1949,8 @@ class $$WordProgressTableTableManager
                 intervalDays: intervalDays,
                 repetitions: repetitions,
                 dueDate: dueDate,
+                updatedAt: updatedAt,
+                dirty: dirty,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1384,6 +1960,8 @@ class $$WordProgressTableTableManager
                 Value<int> intervalDays = const Value.absent(),
                 Value<int> repetitions = const Value.absent(),
                 required DateTime dueDate,
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WordProgressCompanion.insert(
                 wordId: wordId,
@@ -1391,6 +1969,8 @@ class $$WordProgressTableTableManager
                 intervalDays: intervalDays,
                 repetitions: repetitions,
                 dueDate: dueDate,
+                updatedAt: updatedAt,
+                dirty: dirty,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -1432,12 +2012,16 @@ typedef $$UserStatsTableCreateCompanionBuilder = UserStatsCompanion Function({
   Value<int> xp,
   Value<int> streak,
   Value<DateTime?> lastActiveDate,
+  Value<int> updatedAt,
+  Value<bool> dirty,
 });
 typedef $$UserStatsTableUpdateCompanionBuilder = UserStatsCompanion Function({
   Value<int> id,
   Value<int> xp,
   Value<int> streak,
   Value<DateTime?> lastActiveDate,
+  Value<int> updatedAt,
+  Value<bool> dirty,
 });
 
 class $$UserStatsTableFilterComposer
@@ -1466,6 +2050,16 @@ class $$UserStatsTableFilterComposer
 
   ColumnFilters<DateTime> get lastActiveDate => $composableBuilder(
     column: $table.lastActiveDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1498,6 +2092,16 @@ class $$UserStatsTableOrderingComposer
     column: $table.lastActiveDate,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$UserStatsTableAnnotationComposer
@@ -1522,6 +2126,12 @@ class $$UserStatsTableAnnotationComposer
     column: $table.lastActiveDate,
     builder: (column) => column,
   );
+
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
 }
 
 class $$UserStatsTableTableManager
@@ -1559,11 +2169,15 @@ class $$UserStatsTableTableManager
                 Value<int> xp = const Value.absent(),
                 Value<int> streak = const Value.absent(),
                 Value<DateTime?> lastActiveDate = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
               }) => UserStatsCompanion(
                 id: id,
                 xp: xp,
                 streak: streak,
                 lastActiveDate: lastActiveDate,
+                updatedAt: updatedAt,
+                dirty: dirty,
               ),
           createCompanionCallback:
               ({
@@ -1571,11 +2185,15 @@ class $$UserStatsTableTableManager
                 Value<int> xp = const Value.absent(),
                 Value<int> streak = const Value.absent(),
                 Value<DateTime?> lastActiveDate = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
               }) => UserStatsCompanion.insert(
                 id: id,
                 xp: xp,
                 streak: streak,
                 lastActiveDate: lastActiveDate,
+                updatedAt: updatedAt,
+                dirty: dirty,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -1611,6 +2229,153 @@ typedef $$UserStatsTableProcessedTableManager =
       UserStatsRow,
       PrefetchHooks Function()
     >;
+typedef $$SyncMetadataTableCreateCompanionBuilder =
+    SyncMetadataCompanion Function({
+      required String key,
+      required String value,
+      Value<int> rowid,
+    });
+typedef $$SyncMetadataTableUpdateCompanionBuilder =
+    SyncMetadataCompanion Function({
+      Value<String> key,
+      Value<String> value,
+      Value<int> rowid,
+    });
+
+class $$SyncMetadataTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncMetadataTable> {
+  $$SyncMetadataTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncMetadataTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncMetadataTable> {
+  $$SyncMetadataTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncMetadataTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncMetadataTable> {
+  $$SyncMetadataTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get key =>
+      $composableBuilder(column: $table.key, builder: (column) => column);
+
+  GeneratedColumn<String> get value =>
+      $composableBuilder(column: $table.value, builder: (column) => column);
+}
+
+class $$SyncMetadataTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncMetadataTable,
+          SyncMetadataData,
+          $$SyncMetadataTableFilterComposer,
+          $$SyncMetadataTableOrderingComposer,
+          $$SyncMetadataTableAnnotationComposer,
+          $$SyncMetadataTableCreateCompanionBuilder,
+          $$SyncMetadataTableUpdateCompanionBuilder,
+          (
+            SyncMetadataData,
+            BaseReferences<_$AppDatabase, $SyncMetadataTable, SyncMetadataData>,
+          ),
+          SyncMetadataData,
+          PrefetchHooks Function()
+        > {
+  $$SyncMetadataTableTableManager(_$AppDatabase db, $SyncMetadataTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncMetadataTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncMetadataTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncMetadataTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> key = const Value.absent(),
+            Value<String> value = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => SyncMetadataCompanion(key: key, value: value, rowid: rowid),
+          createCompanionCallback:
+              ({
+                required String key,
+                required String value,
+                Value<int> rowid = const Value.absent(),
+              }) => SyncMetadataCompanion.insert(
+                key: key,
+                value: value,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SyncMetadataTable, SyncMetadataData>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $SyncMetadataTable,
+                    SyncMetadataData
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncMetadataTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncMetadataTable,
+      SyncMetadataData,
+      $$SyncMetadataTableFilterComposer,
+      $$SyncMetadataTableOrderingComposer,
+      $$SyncMetadataTableAnnotationComposer,
+      $$SyncMetadataTableCreateCompanionBuilder,
+      $$SyncMetadataTableUpdateCompanionBuilder,
+      (
+        SyncMetadataData,
+        BaseReferences<_$AppDatabase, $SyncMetadataTable, SyncMetadataData>,
+      ),
+      SyncMetadataData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1621,4 +2386,6 @@ class $AppDatabaseManager {
       $$WordProgressTableTableManager(_db, _db.wordProgress);
   $$UserStatsTableTableManager get userStats =>
       $$UserStatsTableTableManager(_db, _db.userStats);
+  $$SyncMetadataTableTableManager get syncMetadata =>
+      $$SyncMetadataTableTableManager(_db, _db.syncMetadata);
 }
