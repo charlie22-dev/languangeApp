@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/app/app.dart';
+import 'package:myapp/features/auth/data/auth_repository.dart';
+import 'package:myapp/features/auth/domain/auth_models.dart';
+import 'package:myapp/features/sync/presentation/sync_providers.dart';
 import 'package:myapp/core/config/app_config.dart';
+import 'package:myapp/core/config/supabase_config.dart';
 import 'package:myapp/core/database/app_database.dart';
 import 'package:myapp/core/utils/clock.dart';
 import 'package:myapp/features/flashcards/data/review_repository.dart';
@@ -32,6 +36,8 @@ class AppHarness {
     LessonCompletionRepository? completionRepository,
     ReviewRepository? reviewRepository,
     DateTime Function()? clock,
+    AuthRepository? authRepository,
+    bool useRealAuth = false,
   }) {
     this.course = course ?? sampleCourse();
     this.repository = repository ?? MemoryOnboardingRepository(saved: settings);
@@ -40,6 +46,20 @@ class AppHarness {
       overrides: [
         onboardingRepositoryProvider.overrideWithValue(this.repository),
         appDatabaseProvider.overrideWithValue(database),
+        syncServiceProvider.overrideWithValue(null),
+        accountReadyProvider.overrideWith((ref) async {}),
+        if (useRealAuth)
+          supabaseConfigProvider.overrideWithValue(
+            const SupabaseConfig(url: '', publishableKey: ''),
+          ),
+        if (authRepository != null)
+          authRepositoryProvider.overrideWith((ref) async => authRepository)
+        else if (!useRealAuth)
+          authStateProvider.overrideWith(
+            (ref) => Stream.value(
+              const AuthIdentity(id: 'test-account', email: 'test@example.com'),
+            ),
+          ),
         if (clock != null) clockProvider.overrideWithValue(clock),
         if (reviewRepository != null)
           reviewRepositoryProvider.overrideWithValue(reviewRepository),
@@ -338,10 +358,7 @@ void main() {
     expect(find.text('Your review deck is ready to grow.'), findsOneWidget);
     await tester.tap(find.byType(NavigationDestination).at(2));
     await tester.pumpAndSettle();
-    expect(
-      find.text('Your profile will appear here in a future phase.'),
-      findsOneWidget,
-    );
+    expect(find.text('Your account'), findsOneWidget);
     final router = harness.container.read(appRouterProvider);
     router.go('/lesson/ja_people');
     await tester.pumpAndSettle();
