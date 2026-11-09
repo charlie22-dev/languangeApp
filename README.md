@@ -1,13 +1,18 @@
-# Language learning app - Phases 1 through 5
+# Language learning app - Phases 1 through 6A
 
 This project contains Material 3 light/dark themes, Riverpod, go_router,
 three-step onboarding, a learning path, an exercise engine, spaced-repetition flashcards,
-and a placeholder Profile screen.
+Supabase authentication, background progress sync, and an account Profile screen.
 Phase 2 adds course content, immutable models, asset loading, and Drift tables.
 Phase 3 connects onboarding preferences and database progress to the interface.
 Phase 4 adds playable lessons, feedback, results, XP awards, and progress saving.
 Phase 5 adds SM-2 scheduling, card enrollment, review sessions, and review summaries.
-Backend integration, audio playback, and AI conversation belong to later phases.
+Phase 6A adds Supabase Auth and row-level-secured Postgres synchronization.
+Audio playback and AI conversation belong to later phases.
+
+For current backend setup and Android run instructions, start with
+[SUPABASE_SETUP.md](SUPABASE_SETUP.md). The app needs your project URL and public
+client key in the ignored config.local.json before sign-in is available.
 
 ## Create a separate project
 
