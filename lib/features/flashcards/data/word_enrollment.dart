@@ -13,7 +13,11 @@ Future<void> enrollWords(
   await database.batch(
     (batch) => batch.insertAll(database.wordProgress, [
       for (final id in ids)
-        WordProgressCompanion.insert(wordId: id, dueDate: now.toUtc()),
+        WordProgressCompanion.insert(
+          wordId: id,
+          dueDate: now.toUtc(),
+          updatedAt: Value(now.toUtc().microsecondsSinceEpoch),
+        ),
     ], mode: InsertMode.insertOrIgnore),
   );
 }
