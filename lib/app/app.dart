@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/config/app_config.dart';
 import '../core/router/app_router.dart';
 import '../core/theme/app_theme.dart';
+import '../features/sync/presentation/sync_providers.dart';
 
 class LanguageApp extends ConsumerWidget {
   const LanguageApp({super.key});
@@ -11,6 +12,7 @@ class LanguageApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(appConfigProvider);
+    ref.watch(syncServiceProvider);
     return MaterialApp.router(
       title: config.appName,
       debugShowCheckedModeBanner: false,
@@ -18,6 +20,39 @@ class LanguageApp extends ConsumerWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
       routerConfig: ref.watch(appRouterProvider),
+      builder: (context, child) => _SyncLifecycle(child: child!),
     );
   }
+}
+
+class _SyncLifecycle extends ConsumerStatefulWidget {
+  const _SyncLifecycle({required this.child});
+  final Widget child;
+  @override
+  ConsumerState<_SyncLifecycle> createState() => _SyncLifecycleState();
+}
+
+class _SyncLifecycleState extends ConsumerState<_SyncLifecycle>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      ref.read(syncServiceProvider)?.request();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
