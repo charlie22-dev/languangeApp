@@ -96,7 +96,7 @@ drift_dev and build_runner are dev dependencies for the Drift database generator
 see the Phase 2 commands below to regenerate it after schema edits.
 Commit pubspec.lock in this application to reproduce resolved dependencies.
 .gitignore excludes build output, local env files, SDK paths, and signing files.
-This directory currently has no Git repository; initialize one when ready.
+The project is a Git repository on main; keep local credentials and tool caches excluded.
 See PHASE1_FILES.md for complete setup file contents and the dependency lockfile.
 
 ## Phase 2: content and persistence
