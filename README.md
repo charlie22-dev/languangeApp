@@ -331,3 +331,21 @@ rating mappings, session save retry, partial sessions, app resume, reduced motio
 and 320px layouts at 200% text scale in light/dark themes. flutter analyze reports
 no issues and formatting is clean. An Android emulator run was not performed.
 See PHASE5_FILES.md for the file manifest and full Phase 5 source.
+
+## Phase 6A: Supabase authentication and sync
+
+See SUPABASE_SETUP.md for project creation, SQL migration/RLS, email and Google
+provider configuration, Android callbacks, offline behavior, and manual testing.
+The app uses supabase_flutter and reads config.local.json through dart-defines.
+That local file is ignored; config.example.json is safe to commit.
+
+Drift remains the source used by screens. Authenticated accounts have separate
+local databases, and the first account can claim the pre-authentication database
+once. Schema version 2 adds timestamp/dirty fields and ownership metadata without
+clearing progress. Sync persists pending changes, retries in the background, and
+merges each row by updatedAt through an owner-checked Postgres RPC. Newer local
+edits made during an upload remain pending. Profile includes sync status and logout.
+
+Validation: 121 Flutter tests and 11 local SQL/RLS checks passed. Cloud project
+configuration, live OAuth/email delivery, and emulator verification remain setup
+steps for your project. Full changed-file contents are in PHASE6A_FILES.md.
