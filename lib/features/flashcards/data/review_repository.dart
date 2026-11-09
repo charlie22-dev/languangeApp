@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/database/app_database.dart';
 import '../../../core/utils/clock.dart';
+import '../../../core/utils/sync_timestamp.dart';
 import '../../lessons/domain/course.dart';
 import '../domain/review_session.dart';
 import '../domain/sm2.dart';
@@ -130,6 +131,8 @@ class ReviewRepository {
             easeFactor: Value(next.easeFactor),
             intervalDays: Value(next.intervalDays),
             dueDate: Value(next.dueDate),
+            updatedAt: Value(nextSyncTimestamp(row.updatedAt, clock())),
+            dirty: const Value(true),
           ),
         );
         return next;
