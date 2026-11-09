@@ -49,7 +49,7 @@ Wait until the emulator boots. Use the Android device ID printed by flutter devi
 (e.g. emulator-5554, which can vary):
 
 ```powershell
-flutter run -d emulator-5554 --dart-define="APP_NAME=My Language App" --dart-define="TARGET_LANGUAGE=Japanese" --dart-define="NATIVE_LANGUAGE=English"
+flutter run -d emulator-5554 --dart-define-from-file=config.local.json --dart-define="APP_NAME=My Language App" --dart-define="TARGET_LANGUAGE=Japanese" --dart-define="NATIVE_LANGUAGE=English"
 ```
 
 Press r for hot reload, R for hot restart, and q to quit. Change dart-defines by
