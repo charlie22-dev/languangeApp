@@ -138,8 +138,8 @@ flutter analyze
 flutter test
 ```
 
-Keep app_database.g.dart with the source, and do not edit it manually. Schema
-version is 1; later schema changes will need a version bump and a migration.
+Keep app_database.g.dart with the source, and do not edit it manually. Phase 6A
+upgrades schema version 1 to 2 with a migration that preserves existing progress.
 The native database setup targets Android/iOS/desktop; running the database on
 web requires Drift's separate web worker/WASM setup in a later phase.
 
