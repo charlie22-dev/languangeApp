@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/data/auth_repository.dart';
+import '../../features/auth/presentation/auth_screens.dart';
+import '../../features/auth/presentation/auth_loading_screen.dart';
+import '../../features/sync/presentation/sync_providers.dart';
+
 import '../../features/flashcards/presentation/review_screen.dart';
 import '../../features/flashcards/presentation/review_session_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
@@ -19,6 +24,8 @@ import '../constants/app_routes.dart';
 final appRouterProvider = Provider<GoRouter>((ref) {
   // Refresh redirects when preferences change without rebuilding the router.
   final refresh = ValueNotifier(0);
+  ref.listen(authStateProvider, (previous, next) => refresh.value++);
+  ref.listen(accountReadyProvider, (previous, next) => refresh.value++);
   ref.listen(onboardingProvider, (previous, next) => refresh.value++);
   ref.listen(
     onboardingFlowProvider.select((draft) => draft.courseId),
@@ -28,8 +35,33 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: AppRoutes.welcome,
     refreshListenable: refresh,
     redirect: (context, state) {
-      final settings = ref.read(onboardingProvider);
       final path = state.uri.path;
+      final auth = ref.read(authStateProvider);
+      const authPaths = {
+        AppRoutes.login,
+        AppRoutes.register,
+        AppRoutes.forgotPassword,
+      };
+      if (auth.isLoading) {
+        return path == AppRoutes.authLoading ? null : AppRoutes.authLoading;
+      }
+      final identity = auth.asData?.value;
+      if (identity == null) {
+        return authPaths.contains(path) ? null : AppRoutes.login;
+      }
+      if (identity.needsPasswordReset) {
+        return path == AppRoutes.resetPassword ? null : AppRoutes.resetPassword;
+      }
+      final ready = ref.read(accountReadyProvider);
+      if (ready.isLoading || ready.hasError) {
+        return path == AppRoutes.authLoading ? null : AppRoutes.authLoading;
+      }
+      if (authPaths.contains(path) ||
+          path == AppRoutes.authLoading ||
+          path == AppRoutes.resetPassword) {
+        return AppRoutes.home;
+      }
+      final settings = ref.read(onboardingProvider);
       const onboardingPaths = {
         AppRoutes.welcome,
         AppRoutes.languages,
@@ -53,6 +85,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           : null;
     },
     routes: [
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.resetPassword,
+        builder: (context, state) => const ResetPasswordScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.authLoading,
+        builder: (context, state) => const AuthLoadingScreen(),
+      ),
       GoRoute(path: '/', redirect: (context, state) => AppRoutes.welcome),
       GoRoute(
         path: AppRoutes.welcome,
