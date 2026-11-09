@@ -55,3 +55,8 @@ app.*.map.json
 /android/key.properties
 *.jks
 *.keystore
+
+# Local Supabase client configuration and CLI state
+config.local.json
+/supabase/.temp/
+/supabase/.branches/
