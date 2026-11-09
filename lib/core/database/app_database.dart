@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../features/auth/data/auth_repository.dart';
 
 part 'app_database.g.dart';
 
@@ -10,6 +14,8 @@ class LessonProgress extends Table {
   BoolColumn get completed => boolean().withDefault(const Constant(false))();
   IntColumn get bestScore => integer().withDefault(const Constant(0))();
   DateTimeColumn get completedAt => dateTime().nullable()();
+  IntColumn get updatedAt => integer().withDefault(const Constant(0))();
+  BoolColumn get dirty => boolean().withDefault(const Constant(true))();
 
   @override
   Set<Column> get primaryKey => {lessonId};
@@ -27,6 +33,8 @@ class WordProgress extends Table {
   IntColumn get intervalDays => integer().withDefault(const Constant(0))();
   IntColumn get repetitions => integer().withDefault(const Constant(0))();
   DateTimeColumn get dueDate => dateTime()();
+  IntColumn get updatedAt => integer().withDefault(const Constant(0))();
+  BoolColumn get dirty => boolean().withDefault(const Constant(true))();
 
   @override
   Set<Column> get primaryKey => {wordId};
@@ -45,6 +53,8 @@ class UserStats extends Table {
   IntColumn get xp => integer().withDefault(const Constant(0))();
   IntColumn get streak => integer().withDefault(const Constant(0))();
   DateTimeColumn get lastActiveDate => dateTime().nullable()();
+  IntColumn get updatedAt => integer().withDefault(const Constant(0))();
+  BoolColumn get dirty => boolean().withDefault(const Constant(true))();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -57,14 +67,26 @@ class UserStats extends Table {
   ];
 }
 
-@DriftDatabase(tables: [LessonProgress, WordProgress, UserStats])
+class SyncMetadata extends Table {
+  TextColumn get key => text()();
+  TextColumn get value => text()();
+  @override
+  Set<Column> get primaryKey => {key};
+}
+
+@DriftDatabase(tables: [LessonProgress, WordProgress, UserStats, SyncMetadata])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(driftDatabase(name: 'language_learning'));
+  AppDatabase({String? userId})
+    : super(driftDatabase(name: databaseName(userId)));
+
+  static String databaseName(String? userId) => userId == null
+      ? 'language_learning'
+      : 'language_learning_${base64Url.encode(utf8.encode(userId)).replaceAll('=', '')}';
 
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -72,11 +94,25 @@ class AppDatabase extends _$AppDatabase {
       await migrator.createAll();
       await into(userStats).insert(UserStatsCompanion.insert());
     },
+    onUpgrade: (migrator, from, to) async {
+      if (from < 2) {
+        await migrator.addColumn(lessonProgress, lessonProgress.updatedAt);
+        await migrator.addColumn(lessonProgress, lessonProgress.dirty);
+        await migrator.addColumn(wordProgress, wordProgress.updatedAt);
+        await migrator.addColumn(wordProgress, wordProgress.dirty);
+        await migrator.addColumn(userStats, userStats.updatedAt);
+        await migrator.addColumn(userStats, userStats.dirty);
+        await migrator.createTable(syncMetadata);
+      }
+    },
   );
 }
 
 final appDatabaseProvider = Provider<AppDatabase>((ref) {
-  final database = AppDatabase();
+  final uid = ref.watch(
+    authStateProvider.select((value) => value.asData?.value?.id),
+  );
+  final database = AppDatabase(userId: uid);
   ref.onDispose(database.close);
   return database;
 });
