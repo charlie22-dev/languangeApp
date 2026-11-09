@@ -77,7 +77,7 @@ scale in both light and dark themes. An Android build has not been verified.
 - lib/core/constants: route constants.
 - lib/core/router: go_router configuration.
 - lib/core/utils: reserved for shared utilities.
-- lib/features/{onboarding,home,lessons,exercises,flashcards,profile}/:
+- lib/features/{auth,sync,onboarding,home,lessons,exercises,flashcards,profile}/:
   each feature has data, domain, and presentation folders.
 - lib/shared/widgets: reusable widgets.
 
