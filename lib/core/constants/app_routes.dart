@@ -1,4 +1,9 @@
 abstract final class AppRoutes {
+  static const login = '/login';
+  static const register = '/register';
+  static const forgotPassword = '/forgot-password';
+  static const resetPassword = '/reset-password';
+  static const authLoading = '/auth-loading';
   static const welcome = '/welcome';
   static const startup = '/startup';
   static const languages = '/languages';
