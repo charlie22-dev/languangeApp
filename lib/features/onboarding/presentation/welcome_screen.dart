@@ -1,3 +1,7 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,40 +16,27 @@ class WelcomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = ref.watch(appConfigProvider);
-    final colors = Theme.of(context).colorScheme;
     return OnboardingFrame(
       step: 1,
       title: config.appName,
-      subtitle: 'A new language. A little practice. Every day.',
+      subtitle: context.l10n.text('ui1d4123828b'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: colors.primaryContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.translate,
-                size: 48,
-                color: colors.onPrimaryContainer,
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
+          const SizedBox(height: LingoSpace.s24),
           Text(
             config.hasLanguagePair
-                ? 'Learn ${config.targetLanguage} with guidance in ${config.nativeLanguage}.'
-                : 'Start a learning habit that fits your life.',
+                ? context.l10n.text('ui73e1f9f2e1', {
+                    'arg0': (config.targetLanguage),
+                    'arg1': (config.nativeLanguage),
+                  })
+                : context.l10n.text('ui79272f9bd7'),
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          const SizedBox(height: 32),
-          FilledButton(
+          const SizedBox(height: LingoSpace.s32),
+          LingoButton(
             onPressed: () => context.go(AppRoutes.languages),
-            child: const Text('Get Started'),
+            child: Text(context.l10n.text('uibd2cb05177')),
           ),
         ],
       ),
