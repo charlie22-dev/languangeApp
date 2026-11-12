@@ -1,3 +1,6 @@
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../shared/widgets/answer_option.dart';
@@ -28,12 +31,13 @@ class MatchPairsView extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      Text('Match the pairs', style: Theme.of(context).textTheme.headlineSmall),
-      const SizedBox(height: 12),
-      const Text(
-        'Tap one card in each column. Tap a paired card to change it.',
+      Text(
+        context.l10n.text('uicdc10ab67f'),
+        style: Theme.of(context).textTheme.headlineSmall,
       ),
-      const SizedBox(height: 24),
+      const SizedBox(height: LingoSpace.s8),
+      Text(context.l10n.text('ui2f381d8f15')),
+      const SizedBox(height: LingoSpace.s24),
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,13 +49,15 @@ class MatchPairsView extends StatelessWidget {
                     key: ValueKey('pair-left-$i'),
                     label: exercise.pairs[i].left,
                     selected: selectedLeft == i || matches.containsKey(i),
-                    pairLabel: matches.containsKey(i) ? 'Pair ${i + 1}' : null,
+                    pairLabel: matches.containsKey(i)
+                        ? context.l10n.text('ui0cbf36e177', {'arg0': i + 1})
+                        : null,
                     onTap: enabled ? () => onLeft(i) : null,
                   ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: LingoSpace.s8),
           Expanded(
             child: Column(
               children: [
@@ -95,7 +101,9 @@ class _RightCard extends StatelessWidget {
       key: ValueKey('pair-right-$index'),
       label: exercise.pairs[index].right,
       selected: pending || paired != null,
-      pairLabel: paired == null ? null : 'Pair ${paired.key + 1}',
+      pairLabel: paired == null
+          ? null
+          : context.l10n.text('ui0cbf36e177', {'arg0': (paired.key + 1)}),
       onTap: onTap,
     );
   }
