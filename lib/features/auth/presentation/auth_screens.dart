@@ -1,3 +1,7 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +13,7 @@ import '../../../shared/widgets/responsive_body.dart';
 import '../data/auth_repository.dart';
 import '../domain/auth_models.dart';
 import 'auth_controller.dart';
+import '../../../shared/widgets/pip_mascot.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -73,22 +78,45 @@ class _AuthFormScreenState extends ConsumerState<AuthFormScreen> {
     final unavailable = ref.watch(authStateProvider).hasError;
     final creating =
         mode == AuthFormMode.register || mode == AuthFormMode.resetPassword;
+    if (mode == AuthFormMode.forgotPassword &&
+        !action.busy &&
+        action.message != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(context.l10n.text('emailSentTitle')),
+          leading: BackButton(onPressed: () => context.go(AppRoutes.login)),
+        ),
+        body: ResponsiveBody(
+          child: LingoEmptyState(
+            title: context.l10n.text('emailSentTitle'),
+            message: context.l10n.message(action.message!),
+            mood: PipMood.happy,
+            action: LingoButton(
+              onPressed: () => context.go(AppRoutes.login),
+              child: Text(context.l10n.text('returnToLogin')),
+            ),
+          ),
+        ),
+      );
+    }
     final title = switch (mode) {
-      AuthFormMode.login => 'Welcome back',
-      AuthFormMode.register => 'Create your account',
-      AuthFormMode.forgotPassword => 'Forgot password?',
-      AuthFormMode.resetPassword => 'Set a new password',
+      AuthFormMode.login => context.l10n.text('uib807833efc'),
+      AuthFormMode.register => context.l10n.text('ui4046b58182'),
+      AuthFormMode.forgotPassword => context.l10n.text('ui4c29f7f033'),
+      AuthFormMode.resetPassword => context.l10n.text('ui1e83ae49d1'),
     };
     final label = switch (mode) {
-      AuthFormMode.login => 'Sign in',
-      AuthFormMode.register => 'Register',
-      AuthFormMode.forgotPassword => 'Send reset link',
-      AuthFormMode.resetPassword => 'Update password',
+      AuthFormMode.login => context.l10n.text('uiada2e9e96f'),
+      AuthFormMode.register => context.l10n.text('uid672995a14'),
+      AuthFormMode.forgotPassword => context.l10n.text('uib8ec554332'),
+      AuthFormMode.resetPassword => context.l10n.text('ui350c355e16'),
     };
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(mode == AuthFormMode.login ? 'Account' : label),
+        title: Text(
+          mode == AuthFormMode.login ? context.l10n.text('account') : label,
+        ),
         leading:
             mode == AuthFormMode.login || mode == AuthFormMode.resetPassword
             ? null
@@ -101,21 +129,29 @@ class _AuthFormScreenState extends ConsumerState<AuthFormScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Center(
+                  child: PipMascot(
+                    mood: mode == AuthFormMode.register
+                        ? PipMood.celebrating
+                        : PipMood.happy,
+                  ),
+                ),
+                const SizedBox(height: LingoSpace.s24),
                 Text(title, style: Theme.of(context).textTheme.headlineMedium),
-                const SizedBox(height: 12),
+                const SizedBox(height: LingoSpace.s8),
                 Text(
                   mode == AuthFormMode.login
-                      ? 'Keep your progress with your account.'
-                      : 'Your learning journey belongs to you.',
+                      ? context.l10n.text('uicee6febc4c')
+                      : context.l10n.text('ui9cf4f75313'),
                 ),
-                const SizedBox(height: 28),
+                const SizedBox(height: LingoSpace.s24),
                 if (unavailable) ...[
-                  const Text('Sign-in is unavailable on this build.'),
-                  TextButton(
+                  Text(context.l10n.text('ui46d17e5a9c')),
+                  LingoButton.ghost(
                     onPressed: () => ref.invalidate(supabaseClientProvider),
-                    child: const Text('Retry connection'),
+                    child: Text(context.l10n.text('uia351235680')),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: LingoSpace.s16),
                 ],
                 if (mode != AuthFormMode.resetPassword) ...[
                   TextFormField(
@@ -127,78 +163,81 @@ class _AuthFormScreenState extends ConsumerState<AuthFormScreen> {
                     textInputAction: mode == AuthFormMode.forgotPassword
                         ? TextInputAction.done
                         : TextInputAction.next,
-                    validator: AuthValidation.email,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
+                    validator: (value) =>
+                        context.l10n.validation(AuthValidation.email(value)),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.text('ui84add5b295'),
                       errorMaxLines: 3,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     onFieldSubmitted: mode == AuthFormMode.forgotPassword
                         ? (_) => _submit()
                         : null,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: LingoSpace.s16),
                 ],
                 if (mode != AuthFormMode.forgotPassword) ...[
                   PasswordField(
                     key: const ValueKey('auth-password'),
                     controller: _password,
-                    label: 'Password',
+                    label: context.l10n.text('ui8be3c943b1'),
                     enabled: !action.busy,
                     validator: (value) =>
                         AuthValidation.password(value, creating: creating),
                     onSubmitted: creating ? null : (_) => _submit(),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: LingoSpace.s16),
                 ],
                 if (creating) ...[
                   PasswordField(
                     key: const ValueKey('auth-confirmation'),
                     controller: _confirmation,
-                    label: 'Confirm password',
+                    label: context.l10n.text('ui4a7c565d4c'),
                     enabled: !action.busy,
                     validator: (value) =>
                         AuthValidation.confirmation(value, _password.text),
                     onSubmitted: (_) => _submit(),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: LingoSpace.s16),
                 ],
                 _AuthNotice(action: action),
-                FilledButton(
+                LingoButton(
                   onPressed: action.busy ? null : _submit,
-                  child: Text(action.busy ? 'Please wait…' : label),
+                  child: Text(
+                    action.busy ? context.l10n.text('pleaseWait') : label,
+                  ),
                 ),
                 if (mode == AuthFormMode.login ||
                     mode == AuthFormMode.register) ...[
-                  const SizedBox(height: 12),
-                  OutlinedButton(
+                  const SizedBox(height: LingoSpace.s8),
+                  LingoButton.outlined(
                     onPressed: action.busy
                         ? null
                         : ref
                               .read(authControllerProvider(mode).notifier)
                               .google,
-                    child: const Text('Continue with Google'),
+                    child: Text(context.l10n.text('uiccc5b0edaa')),
                   ),
                 ],
                 if (mode == AuthFormMode.login) ...[
-                  TextButton(
+                  LingoButton.ghost(
                     onPressed: action.busy
                         ? null
                         : () => context.go(AppRoutes.register),
-                    child: const Text('Create an account'),
+                    child: Text(context.l10n.text('ui3f4f547d73')),
                   ),
-                  TextButton(
+                  LingoButton.ghost(
                     onPressed: action.busy
                         ? null
                         : () => context.go(AppRoutes.forgotPassword),
-                    child: const Text('Forgot password?'),
+                    child: Text(context.l10n.text('ui4c29f7f033')),
                   ),
                 ] else if (mode != AuthFormMode.resetPassword)
-                  TextButton(
+                  LingoButton.ghost(
                     onPressed: action.busy
                         ? null
                         : () => context.go(AppRoutes.login),
-                    child: const Text('Back to sign in'),
+                    child: Text(context.l10n.text('ui4da821676b')),
                   ),
               ],
             ),
@@ -224,10 +263,14 @@ class _AuthNotice extends StatelessWidget {
             style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ),
+      if (action.message != null) const Icon(Icons.mark_email_read_outlined),
       if (action.message != null)
-        Semantics(liveRegion: true, child: Text(action.message!)),
+        Semantics(
+          liveRegion: true,
+          child: Text(context.l10n.message(action.message!)),
+        ),
       if (action.error != null || action.message != null)
-        const SizedBox(height: 16),
+        const SizedBox(height: LingoSpace.s16),
     ],
   );
 }

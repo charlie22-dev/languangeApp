@@ -1,3 +1,5 @@
+import '../../../core/localization/lingo_localizations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,8 +19,8 @@ class AuthLoadingScreen extends ConsumerWidget {
       body: AsyncStatusView(
         loading: !ready.hasError,
         message: ready.hasError
-            ? 'Your local progress could not be opened.'
-            : 'Opening your local progress…',
+            ? context.l10n.text('uif6021dbc0e')
+            : context.l10n.text('uidfa9ed40fe'),
         onRetry: ready.hasError
             ? () => ref.invalidate(accountReadyProvider)
             : null,
