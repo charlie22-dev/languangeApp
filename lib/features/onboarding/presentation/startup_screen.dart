@@ -1,3 +1,5 @@
+import '../../../core/localization/lingo_localizations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,8 +15,8 @@ class StartupScreen extends ConsumerWidget {
     return Scaffold(
       body: AsyncStatusView(
         message: settings.hasError
-            ? 'Your preferences could not be loaded.'
-            : 'Getting ready…',
+            ? context.l10n.text('ui2d467de3ea')
+            : context.l10n.text('ui1e6538235e'),
         loading: !settings.hasError,
         onRetry: settings.hasError
             ? () => ref.invalidate(onboardingProvider)
