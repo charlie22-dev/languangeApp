@@ -1,3 +1,5 @@
+import '../../core/localization/lingo_localizations.dart';
+
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatefulWidget {
@@ -27,7 +29,7 @@ class _PasswordFieldState extends State<PasswordField> {
     obscureText: _obscured,
     autocorrect: false,
     enableSuggestions: false,
-    validator: widget.validator,
+    validator: (value) => context.l10n.validation(widget.validator(value)),
     textInputAction: TextInputAction.done,
     onFieldSubmitted: widget.onSubmitted,
     decoration: InputDecoration(
@@ -35,7 +37,9 @@ class _PasswordFieldState extends State<PasswordField> {
       errorMaxLines: 3,
       border: const OutlineInputBorder(),
       suffixIcon: IconButton(
-        tooltip: _obscured ? 'Show password' : 'Hide password',
+        tooltip: _obscured
+            ? context.l10n.text('showPassword')
+            : context.l10n.text('uie40123b4e7'),
         onPressed: () => setState(() => _obscured = !_obscured),
         icon: Icon(
           _obscured ? Icons.visibility_outlined : Icons.visibility_off_outlined,
