@@ -27,6 +27,27 @@ Future<void> submit(WidgetTester tester, String label) async {
 
 void main() {
   testWidgets(
+    'session expiry redirects an open lesson to Login without crashing',
+    (tester) async {
+      final repository = MemoryAuthRepository(
+        identity: const AuthIdentity(id: 'account-a', email: 'a@example.com'),
+      );
+      addTearDown(repository.close);
+      final harness = AppHarness(
+        authRepository: repository,
+        settings: completedSettings(),
+      );
+      await mount(tester, harness);
+      final router = harness.container.read(appRouterProvider);
+      router.go('/lesson/ja_greetings');
+      await tester.pumpAndSettle();
+      repository.emit(null);
+      await tester.pumpAndSettle();
+      expect(router.state.uri.path, '/login');
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets(
     'missing Supabase configuration shows a login error instead of crashing',
     (tester) async {
       final harness = AppHarness(useRealAuth: true);
@@ -64,7 +85,7 @@ void main() {
       await enter(tester, 'auth-password', 'password123');
       await submit(tester, 'Sign in');
       expect(router.state.uri.path, '/home');
-      await tester.tap(find.byType(NavigationDestination).at(2));
+      await tester.tap(find.widgetWithText(NavigationDestination, 'Profile'));
       await tester.pumpAndSettle();
       expect(find.text('a@example.com'), findsOneWidget);
       await tapText(tester, 'Sign out');

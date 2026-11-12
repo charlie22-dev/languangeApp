@@ -54,7 +54,12 @@ void main() {
       expect(find.text(first.translation), findsNothing);
       expect(
         tester
-            .widget<OutlinedButton>(find.byKey(const ValueKey('rate-good')))
+            .widget<OutlinedButton>(
+              find.descendant(
+                of: find.byKey(const ValueKey('rate-good')),
+                matching: find.byType(OutlinedButton),
+              ),
+            )
             .onPressed,
         isNull,
       );

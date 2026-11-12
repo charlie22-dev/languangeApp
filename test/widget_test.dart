@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/shared/widgets/lingo_components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/app/app.dart';
@@ -252,7 +253,7 @@ void main() {
     harness.repository.loadGate = Completer<void>();
     await mount(tester, harness, settle: false);
     await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(LingoSkeleton), findsOneWidget);
     expect(find.text('Get Started'), findsNothing);
     harness.repository.failLoad = true;
     harness.repository.loadGate!.complete();
@@ -281,7 +282,7 @@ void main() {
     await mount(tester, harness, settle: false);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(LingoSkeleton), findsOneWidget);
     harness.catalogGate!.completeError(StateError('Catalog failure'));
     await tester.pumpAndSettle();
     expect(find.text('Your lessons could not be loaded.'), findsOneWidget);
@@ -356,7 +357,7 @@ void main() {
     await mount(tester, harness);
     await tapText(tester, 'Review');
     expect(find.text('Your review deck is ready to grow.'), findsOneWidget);
-    await tester.tap(find.byType(NavigationDestination).at(2));
+    await tester.tap(find.widgetWithText(NavigationDestination, 'Profile'));
     await tester.pumpAndSettle();
     expect(find.text('Your account'), findsOneWidget);
     final router = harness.container.read(appRouterProvider);
