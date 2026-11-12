@@ -1,3 +1,5 @@
+import '../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 
 class ResponsiveBody extends StatelessWidget {
@@ -7,7 +9,7 @@ class ResponsiveBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SafeArea(
     child: SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(LingoSpace.s24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 560),

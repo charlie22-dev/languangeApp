@@ -1,3 +1,5 @@
+import '../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 
 class PlaceholderPage extends StatelessWidget {
@@ -19,7 +21,7 @@ class PlaceholderPage extends StatelessWidget {
       appBar: AppBar(title: Text(title)),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(LingoSpace.s24),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 560),
@@ -27,9 +29,12 @@ class PlaceholderPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: textTheme.headlineMedium),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: LingoSpace.s16),
                   Text(message, style: textTheme.bodyLarge),
-                  if (action != null) ...[const SizedBox(height: 24), action!],
+                  if (action != null) ...[
+                    const SizedBox(height: LingoSpace.s24),
+                    action!,
+                  ],
                 ],
               ),
             ),
