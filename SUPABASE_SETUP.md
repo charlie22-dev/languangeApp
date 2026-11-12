@@ -1,9 +1,10 @@
-﻿# Phase 6A: Supabase Auth and offline sync
+# Phase 6C: Supabase Auth and offline sync
 
 The app uses supabase_flutter ^2.18.3. Supabase replaces the Firebase backend
 requested initially. Email/password, Google OAuth, password recovery, local
-account isolation, and background sync are implemented. No cloud project has
-been created or configured by this change.
+account isolation, and incremental background sync are implemented. Your project
+URL and publishable key are already in ignored config.local.json. Dashboard
+changes below must be made in your project; the public app key cannot run DDL.
 
 ## 1. Create your Supabase project
 
@@ -11,8 +12,9 @@ been created or configured by this change.
 2. Create a project in your organization. Enter its name, choose a database
    password, and select a region near your users. Keep the database password
    outside the Flutter app.
-3. Once ready, open the project's Connect panel or Settings / API Keys. Copy
-   the project URL and publishable key.
+3. Once ready, open the project's Connect panel / App Frameworks for the project
+   URL. In Settings / API Keys, copy its publishable key, or the legacy anon key
+   under Legacy API Keys. Use your existing project if you already created one.
 4. From C:\Langunge_flutter\myapp, create the local config file once:
 
 ```powershell
@@ -35,29 +37,38 @@ The publishable key is a public client identifier; auth and row-level security
 control access. Legacy anon keys also work. Secret keys, service_role keys,
 Google client secrets, and database passwords do not belong in this file.
 Configuration rejects service-role keys. The local file is ignored by Git.
+SUPABASE_ANON_KEY is supported as an alternative to SUPABASE_PUBLISHABLE_KEY;
+use one key setting. Never use a service_role or sb_secret_ key in Flutter.
 Values are read through String.fromEnvironment and --dart-define-from-file;
 stop and rerun the app after changing them.
 
 See [Supabase's Flutter setup](https://supabase.com/docs/guides/getting-started/quickstarts/flutter).
 FlutterFire and Firebase configuration are not used.
 
-## 2. Create tables, policies, and the merge function
+## 2. Run the one Phase 6C SQL script
 
-Open supabase/migrations/202611080001_auth_sync.sql. Copy its complete contents
-into a new query in the project's SQL Editor and run it once on your new project.
+Open [202611120001_phase6c.sql](supabase/migrations/202611120001_phase6c.sql).
+Copy the entire script into SQL Editor / New query and click Run. It creates a
+fresh schema or upgrades Phase 6A without dropping progress; do not run the old
+Phase 6A script separately on a fresh project. Re-running this script is safe.
+It replaces the earlier sync RPC, so update old app builds with this schema.
 
 | Table | Key | Synced data |
 | --- | --- | --- |
+| public.profiles | user_id | display_name, updated_at |
 | public.user_stats | user_id | xp, streak, last_active_date, updated_at |
 | public.word_progress | user_id, word_id | ease factor, interval, repetitions, due date, updated_at |
 | public.lesson_progress | user_id, lesson_id | completion, best score, completion date, updated_at |
 
 All user_id values reference the managed auth.users table. Lesson progress is
 included so another device restores completed/unlocked lessons too. updated_at
-is an integer UTC epoch timestamp in microseconds, matching Drift's updatedAt
-property. Other date columns are Postgres timestamptz values.
+is timestamptz on every table. Flutter converts its internal UTC microsecond
+integers to ISO timestamps at the API boundary without losing microseconds.
+The signup trigger creates profiles and empty user_stats rows for email and
+Google accounts; existing accounts are backfilled. Empty signup stats use epoch
+timestamps so they cannot replace actual offline learning progress.
 
-Row-level security is enabled on all three tables. Each policy permits access
+Row-level security is enabled on all four tables. Each policy permits access
 only when the authenticated user's ID equals the row's user_id:
 
 ```sql
@@ -170,8 +181,10 @@ scheme configuration before OAuth/email callbacks can work.
   imported once. Another account cannot import it. Untimestamped legacy rows
   are older than timestamped cloud rows.
 - Language/goal preferences remain device settings and are not synced.
-- Progress rows have updatedAt and a durable dirty flag. Schema version 1
-  upgrades to version 2 without dropping existing progress.
+- Progress rows have updatedAt and a durable dirty flag. Dirty rows represent
+  edits since their last successful acknowledgement, even if their timestamps
+  predate the cursor. Schema version 3 adds a local profiles cache and preserves
+  progress from versions 1 and 2.
 - Sync starts after local account preparation, coalesces changes, retries every
   30 seconds while the app is active, and retries on resume. Profile provides
   Sync now and Sign out.
@@ -180,8 +193,17 @@ scheme configuration before OAuth/email callbacks can work.
   goes backwards. Exact timestamp ties consistently prefer remote values.
 - Applying responses rechecks current local timestamps. A newer edit made while
   an upload was in flight remains pending instead of being overwritten/acknowledged.
-- Disposed account services do not apply late responses. The RPC rejects a user
-  ID that differs from the request's authenticated identity.
+- Disposed account services do not apply late responses. Upserts use the primary
+  key in onConflict. An ownership policy protects every request, and a database
+  trigger keeps newer cloud rows when a stale device attempts to replace them.
+- Each account stores lastSyncedAt and a server revision in SQLite. The pull RPC
+  returns rows with updated_at > lastSyncedAt, plus rows with a newer revision.
+  The revision catches late offline uploads whose old timestamps would otherwise
+  be missed. Per-account transaction locks serialize server writes and pulls so
+  the revision boundary cannot skip an uncommitted write.
+- Downloaded rows and the cursor commit together locally. Failed or interrupted
+  requests retain dirty flags and the previous cursor for a safe retry. Upload
+  responses also include the cloud winners to acknowledge stale attempted edits.
 - A cached account can keep learning offline when network token refresh fails.
   Logged-out users go to Login.
 
@@ -208,6 +230,7 @@ ignored Dart tool directory:
 ```powershell
 npm.cmd install --prefix .dart_tool/sqlcheck --no-save --no-audit --no-fund @electric-sql/pglite@0.5.15
 node.exe supabase/tests/sync_security.mjs
+node.exe supabase/tests/phase6c_security.mjs
 ```
 
 The SQL test uses Postgres semantics with a stubbed auth.users/auth.uid context.
@@ -225,6 +248,67 @@ Manual checks after setup:
 6. Sign out and use another account; its local and remote progress stay separate.
 7. Exercise Forgot Password and Google sign-in on the Android installation.
 
-Local verification passed: 121 Flutter tests and 11 SQL security/merge checks.
-Live project setup, email delivery, Google OAuth, and an Android emulator run
-have not been performed because no project configuration was supplied.
+The earlier Android build reached Login and passed empty-field validation. The
+new Phase 6C build and automated checks are recorded in PHASE6C_FILES.md. A
+successful public-key health check does not verify a live account login or sync.
+Email delivery, confirmation/recovery links, Google OAuth and two-account cloud
+sync must still be checked in your configured project.
+
+## 8. Test that user A cannot read user B
+
+Create two test accounts with distinct email addresses using the app and confirm
+both. Copy their UUIDs from Authentication / Users. Confirm B has profiles and
+user_stats rows in Table Editor; complete a lesson as B to populate the other
+tables too. The SQL Editor normally uses an admin role that bypasses RLS, so
+SELECT alone in that editor does not test client permissions.
+
+Replace both UUID placeholders below, then run this entire read-only transaction
+in SQL Editor. auth.uid() must show A and every visible_b_rows count must be 0.
+The preceding admin counts should be nonzero for B's populated tables.
+
+```sql
+begin;
+select 'profiles' as table_name, count(*) as actual_b_rows from public.profiles
+  where user_id = 'USER_B_UUID'::uuid
+union all select 'user_stats', count(*) from public.user_stats
+  where user_id = 'USER_B_UUID'::uuid
+union all select 'lesson_progress', count(*) from public.lesson_progress
+  where user_id = 'USER_B_UUID'::uuid
+union all select 'word_progress', count(*) from public.word_progress
+  where user_id = 'USER_B_UUID'::uuid;
+
+set local role authenticated;
+select set_config('request.jwt.claim.sub', 'USER_A_UUID', true);
+select auth.uid() as acting_as_a;
+select 'profiles' as table_name, count(*) as visible_b_rows from public.profiles
+  where user_id = 'USER_B_UUID'::uuid
+union all select 'user_stats', count(*) from public.user_stats
+  where user_id = 'USER_B_UUID'::uuid
+union all select 'lesson_progress', count(*) from public.lesson_progress
+  where user_id = 'USER_B_UUID'::uuid
+union all select 'word_progress', count(*) from public.word_progress
+  where user_id = 'USER_B_UUID'::uuid;
+rollback;
+```
+
+Repeat with A and B swapped. Also sign in as A in the app and verify only A's
+progress is restored. No private server key is needed for these client tests.
+
+## 9. Flutter and session behavior explained
+
+main() calls WidgetsFlutterBinding.ensureInitialized() before Supabase.initialize:
+Flutter must prepare platform plugins before the SDK reads cached credentials.
+ProviderScope then supplies the initialized client to Riverpod. A provider is a
+shared dependency/state source, similar to React context with subscriptions.
+
+authStateProvider subscribes to onAuthStateChange. go_router refreshes redirects
+when that provider changes: signed-out users go to Login, password recovery goes
+to Reset Password, and signed-in users open their local account database.
+The SDK renews access tokens. Network renewal errors keep a cached account
+usable offline; a cleared/revoked session emits signed-out state and safely opens
+Login. Local rows stay in that account's database for the next sign-in.
+
+In Profile, Sign out clears the local SDK session and triggers the same redirect.
+Database changes after successful lessons and flashcard ratings request sync;
+app resume requests it as well. Screens and gameplay always read Drift. Sync is
+an app-lifecycle task, not a mobile OS service that runs while the app is killed.
