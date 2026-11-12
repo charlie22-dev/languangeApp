@@ -8,6 +8,7 @@ final class SupabaseConfig {
     this.url = const String.fromEnvironment('SUPABASE_URL'),
     this.publishableKey = const String.fromEnvironment(
       'SUPABASE_PUBLISHABLE_KEY',
+      defaultValue: String.fromEnvironment('SUPABASE_ANON_KEY'),
     ),
     this.authRedirect = const String.fromEnvironment(
       'AUTH_REDIRECT_URL',

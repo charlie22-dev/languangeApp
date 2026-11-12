@@ -61,7 +61,8 @@ class SupabaseAuthRepository implements AuthRepository {
             if (cached != null) {
               sink.add(_identity(cached));
             } else {
-              sink.addError(error, stack);
+              // An expired/revoked session returns to Login without an unhandled stream error.
+              sink.add(null);
             }
           },
         ),
