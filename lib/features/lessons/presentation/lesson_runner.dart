@@ -1,3 +1,6 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +14,7 @@ import 'exercise_content.dart';
 import 'lesson_action_bar.dart';
 import 'lesson_controller.dart';
 import 'results_screen.dart';
+import '../../../shared/widgets/pip_mascot.dart';
 
 class LessonRunner extends ConsumerStatefulWidget {
   const LessonRunner({super.key, required this.lesson});
@@ -35,20 +39,21 @@ class _LessonRunnerState extends ConsumerState<LessonRunner> {
     final leave = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Leave this lesson?'),
+        icon: const PipMascot(mood: PipMood.sad),
+        title: Text(context.l10n.text('ui8d0ec552c7')),
         content: Text(
           session.phase == LessonPhase.finished
-              ? 'Your result has not been saved. Leave without saving?'
-              : 'Your progress in this lesson will be lost.',
+              ? context.l10n.text('ui6bf00cbfa1')
+              : context.l10n.text('uif01124363e'),
         ),
         actions: [
-          TextButton(
+          LingoButton.ghost(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Stay'),
+            child: Text(context.l10n.text('uiae768f766f')),
           ),
-          FilledButton(
+          LingoButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Leave'),
+            child: Text(context.l10n.text('ui7e3520a973')),
           ),
         ],
       ),
@@ -85,7 +90,7 @@ class _LessonRunnerState extends ConsumerState<LessonRunner> {
                 automaticallyImplyLeading: false,
                 title: Text(widget.lesson.title),
                 leading: IconButton(
-                  tooltip: 'Close lesson',
+                  tooltip: context.l10n.text('uif816925e28'),
                   onPressed: _requestExit,
                   icon: const Icon(Icons.close),
                 ),

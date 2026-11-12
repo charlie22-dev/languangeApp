@@ -1,4 +1,14 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../home/data/home_providers.dart';
+import '../../../shared/widgets/stat_badge.dart';
+
+import '../../../shared/widgets/pip_mascot.dart';
 
 import '../../../shared/widgets/responsive_body.dart';
 import '../domain/lesson_session.dart';
@@ -23,9 +33,9 @@ class ResultsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Results'),
+        title: Text(context.l10n.text('ui612e12d292')),
         leading: IconButton(
-          tooltip: 'Close results',
+          tooltip: context.l10n.text('uib9a0e74637'),
           onPressed: session.saving ? null : onClose,
           icon: const Icon(Icons.close),
         ),
@@ -34,60 +44,70 @@ class ResultsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Icon(
-              result.success
-                  ? Icons.emoji_events_outlined
-                  : Icons.favorite_border,
-              size: 64,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(height: 24),
+            PipMascot(mood: result.success ? PipMood.celebrating : PipMood.sad),
+            const SizedBox(height: LingoSpace.s24),
             Text(
-              result.success ? 'Lesson complete!' : 'Out of hearts',
+              result.success
+                  ? context.l10n.text('lessonComplete')
+                  : context.l10n.text('ui0c169c0cd5'),
               style: theme.textTheme.headlineMedium,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: LingoSpace.s8),
             Text(
               result.success
-                  ? 'Your practice is paying off.'
-                  : 'A fresh start is another chance to learn.',
+                  ? context.l10n.text('ui6af0fa544c')
+                  : context.l10n.text('ui27bf448b30'),
               style: theme.textTheme.bodyLarge,
             ),
-            const SizedBox(height: 24),
-            _ResultMetric(label: 'Accuracy', value: '${result.score}%'),
-            _ResultMetric(label: 'XP earned', value: '${result.xp} XP'),
+            const SizedBox(height: LingoSpace.s24),
             _ResultMetric(
-              label: 'Correct attempts',
-              value: '${result.correctCount} / ${result.attempts}',
+              label: context.l10n.text('ui12a3a4f498'),
+              value: context.l10n.text('ui6fdde657b8', {
+                'arg0': (result.score),
+              }),
+            ),
+            _ResultMetric(
+              label: context.l10n.text('ui5e7a5b54d3'),
+              value: context.l10n.text('ui122bc8d96b', {'arg0': (result.xp)}),
+            ),
+            _ResultMetric(
+              label: context.l10n.text('ui1fed869b77'),
+              value: context.l10n.text('ui3c1eaed8e8', {
+                'arg0': (result.correctCount),
+                'arg1': (result.attempts),
+              }),
             ),
             if (result.success)
               Text(
-                '10 base XP + 5 × ${result.perfectCount} first-try exercises',
+                context.l10n.text('ui4f01e308ca', {
+                  'arg0': (result.perfectCount),
+                }),
               ),
-            const SizedBox(height: 24),
+            const SizedBox(height: LingoSpace.s24),
+            if (result.success && session.saved) const _SavedStreak(),
             if (session.saving)
               Semantics(
                 liveRegion: true,
-                child: const Text('Saving your progress…'),
+                child: Text(context.l10n.text('ui0884c92a27')),
               ),
             if (session.saveError != null) ...[
               Semantics(
                 liveRegion: true,
                 child: Text(
-                  session.saveError!,
-                  style: TextStyle(color: theme.colorScheme.error),
+                  context.l10n.message(session.saveError!),
+                  style: TextStyle(color: theme.colorScheme.onSurface),
                 ),
               ),
-              const SizedBox(height: 12),
-              OutlinedButton(
+              const SizedBox(height: LingoSpace.s8),
+              LingoButton.outlined(
                 onPressed: onRetry,
-                child: const Text('Retry saving'),
+                child: Text(context.l10n.text('ui71e1aa94f8')),
               ),
             ],
-            const SizedBox(height: 16),
-            FilledButton(
+            const SizedBox(height: LingoSpace.s16),
+            LingoButton(
               onPressed: !result.success || session.saved ? onContinue : null,
-              child: const Text('Continue'),
+              child: Text(context.l10n.text('ui2e02623966')),
             ),
           ],
         ),
@@ -104,10 +124,10 @@ class _ResultMetric extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card.filled(
     child: Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(LingoSpace.s16),
       child: Wrap(
-        spacing: 20,
-        runSpacing: 8,
+        spacing: LingoSpace.s16,
+        runSpacing: LingoSpace.s8,
         alignment: WrapAlignment.spaceBetween,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
@@ -117,4 +137,28 @@ class _ResultMetric extends StatelessWidget {
       ),
     ),
   );
+}
+
+class _SavedStreak extends ConsumerWidget {
+  const _SavedStreak();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => ref
+      .watch(userStatsProvider)
+      .maybeWhen(
+        data: (stats) => Padding(
+          padding: const EdgeInsets.only(bottom: LingoSpace.s24),
+          child: Center(
+            child: CelebrationPulse(
+              child: StatBadge(
+                icon: Icons.local_fire_department_outlined,
+                label: context.l10n.text(
+                  stats.streak == 1 ? 'streakDay' : 'streakDays',
+                  {'count': stats.streak},
+                ),
+              ),
+            ),
+          ),
+        ),
+        orElse: () => const SizedBox.shrink(),
+      );
 }

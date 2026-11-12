@@ -33,12 +33,14 @@ class ExerciseContent extends StatelessWidget {
         selectedIndex: selectedIndex,
         enabled: enabled,
         onSelected: controller.selectChoice,
+        feedbackCorrect: session.feedback?.correct,
       ),
       FillInBlank() => FillInBlankView(
         exercise: exercise,
         selectedIndex: selectedIndex,
         enabled: enabled,
         onSelected: controller.selectChoice,
+        feedbackCorrect: session.feedback?.correct,
       ),
       TypeTranslation() => TypeTranslationView(
         exercise: exercise,
@@ -53,7 +55,7 @@ class ExerciseContent extends StatelessWidget {
         exercise: exercise,
         matches: session.answer is PairsAnswer
             ? (session.answer as PairsAnswer).matches
-            : const {},
+            : {},
         rightOrder: session.rightOrder,
         selectedLeft: session.selectedLeft,
         selectedRight: session.selectedRight,

@@ -1,3 +1,7 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../shared/widgets/answer_feedback_sheet.dart';
@@ -20,7 +24,12 @@ class LessonActionBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final feedback = session.phase == LessonPhase.feedback;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+      padding: const EdgeInsets.fromLTRB(
+        LingoSpace.s24,
+        LingoSpace.s8,
+        LingoSpace.s24,
+        LingoSpace.s16,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -32,15 +41,19 @@ class LessonActionBar extends StatelessWidget {
                 child: AnswerFeedbackSheet(feedback: session.feedback!),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: LingoSpace.s8),
           ],
-          FilledButton(
+          LingoButton(
             onPressed: feedback
                 ? onContinue
                 : session.canCheck
                 ? onCheck
                 : null,
-            child: Text(feedback ? 'Continue' : 'Check'),
+            child: Text(
+              feedback
+                  ? context.l10n.text('continueAction')
+                  : context.l10n.text('ui4b5e84be0e'),
+            ),
           ),
         ],
       ),

@@ -1,3 +1,6 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,15 +23,15 @@ class LessonScreen extends ConsumerWidget {
         skipLoadingOnRefresh: false,
         loading: () => Scaffold(
           appBar: AppBar(),
-          body: const AsyncStatusView(
-            message: 'Loading lesson…',
+          body: AsyncStatusView(
+            message: context.l10n.text('ui8966e65028'),
             loading: true,
           ),
         ),
         error: (error, stack) => Scaffold(
           appBar: AppBar(),
           body: AsyncStatusView(
-            message: 'This lesson could not be loaded.',
+            message: context.l10n.text('uief65719d1c'),
             onRetry: () => retryLearningPath(ref),
           ),
         ),
@@ -37,21 +40,23 @@ class LessonScreen extends ConsumerWidget {
           final locked = entry?.availability == LessonAvailability.locked;
           if (entry != null && !locked) {
             if (entry.lesson.exercises.isEmpty) {
-              return const PlaceholderPage(
-                title: 'Lesson unavailable',
-                message: 'This lesson has no exercises yet.',
+              return PlaceholderPage(
+                title: context.l10n.text('ui7a3ec4daa4'),
+                message: context.l10n.text('ui992010f71a'),
               );
             }
             return LessonRunner(key: ValueKey(lessonId), lesson: entry.lesson);
           }
           return PlaceholderPage(
-            title: entry == null ? 'Lesson not found' : 'Lesson locked',
+            title: entry == null
+                ? context.l10n.text('lessonNotFound')
+                : context.l10n.text('ui4411672e28'),
             message: entry == null
-                ? 'This lesson is not part of your course.'
-                : 'Complete the earlier lessons to unlock this one.',
-            action: FilledButton.tonal(
+                ? context.l10n.text('ui1ff2458dce')
+                : context.l10n.text('ui54a1d32a01'),
+            action: LingoButton.tonal(
               onPressed: () => context.go(AppRoutes.home),
-              child: const Text('Back to Learn'),
+              child: Text(context.l10n.text('ui3469f4bb98')),
             ),
           );
         },
