@@ -1,4 +1,10 @@
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
+
+import '../../../shared/widgets/pip_mascot.dart';
+
 import 'package:intl/intl.dart';
 
 import '../domain/review_session.dart';
@@ -11,23 +17,22 @@ class ReviewEmptyState extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      Icon(
-        Icons.task_alt,
-        size: 56,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      const SizedBox(height: 24),
+      const PipMascot(mood: PipMood.sleepy),
+      const SizedBox(height: LingoSpace.s24),
       Text(
         overview.totalCards == 0
-            ? 'Your review deck is ready to grow.'
-            : 'All caught up!',
+            ? context.l10n.text('ui7e2591d7d8')
+            : context.l10n.text('uieeaebc0f53'),
         style: Theme.of(context).textTheme.headlineSmall,
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: LingoSpace.s8),
       Text(
         overview.nextDue == null
-            ? 'Complete a lesson to add words to your review deck.'
-            : 'Next card due ${DateFormat('EEE, MMM d, y • h:mm a').format(overview.nextDue!.toLocal())}.',
+            ? context.l10n.text('uicb3d733d34')
+            : context.l10n.text('ui067601e75f', {
+                'arg0': (DateFormat('EEE, MMM d, y • h:mm a')
+                    .format(overview.nextDue!.toLocal())),
+              }),
         style: Theme.of(context).textTheme.bodyLarge,
       ),
     ],
