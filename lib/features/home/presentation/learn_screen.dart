@@ -1,3 +1,5 @@
+import '../../../core/localization/lingo_localizations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,17 +27,17 @@ class LearnScreen extends ConsumerWidget {
             Expanded(
               child: path.when(
                 skipLoadingOnRefresh: false,
-                loading: () => const AsyncStatusView(
-                  message: 'Loading your learning path…',
+                loading: () => AsyncStatusView(
+                  message: context.l10n.text('uiabcf5894a9'),
                   loading: true,
                 ),
                 error: (error, stack) => AsyncStatusView(
-                  message: 'Your lessons could not be loaded.',
+                  message: context.l10n.text('ui36d5d2cea8'),
                   onRetry: () => retryLearningPath(ref),
                 ),
                 data: (path) => path.lessons.isEmpty
-                    ? const AsyncStatusView(
-                        message: 'There are no lessons in this course yet.',
+                    ? AsyncStatusView(
+                        message: context.l10n.text('uib2fc8d4d68'),
                       )
                     : LearningPathView(path: path, goalMinutes: goal),
               ),
