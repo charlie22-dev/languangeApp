@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp" android:height="288dp"
+    android:viewportWidth="192" android:viewportHeight="192">
+    <!-- Safe inset for Android 12+'s system splash icon mask. -->
+    <group android:translateX="48" android:translateY="48">
+        <path android:fillColor="@color/lingoblob_primary" android:strokeColor="@color/lingoblob_ink" android:strokeWidth="3"
+            android:pathData="M48,16 C45,10 38,11 40,18 C23,21 14,35 14,54 C14,73 27,84 48,84 C69,84 82,73 82,54 C82,35 73,21 56,18 C58,11 51,10 48,16 Z" />
+        <path android:fillColor="@color/lingoblob_coral" android:fillAlpha="0.55"
+            android:pathData="M20.5,57 a4.5,2.5 0,1 0,9,0 a4.5,2.5 0,1 0,-9,0 M66.5,57 a4.5,2.5 0,1 0,9,0 a4.5,2.5 0,1 0,-9,0" />
+        <path android:fillColor="@color/lingoblob_cream" android:strokeColor="@color/lingoblob_ink" android:strokeWidth="2.5"
+            android:pathData="M23,46 a11,11 0,1 0,22,0 a11,11 0,1 0,-22,0 M51,46 a11,11 0,1 0,22,0 a11,11 0,1 0,-22,0" />
+        <path android:fillColor="@color/lingoblob_ink"
+            android:pathData="M30.5,46 a5.5,5.5 0,1 0,11,0 a5.5,5.5 0,1 0,-11,0 M54.5,46 a5.5,5.5 0,1 0,11,0 a5.5,5.5 0,1 0,-11,0" />
+        <path android:fillColor="@color/lingoblob_cream"
+            android:pathData="M36,44 a2,2 0,1 0,4,0 a2,2 0,1 0,-4,0 M60,44 a2,2 0,1 0,4,0 a2,2 0,1 0,-4,0" />
+        <path android:fillColor="@android:color/transparent" android:strokeColor="@color/lingoblob_ink"
+            android:strokeWidth="3" android:strokeLineCap="round" android:pathData="M41,63 C44,67 52,67 55,63" />
+    </group>
+</vector>

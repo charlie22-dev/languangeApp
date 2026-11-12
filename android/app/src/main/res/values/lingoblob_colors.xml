@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Native launch-only mirrors of the prototype palette; Flutter uses LingoPalette. -->
+    <color name="lingoblob_primary">#B2EE05</color>
+    <color name="lingoblob_ink">#0A1038</color>
+    <color name="lingoblob_cream">#FFF9E5</color>
+    <color name="lingoblob_coral">#F4695F</color>
+    <color name="lingoblob_background">#FFF9E5</color>
+</resources>
