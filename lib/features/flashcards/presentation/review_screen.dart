@@ -1,3 +1,7 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -38,17 +42,17 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Review')),
+    appBar: AppBar(title: Text(context.l10n.text('uie29a79fe0c'))),
     body: ref
         .watch(reviewOverviewProvider)
         .when(
           skipLoadingOnRefresh: false,
-          loading: () => const AsyncStatusView(
-            message: 'Checking your review deck...',
+          loading: () => AsyncStatusView(
+            message: context.l10n.text('uia255804c0f'),
             loading: true,
           ),
           error: (error, stack) => AsyncStatusView(
-            message: 'Your review deck could not be loaded.',
+            message: context.l10n.text('ui0168f01327'),
             onRetry: () => retryReviewData(ref),
           ),
           data: (overview) => ResponsiveBody(
@@ -56,26 +60,27 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  '${overview.dueCount} ${overview.dueCount == 1 ? 'card' : 'cards'} due today',
+                  context.l10n.text(
+                    overview.dueCount == 1 ? 'cardDue' : 'cardsDue',
+                    {'count': overview.dueCount},
+                  ),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Includes overdue cards. Cards become available at their scheduled time.',
-                ),
-                const SizedBox(height: 32),
+                const SizedBox(height: LingoSpace.s8),
+                Text(context.l10n.text('uibf6e7b0ea9')),
+                const SizedBox(height: LingoSpace.s32),
                 if (overview.dueCount == 0)
                   ReviewEmptyState(overview: overview)
                 else ...[
                   Text(
-                    'A little review helps your words stay with you.',
+                    context.l10n.text('ui141dbef819'),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  const SizedBox(height: 24),
-                  FilledButton(
+                  const SizedBox(height: LingoSpace.s24),
+                  LingoButton(
                     key: const ValueKey('start-review'),
                     onPressed: () => context.push(AppRoutes.reviewSession),
-                    child: const Text('Start'),
+                    child: Text(context.l10n.text('ui952f375412')),
                   ),
                 ],
               ],

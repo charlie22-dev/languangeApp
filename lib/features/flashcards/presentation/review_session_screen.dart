@@ -1,3 +1,7 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -30,21 +34,21 @@ class ReviewSessionScreen extends ConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('Flashcards'),
+          title: Text(context.l10n.text('ui2c6822cced')),
           leading: IconButton(
-            tooltip: 'Close review',
+            tooltip: context.l10n.text('ui8507ba7328'),
             onPressed: saving ? null : leave,
             icon: const Icon(Icons.close),
           ),
         ),
         body: value.when(
           skipLoadingOnRefresh: false,
-          loading: () => const AsyncStatusView(
-            message: 'Loading your flashcards…',
+          loading: () => AsyncStatusView(
+            message: context.l10n.text('uieb0ecb146f'),
             loading: true,
           ),
           error: (error, stack) => AsyncStatusView(
-            message: 'Your flashcards could not be loaded.',
+            message: context.l10n.text('uia080fcba8d'),
             onRetry: () => retryReviewData(ref, session: true),
           ),
           data: (session) {
@@ -57,20 +61,20 @@ class ReviewSessionScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ReviewEmptyState(overview: overview),
-                          const SizedBox(height: 24),
-                          FilledButton(
+                          const SizedBox(height: LingoSpace.s24),
+                          LingoButton(
                             onPressed: leave,
-                            child: const Text('Back to Review'),
+                            child: Text(context.l10n.text('ui3ace0446ed')),
                           ),
                         ],
                       ),
                     ),
-                    loading: () => const AsyncStatusView(
-                      message: 'Checking your next review…',
+                    loading: () => AsyncStatusView(
+                      message: context.l10n.text('uia61bcca965'),
                       loading: true,
                     ),
                     error: (error, stack) => AsyncStatusView(
-                      message: 'Your next review could not be loaded.',
+                      message: context.l10n.text('ui08f0cc3fbf'),
                       onRetry: () => retryReviewData(ref),
                     ),
                   );
@@ -99,22 +103,25 @@ class _ReviewCardContent extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Card ${session.index + 1} of ${session.cards.length}',
+          context.l10n.text('ui7f3a3a5bec', {
+            'arg0': (session.index + 1),
+            'arg1': (session.cards.length),
+          }),
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 12),
-        LinearProgressIndicator(
+        const SizedBox(height: LingoSpace.s8),
+        LingoProgress(
           value: session.index / session.cards.length,
-          semanticsLabel: 'Review progress',
+          label: context.l10n.text('uiafc2256d66'),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: LingoSpace.s24),
         FlippableFlashcard(
           key: ValueKey(session.currentCard!.id),
           word: session.currentCard!,
           revealed: session.revealed,
           onFlip: session.saving ? null : controller.flip,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: LingoSpace.s24),
         if (session.error != null) ...[
           Semantics(
             liveRegion: true,
@@ -123,16 +130,16 @@ class _ReviewCardContent extends ConsumerWidget {
               style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: LingoSpace.s16),
         ],
         Text(
           session.saving
-              ? 'Saving rating…'
+              ? context.l10n.text('ui1cd1afe475')
               : session.revealed
-              ? 'How well did you remember?'
-              : 'Reveal the answer before choosing a rating.',
+              ? context.l10n.text('ui9f7659076f')
+              : context.l10n.text('ui389a938659'),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: LingoSpace.s16),
         ReviewRatingButtons(
           enabled: session.revealed && !session.saving,
           onRating: controller.rate,
