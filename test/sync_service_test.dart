@@ -21,8 +21,14 @@ class MemoryRemoteStore implements RemoteSyncStore {
   int calls = 0;
   Completer<void>? gate;
   final started = Completer<void>();
+  final cursors = <SyncCursor>[];
   @override
-  Future<SyncSnapshot> exchange(String userId, SyncSnapshot local) async {
+  Future<SyncSnapshot> exchange(
+    String userId,
+    SyncSnapshot local, {
+    SyncCursor cursor = const SyncCursor(),
+  }) async {
+    cursors.add(cursor);
     calls++;
     if (!started.isCompleted) started.complete();
     await gate?.future;
@@ -34,7 +40,14 @@ class MemoryRemoteStore implements RemoteSyncStore {
         records[key] = row;
       }
     }
-    return SyncSnapshot(records.values);
+    final timestamp = records.values.fold(
+      cursor.timestamp,
+      (stamp, row) => row.updatedAt > stamp ? row.updatedAt : stamp,
+    );
+    return SyncSnapshot(
+      records.values,
+      cursor: SyncCursor(timestamp: timestamp, revision: cursor.revision + 1),
+    );
   }
 }
 
@@ -204,9 +217,14 @@ void main() {
 
   test('payload parser rejects wrong owners, versions and malformed dates', () {
     final valid = {
-      'schema_version': 1,
+      'schema_version': 2,
       'user_id': 'A',
-      'stats': statsRecord(1, 100).toJson(),
+      'last_synced_at': DateTime.fromMicrosecondsSinceEpoch(
+        100,
+        isUtc: true,
+      ).toIso8601String(),
+      'revision': 1,
+      'stats': statsRecord(1, 100).toRemoteJson('A'),
       'words': [],
       'lessons': [],
     };
@@ -215,7 +233,7 @@ void main() {
       throwsFormatException,
     );
     expect(
-      () => SyncSnapshot.fromJson({...valid, 'schema_version': 2}, userId: 'A'),
+      () => SyncSnapshot.fromJson({...valid, 'schema_version': 3}, userId: 'A'),
       throwsFormatException,
     );
     expect(
@@ -229,5 +247,79 @@ void main() {
       }),
       throwsFormatException,
     );
+  });
+
+  test(
+    'cursor survives service restart and advances only after successful merge',
+    () async {
+      await editStats(35, 100);
+      await service.syncOnce();
+      expect((await local.readCursor()).timestamp, 100);
+      expect((await local.readCursor()).revision, 1);
+      service.dispose();
+      service = SyncService(
+        userId: 'A',
+        local: LocalSyncStore(database),
+        remote: remote,
+      );
+      remote.fail = true;
+      await service.syncOnce();
+      expect(remote.cursors.last.timestamp, 100);
+      expect((await local.readCursor()).revision, 1);
+      remote.fail = false;
+      await service.syncOnce();
+      expect((await local.readCursor()).revision, 2);
+    },
+  );
+
+  test('profile caches timestamp strings locally for offline use', () async {
+    final now = DateTime.utc(2026, 11, 12, 8, 1, 2, 3, 456);
+    await local.merge(
+      SyncSnapshot([
+        SyncRecord.fromJson(SyncKind.profile, {
+          'display_name': 'Learner',
+          'updated_at': now.toIso8601String(),
+        }),
+      ]),
+    );
+    final row = await database.select(database.localProfiles).getSingle();
+    expect(row.displayName, 'Learner');
+    expect(row.updatedAt, now.microsecondsSinceEpoch);
+    expect(row.dirty, isFalse);
+    expect(
+      (await local.snapshot()).records,
+      isNot(
+        contains(
+          isA<SyncRecord>().having((row) => row.kind, 'kind', SyncKind.profile),
+        ),
+      ),
+    );
+  });
+
+  test('merge rollback also rolls back cursor and earlier rows', () async {
+    await local.merge(
+      SyncSnapshot([], cursor: const SyncCursor(timestamp: 100, revision: 1)),
+      saveCursor: true,
+    );
+    await database.customStatement(
+      '''CREATE TRIGGER reject_profile BEFORE INSERT ON local_profiles
+      BEGIN SELECT RAISE(ABORT, 'test failure'); END''',
+    );
+    await expectLater(
+      local.merge(
+        SyncSnapshot([
+          statsRecord(90, 200),
+          SyncRecord.fromJson(SyncKind.profile, {
+            'display_name': 'Learner',
+            'updated_at': 200,
+          }),
+        ], cursor: const SyncCursor(timestamp: 200, revision: 2)),
+        saveCursor: true,
+      ),
+      throwsA(anything),
+    );
+    expect((await database.select(database.userStats).getSingle()).xp, 0);
+    expect((await local.readCursor()).timestamp, 100);
+    expect((await local.readCursor()).revision, 1);
   });
 }

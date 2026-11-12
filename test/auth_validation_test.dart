@@ -33,7 +33,10 @@ void main() {
     expect(authMessageForCode('unknown'), contains('try again'));
   });
   test('configuration accepts only public client keys and valid URLs', () {
-    expect(const SupabaseConfig().isConfigured, isFalse);
+    expect(
+      const SupabaseConfig(url: '', publishableKey: '').isConfigured,
+      isFalse,
+    );
     expect(
       const SupabaseConfig(
         url: 'https://example.supabase.co',

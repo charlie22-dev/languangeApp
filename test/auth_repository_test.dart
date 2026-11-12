@@ -84,4 +84,20 @@ void main() {
       ),
     );
   });
+  test(
+    'expired session without cached credentials emits logged out safely',
+    () {
+      when(() => auth.currentSession).thenReturn(null);
+      final received = <AuthIdentity?>[];
+      final subscription = repository.watchIdentity().listen(received.add);
+      addTearDown(subscription.cancel);
+      events.addError(
+        const AuthException(
+          'Refresh token revoked',
+          code: 'refresh_token_not_found',
+        ),
+      );
+      expect(received, [null]);
+    },
+  );
 }

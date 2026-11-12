@@ -70,6 +70,7 @@ void main() {
       await LocalSyncStore(a).importLegacy(legacy, 'A');
       await LocalSyncStore(b).importLegacy(legacy, 'B');
       expect((await a.select(a.userStats).getSingle()).xp, 80);
+      expect((await a.select(a.userStats).getSingle()).updatedAt, 1);
       expect((await a.select(a.wordProgress).get()).length, 1);
       expect((await b.select(b.userStats).getSingle()).xp, 0);
       expect(await b.select(b.wordProgress).get(), isEmpty);
@@ -82,6 +83,35 @@ void main() {
       expect((await a.select(a.userStats).getSingle()).xp, 100);
     },
   );
+
+  test('schema version 2 adds profiles without losing sync metadata or pending flags', () async {
+    final database = AppDatabase.forTesting(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw.execute('''
+        CREATE TABLE lesson_progress (lesson_id TEXT PRIMARY KEY NOT NULL, completed INTEGER NOT NULL DEFAULT 0, best_score INTEGER NOT NULL DEFAULT 0, completed_at INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE word_progress (word_id TEXT PRIMARY KEY NOT NULL, ease_factor REAL NOT NULL DEFAULT 2.5, interval_days INTEGER NOT NULL DEFAULT 0, repetitions INTEGER NOT NULL DEFAULT 0, due_date INTEGER NOT NULL, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE user_stats (id INTEGER PRIMARY KEY NOT NULL DEFAULT 1, xp INTEGER NOT NULL DEFAULT 0, streak INTEGER NOT NULL DEFAULT 0, last_active_date INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE sync_metadata (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL);
+        INSERT INTO user_stats(id,xp,updated_at,dirty) VALUES (1,80,100,0);
+        INSERT INTO sync_metadata(key,value) VALUES ('legacyImported','1');
+        PRAGMA user_version = 2;
+      ''');
+        },
+      ),
+    );
+    addTearDown(database.close);
+    final row = await database.select(database.userStats).getSingle();
+    expect(row.xp, 80);
+    expect(row.updatedAt, 100);
+    expect(row.dirty, isFalse);
+    expect(
+      (await database.select(database.syncMetadata).getSingle()).value,
+      '1',
+    );
+    expect(await database.select(database.localProfiles).get(), isEmpty);
+    expect((await LocalSyncStore(database).readCursor()).revision, 0);
+  });
 
   test(
     'account filenames are deterministic and cannot contain path separators',
