@@ -1,3 +1,5 @@
+import '../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 
 class StatBadge extends StatelessWidget {
@@ -12,23 +14,29 @@ class StatBadge extends StatelessWidget {
       label: label,
       child: ExcludeSemantics(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.symmetric(
+            horizontal: LingoSpace.s16,
+            vertical: LingoSpace.s8,
+          ),
           decoration: BoxDecoration(
-            color: colors.secondaryContainer,
-            borderRadius: BorderRadius.circular(24),
+            color: icon == Icons.bolt
+                ? colors.primaryContainer
+                : icon == Icons.local_fire_department_outlined
+                ? colors.errorContainer
+                : colors.secondaryContainer,
+            borderRadius: BorderRadius.circular(LingoRadii.pill),
+            border: Border.all(color: colors.outline, width: LingoSpace.border),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, size: 20, color: colors.onSecondaryContainer),
-              const SizedBox(width: 8),
+              const SizedBox(width: LingoSpace.s8),
               Flexible(
                 child: Text(
                   label,
-                  style: TextStyle(
-                    color: colors.onSecondaryContainer,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.labelLarge
+                      ?.copyWith(color: colors.onSecondaryContainer),
                 ),
               ),
             ],
