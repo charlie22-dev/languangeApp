@@ -1499,6 +1499,307 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataData> {
   }
 }
 
+class $LocalProfilesTable extends LocalProfiles
+    with TableInfo<$LocalProfilesTable, LocalProfileRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LocalProfilesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, displayName, updatedAt, dirty];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'local_profiles';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LocalProfileRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LocalProfileRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LocalProfileRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
+    );
+  }
+
+  @override
+  $LocalProfilesTable createAlias(String alias) {
+    return $LocalProfilesTable(attachedDatabase, alias);
+  }
+}
+
+class LocalProfileRow extends DataClass implements Insertable<LocalProfileRow> {
+  final int id;
+  final String displayName;
+  final int updatedAt;
+  final bool dirty;
+  const LocalProfileRow({
+    required this.id,
+    required this.displayName,
+    required this.updatedAt,
+    required this.dirty,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['display_name'] = Variable<String>(displayName);
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['dirty'] = Variable<bool>(dirty);
+    return map;
+  }
+
+  LocalProfilesCompanion toCompanion(bool nullToAbsent) {
+    return LocalProfilesCompanion(
+      id: Value(id),
+      displayName: Value(displayName),
+      updatedAt: Value(updatedAt),
+      dirty: Value(dirty),
+    );
+  }
+
+  factory LocalProfileRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LocalProfileRow(
+      id: serializer.fromJson<int>(json['id']),
+      displayName: serializer.fromJson<String>(json['displayName']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'displayName': serializer.toJson<String>(displayName),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'dirty': serializer.toJson<bool>(dirty),
+    };
+  }
+
+  LocalProfileRow copyWith({
+    int? id,
+    String? displayName,
+    int? updatedAt,
+    bool? dirty,
+  }) => LocalProfileRow(
+    id: id ?? this.id,
+    displayName: displayName ?? this.displayName,
+    updatedAt: updatedAt ?? this.updatedAt,
+    dirty: dirty ?? this.dirty,
+  );
+  LocalProfileRow copyWithCompanion(LocalProfilesCompanion data) {
+    return LocalProfileRow(
+      id: data.id.present ? data.id.value : this.id,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocalProfileRow(')
+          ..write('id: $id, ')
+          ..write('displayName: $displayName, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, displayName, updatedAt, dirty);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LocalProfileRow &&
+          other.id == this.id &&
+          other.displayName == this.displayName &&
+          other.updatedAt == this.updatedAt &&
+          other.dirty == this.dirty);
+}
+
+class LocalProfilesCompanion extends UpdateCompanion<LocalProfileRow> {
+  final Value<int> id;
+  final Value<String> displayName;
+  final Value<int> updatedAt;
+  final Value<bool> dirty;
+  const LocalProfilesCompanion({
+    this.id = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+  });
+  LocalProfilesCompanion.insert({
+    this.id = const Value.absent(),
+    required String displayName,
+    required int updatedAt,
+    this.dirty = const Value.absent(),
+  }) : displayName = Value(displayName),
+       updatedAt = Value(updatedAt);
+  static Insertable<LocalProfileRow> custom({
+    Expression<int>? id,
+    Expression<String>? displayName,
+    Expression<int>? updatedAt,
+    Expression<bool>? dirty,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (displayName != null) 'display_name': displayName,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (dirty != null) 'dirty': dirty,
+    });
+  }
+
+  LocalProfilesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? displayName,
+    Value<int>? updatedAt,
+    Value<bool>? dirty,
+  }) {
+    return LocalProfilesCompanion(
+      id: id ?? this.id,
+      displayName: displayName ?? this.displayName,
+      updatedAt: updatedAt ?? this.updatedAt,
+      dirty: dirty ?? this.dirty,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocalProfilesCompanion(')
+          ..write('id: $id, ')
+          ..write('displayName: $displayName, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1506,6 +1807,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $WordProgressTable wordProgress = $WordProgressTable(this);
   late final $UserStatsTable userStats = $UserStatsTable(this);
   late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
+  late final $LocalProfilesTable localProfiles = $LocalProfilesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1515,6 +1817,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     wordProgress,
     userStats,
     syncMetadata,
+    localProfiles,
   ];
 }
 
@@ -2376,6 +2679,192 @@ typedef $$SyncMetadataTableProcessedTableManager =
       SyncMetadataData,
       PrefetchHooks Function()
     >;
+typedef $$LocalProfilesTableCreateCompanionBuilder =
+    LocalProfilesCompanion Function({
+      Value<int> id,
+      required String displayName,
+      required int updatedAt,
+      Value<bool> dirty,
+    });
+typedef $$LocalProfilesTableUpdateCompanionBuilder =
+    LocalProfilesCompanion Function({
+      Value<int> id,
+      Value<String> displayName,
+      Value<int> updatedAt,
+      Value<bool> dirty,
+    });
+
+class $$LocalProfilesTableFilterComposer
+    extends Composer<_$AppDatabase, $LocalProfilesTable> {
+  $$LocalProfilesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LocalProfilesTableOrderingComposer
+    extends Composer<_$AppDatabase, $LocalProfilesTable> {
+  $$LocalProfilesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LocalProfilesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LocalProfilesTable> {
+  $$LocalProfilesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
+}
+
+class $$LocalProfilesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LocalProfilesTable,
+          LocalProfileRow,
+          $$LocalProfilesTableFilterComposer,
+          $$LocalProfilesTableOrderingComposer,
+          $$LocalProfilesTableAnnotationComposer,
+          $$LocalProfilesTableCreateCompanionBuilder,
+          $$LocalProfilesTableUpdateCompanionBuilder,
+          (
+            LocalProfileRow,
+            BaseReferences<_$AppDatabase, $LocalProfilesTable, LocalProfileRow>,
+          ),
+          LocalProfileRow,
+          PrefetchHooks Function()
+        > {
+  $$LocalProfilesTableTableManager(_$AppDatabase db, $LocalProfilesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LocalProfilesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LocalProfilesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LocalProfilesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> displayName = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+              }) => LocalProfilesCompanion(
+                id: id,
+                displayName: displayName,
+                updatedAt: updatedAt,
+                dirty: dirty,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String displayName,
+                required int updatedAt,
+                Value<bool> dirty = const Value.absent(),
+              }) => LocalProfilesCompanion.insert(
+                id: id,
+                displayName: displayName,
+                updatedAt: updatedAt,
+                dirty: dirty,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LocalProfilesTable, LocalProfileRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $LocalProfilesTable,
+                    LocalProfileRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LocalProfilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LocalProfilesTable,
+      LocalProfileRow,
+      $$LocalProfilesTableFilterComposer,
+      $$LocalProfilesTableOrderingComposer,
+      $$LocalProfilesTableAnnotationComposer,
+      $$LocalProfilesTableCreateCompanionBuilder,
+      $$LocalProfilesTableUpdateCompanionBuilder,
+      (
+        LocalProfileRow,
+        BaseReferences<_$AppDatabase, $LocalProfilesTable, LocalProfileRow>,
+      ),
+      LocalProfileRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2388,4 +2877,6 @@ class $AppDatabaseManager {
       $$UserStatsTableTableManager(_db, _db.userStats);
   $$SyncMetadataTableTableManager get syncMetadata =>
       $$SyncMetadataTableTableManager(_db, _db.syncMetadata);
+  $$LocalProfilesTableTableManager get localProfiles =>
+      $$LocalProfilesTableTableManager(_db, _db.localProfiles);
 }

@@ -74,7 +74,27 @@ class SyncMetadata extends Table {
   Set<Column> get primaryKey => {key};
 }
 
-@DriftDatabase(tables: [LessonProgress, WordProgress, UserStats, SyncMetadata])
+@DataClassName('LocalProfileRow')
+class LocalProfiles extends Table {
+  IntColumn get id => integer().withDefault(const Constant(1))();
+  TextColumn get displayName => text()();
+  IntColumn get updatedAt => integer()();
+  BoolColumn get dirty => boolean().withDefault(const Constant(false))();
+  @override
+  Set<Column> get primaryKey => {id};
+  @override
+  List<String> get customConstraints => ['CHECK (id = 1)'];
+}
+
+@DriftDatabase(
+  tables: [
+    LessonProgress,
+    WordProgress,
+    UserStats,
+    SyncMetadata,
+    LocalProfiles,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase({String? userId})
     : super(driftDatabase(name: databaseName(userId)));
@@ -86,7 +106,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -103,6 +123,9 @@ class AppDatabase extends _$AppDatabase {
         await migrator.addColumn(userStats, userStats.updatedAt);
         await migrator.addColumn(userStats, userStats.dirty);
         await migrator.createTable(syncMetadata);
+      }
+      if (from < 3) {
+        await migrator.createTable(localProfiles);
       }
     },
   );
