@@ -1,3 +1,6 @@
+import '../../core/localization/lingo_localizations.dart';
+import '../../core/theme/lingo_tokens.dart';
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -21,10 +24,15 @@ class FlippableFlashcard extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     return Semantics(
       button: true,
-      label: revealed ? 'Show word' : 'Reveal translation',
+      label: revealed
+          ? context.l10n.text('showWord')
+          : context.l10n.text('ui1abc8584ad'),
       child: Material(
         color: colors.primaryContainer,
-        borderRadius: BorderRadius.circular(28),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(LingoRadii.card),
+          side: BorderSide(color: colors.outline, width: LingoSpace.border),
+        ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           key: const ValueKey('flashcard-flip'),
@@ -32,7 +40,7 @@ class FlippableFlashcard extends StatelessWidget {
           child: AnimatedSwitcher(
             duration: reducedMotion
                 ? Duration.zero
-                : const Duration(milliseconds: 240),
+                : const Duration(milliseconds: 550),
             switchInCurve: Curves.easeOutCubic,
             switchOutCurve: Curves.easeOutCubic,
             transitionBuilder: (child, animation) => AnimatedBuilder(
@@ -77,7 +85,7 @@ class _CardFace extends StatelessWidget {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 240),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(LingoSpace.s24),
       child: DefaultTextStyle.merge(
         style: TextStyle(color: color),
         child: Column(
@@ -94,25 +102,27 @@ class _CardFace extends StatelessWidget {
                       ?.copyWith(color: color),
             ),
             if (revealed) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: LingoSpace.s16),
               Text(
                 word.translation,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.headlineSmall?.copyWith(color: color),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: LingoSpace.s24),
               const Divider(),
-              const SizedBox(height: 16),
+              const SizedBox(height: LingoSpace.s16),
               Text(
                 word.example,
                 style: theme.textTheme.bodyLarge?.copyWith(color: color),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: LingoSpace.s8),
               Text(word.exampleTranslation),
             ],
-            const SizedBox(height: 24),
+            const SizedBox(height: LingoSpace.s24),
             Text(
-              revealed ? 'Tap to see the word again' : 'Tap to reveal',
+              revealed
+                  ? context.l10n.text('showWordAgain')
+                  : context.l10n.text('ui8e80e16b5c'),
               textAlign: TextAlign.center,
             ),
           ],
