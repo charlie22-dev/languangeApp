@@ -1,6 +1,11 @@
+import '../../core/localization/lingo_localizations.dart';
+import '../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 
 import 'responsive_body.dart';
+import 'pip_mascot.dart';
+import 'lingo_components.dart';
 
 class AsyncStatusView extends StatelessWidget {
   const AsyncStatusView({
@@ -18,19 +23,20 @@ class AsyncStatusView extends StatelessWidget {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        PipMascot(mood: loading ? PipMood.thinking : PipMood.sad),
         if (loading) ...[
-          const CircularProgressIndicator(),
-          const SizedBox(height: 20),
+          const LingoSkeleton(),
+          const SizedBox(height: LingoSpace.s16),
         ],
         Semantics(
           liveRegion: true,
           child: Text(message, textAlign: TextAlign.center),
         ),
         if (onRetry != null) ...[
-          const SizedBox(height: 16),
-          FilledButton.tonal(
+          const SizedBox(height: LingoSpace.s16),
+          LingoButton.tonal(
             onPressed: onRetry,
-            child: const Text('Try again'),
+            child: Text(context.l10n.text('ui042c862e44')),
           ),
         ],
       ],

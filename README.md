@@ -1,4 +1,4 @@
-# Language learning app - Phases 1 through 6A
+# Language learning app - Phases 1 through 6C
 
 This project contains Material 3 light/dark themes, Riverpod, go_router,
 three-step onboarding, a learning path, an exercise engine, spaced-repetition flashcards,
@@ -7,7 +7,8 @@ Phase 2 adds course content, immutable models, asset loading, and Drift tables.
 Phase 3 connects onboarding preferences and database progress to the interface.
 Phase 4 adds playable lessons, feedback, results, XP awards, and progress saving.
 Phase 5 adds SM-2 scheduling, card enrollment, review sessions, and review summaries.
-Phase 6A adds Supabase Auth and row-level-secured Postgres synchronization.
+Phase 6C completes Supabase Auth, signup profiles, timestamp-based conflict
+protection, ownership policies, and incremental Postgres synchronization.
 Audio playback and AI conversation belong to later phases.
 
 For current backend setup and Android run instructions, start with
@@ -31,9 +32,9 @@ replace package:myapp/ imports in tests with package:app_name/.
 
 ## Android setup and run
 
-Your current doctor output reports missing Android SDK Command-line Tools and
-unknown Android license status. In Android Studio, open Tools > SDK Manager >
-SDK Tools, install Android SDK Command-line Tools (latest), and then run:
+If flutter doctor reports missing Android SDK tools or unaccepted licenses,
+open Android Studio / Tools / SDK Manager / SDK Tools, install Android SDK
+Command-line Tools (latest), and then run:
 
 ```powershell
 flutter doctor --android-licenses
@@ -67,7 +68,8 @@ flutter test
 
 Widget tests cover welcome configuration, all bottom tabs, lesson IDs, back
 navigation, direct routes, an unknown route, and 320x568 layouts at 200% text
-scale in both light and dark themes. An Android build has not been verified.
+scale in both light and dark themes. An Android debug build has been verified;
+the earlier app reached Login and passed empty-field validation on the emulator.
 
 ## Structure
 
@@ -332,7 +334,7 @@ and 320px layouts at 200% text scale in light/dark themes. flutter analyze repor
 no issues and formatting is clean. An Android emulator run was not performed.
 See PHASE5_FILES.md for the file manifest and full Phase 5 source.
 
-## Phase 6A: Supabase authentication and sync
+## Phase 6C: Supabase authentication and incremental sync
 
 See SUPABASE_SETUP.md for project creation, SQL migration/RLS, email and Google
 provider configuration, Android callbacks, offline behavior, and manual testing.
@@ -341,11 +343,31 @@ That local file is ignored; config.example.json is safe to commit.
 
 Drift remains the source used by screens. Authenticated accounts have separate
 local databases, and the first account can claim the pre-authentication database
-once. Schema version 2 adds timestamp/dirty fields and ownership metadata without
-clearing progress. Sync persists pending changes, retries in the background, and
-merges each row by updatedAt through an owner-checked Postgres RPC. Newer local
+once. Schema version 3 preserves existing progress and adds a profile cache.
+main() initializes Supabase before ProviderScope starts the app. Auth events
+refresh route redirects, including recovery and signed-out session handling.
+Sync uploads pending rows with explicit conflict keys and merges rows by updatedAt.
+The database keeps newer rows during stale upserts. A persisted timestamp/revision
+cursor downloads changes incrementally and catches late offline edits. Newer local
 edits made during an upload remain pending. Profile includes sync status and logout.
 
-Validation: 121 Flutter tests and 11 local SQL/RLS checks passed. Cloud project
-configuration, live OAuth/email delivery, and emulator verification remain setup
-steps for your project. Full changed-file contents are in PHASE6A_FILES.md.
+Run the single script supabase/migrations/202611120001_phase6c.sql in SQL Editor.
+It supports a fresh schema or the earlier Phase 6A tables, preserving timestamps
+and progress. It creates profiles, user_stats, lesson_progress and word_progress,
+all with user-owned RLS and timestamptz updated_at, plus a signup trigger.
+
+Validation: 131 Flutter tests and 14 Phase 6C SQL/RLS checks passed. The earlier
+11 Phase 6A SQL checks remain available as migration-history tests. Your project
+URL and public key are in ignored config.local.json. Live email, Google OAuth,
+and two-account cloud sync still need your dashboard setup and test accounts.
+See SUPABASE_SETUP.md for the exact setup and RLS test transaction, and
+PHASE6C_FILES.md for the changed-file manifest and source.
+
+## LingoBlob presentation
+
+The Flutter UI uses the LingoBlob prototype palette, bundled Plus Jakarta Sans,
+Pip mascot, flat bordered components, saved light/dark/system appearance and
+localized English copy. Existing learning, auth and sync behavior is preserved.
+See [LINGOBLOB_UI_IMPLEMENTATION.md](LINGOBLOB_UI_IMPLEMENTATION.md) for the
+screen-by-screen checklist, limitations, files, validation and run commands.
+Debug builds expose the component gallery through Profile / Settings.
