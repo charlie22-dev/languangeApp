@@ -1,3 +1,7 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,40 +22,41 @@ class LanguageScreen extends ConsumerWidget {
     final selectedId = ref.watch(onboardingFlowProvider).courseId;
     return OnboardingFrame(
       step: 2,
-      title: 'What would you like to learn?',
-      subtitle: 'Choose a language to begin your journey.',
+      title: context.l10n.text('ui19a3d02735'),
+      subtitle: context.l10n.text('ui0edffe822e'),
       onBack: () => context.go(AppRoutes.welcome),
       child: courses.when(
         skipLoadingOnRefresh: false,
-        loading: () => const AsyncStatusView(
-          message: 'Finding your languages…',
+        loading: () => AsyncStatusView(
+          message: context.l10n.text('ui6a0080099f'),
           loading: true,
         ),
         error: (error, stack) => AsyncStatusView(
-          message: 'Languages could not be loaded.',
+          message: context.l10n.text('ui5241cba79b'),
           onRetry: () => ref.invalidate(courseCatalogProvider),
         ),
         data: (items) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (items.isEmpty)
-              const Text('There are no languages available yet.'),
+            if (items.isEmpty) Text(context.l10n.text('ui7e0cbe2650')),
             for (final course in items)
               ChoiceCard(
                 key: ValueKey('language-${course.id}'),
                 title: course.targetLanguage,
-                subtitle: 'For ${course.nativeLanguage} speakers',
+                subtitle: context.l10n.text('uief93d6c6a2', {
+                  'arg0': (course.nativeLanguage),
+                }),
                 selected: course.id == selectedId,
                 onTap: () => ref
                     .read(onboardingFlowProvider.notifier)
                     .selectCourse(course.id),
               ),
-            const SizedBox(height: 12),
-            FilledButton(
+            const SizedBox(height: LingoSpace.s8),
+            LingoButton(
               onPressed: items.any((course) => course.id == selectedId)
                   ? () => context.go(AppRoutes.dailyGoal)
                   : null,
-              child: const Text('Continue'),
+              child: Text(context.l10n.text('ui2e02623966')),
             ),
           ],
         ),
