@@ -55,12 +55,17 @@ class SyncService {
     onStatus?.call(SyncStatus.syncing);
     try {
       final changes = await local.snapshot();
+      final cursor = await local.readCursor();
       if (_disposed) return;
       final merged = await remote
-          .exchange(userId, changes)
+          .exchange(userId, changes, cursor: cursor)
           .timeout(const Duration(seconds: 15));
       if (_disposed) return;
-      await local.merge(merged);
+      if (merged.cursor.timestamp < cursor.timestamp ||
+          merged.cursor.revision < cursor.revision) {
+        throw StateError('Sync cursor moved backwards');
+      }
+      await local.merge(merged, saveCursor: true);
       if (!_disposed) onStatus?.call(SyncStatus.idle);
     } catch (_) {
       // Dirty rows stay on disk. Gameplay never waits for the network.

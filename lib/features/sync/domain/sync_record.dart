@@ -1,6 +1,16 @@
 import '../../../core/utils/json_reader.dart';
 
-enum SyncKind { stats, word, lesson }
+enum SyncKind { stats, word, lesson, profile }
+
+final class SyncCursor {
+  const SyncCursor({this.timestamp = 0, this.revision = 0});
+  final int timestamp;
+  final int revision;
+  String get isoTimestamp => DateTime.fromMicrosecondsSinceEpoch(
+    timestamp,
+    isUtc: true,
+  ).toIso8601String();
+}
 
 final class SyncRecord {
   SyncRecord._(this.kind, this.id, this.updatedAt, JsonMap data)
@@ -11,7 +21,12 @@ final class SyncRecord {
   final JsonMap data;
 
   factory SyncRecord.fromJson(SyncKind kind, JsonMap json) {
-    final stamp = JsonReader.integer(json, 'updated_at');
+    final value = json['updated_at'];
+    final stamp = value is int
+        ? value
+        : DateTime.tryParse(value is String ? value : '')
+              ?.microsecondsSinceEpoch;
+    if (stamp == null) throw const FormatException('Invalid updated_at');
     if (stamp < 0) throw const FormatException('Invalid updated_at');
     String? date(String key, {bool optional = false}) {
       if (optional && json[key] == null) return null;
@@ -27,6 +42,12 @@ final class SyncRecord {
     }
 
     switch (kind) {
+      case SyncKind.profile:
+        final name = json['display_name'];
+        if (name is! String || name.length > 120) {
+          throw const FormatException('Invalid display_name');
+        }
+        return SyncRecord._(kind, 'profile', stamp, {'display_name': name});
       case SyncKind.stats:
         return SyncRecord._(kind, 'stats', stamp, {
           'xp': count('xp'),
@@ -64,47 +85,59 @@ final class SyncRecord {
     ...data,
     'updated_at': updatedAt,
   };
+
+  JsonMap toRemoteJson(String userId) => {
+    ...toJson(),
+    'user_id': userId,
+    'updated_at': DateTime.fromMicrosecondsSinceEpoch(
+      updatedAt,
+      isUtc: true,
+    ).toIso8601String(),
+  };
 }
 
 final class SyncSnapshot {
-  SyncSnapshot(Iterable<SyncRecord> records)
+  SyncSnapshot(Iterable<SyncRecord> records, {this.cursor = const SyncCursor()})
     : records = List.unmodifiable(records);
   final List<SyncRecord> records;
+  final SyncCursor cursor;
 
   factory SyncSnapshot.fromJson(JsonMap json, {required String userId}) {
-    if (json['schema_version'] != 1 || json['user_id'] != userId) {
+    if (json['schema_version'] != 2 || json['user_id'] != userId) {
       throw const FormatException('Sync response owner or version mismatch');
     }
-    return SyncSnapshot([
-      if (json['stats'] != null)
-        SyncRecord.fromJson(
-          SyncKind.stats,
-          JsonReader.object(json['stats'], 'stats'),
-        ),
-      for (final value in JsonReader.list(json, 'words'))
-        SyncRecord.fromJson(SyncKind.word, JsonReader.object(value, 'word')),
-      for (final value in JsonReader.list(json, 'lessons'))
-        SyncRecord.fromJson(
-          SyncKind.lesson,
-          JsonReader.object(value, 'lesson'),
-        ),
-    ]);
-  }
+    final timestamp = DateTime.tryParse(
+      JsonReader.text(json, 'last_synced_at'),
+    );
+    final revision = JsonReader.integer(json, 'revision');
+    if (timestamp == null ||
+        timestamp.microsecondsSinceEpoch < 0 ||
+        revision < 0) {
+      throw const FormatException('Invalid sync cursor');
+    }
+    SyncRecord record(SyncKind kind, Object? value) {
+      final row = JsonReader.object(value, kind.name);
+      if (row['user_id'] != userId) {
+        throw const FormatException('Sync row owner mismatch');
+      }
+      return SyncRecord.fromJson(kind, row);
+    }
 
-  JsonMap get payload => {
-    'p_stats': records
-        .where((row) => row.kind == SyncKind.stats)
-        .firstOrNull
-        ?.toJson(),
-    'p_words': records
-        .where((row) => row.kind == SyncKind.word)
-        .map((row) => row.toJson())
-        .toList(),
-    'p_lessons': records
-        .where((row) => row.kind == SyncKind.lesson)
-        .map((row) => row.toJson())
-        .toList(),
-  };
+    return SyncSnapshot(
+      [
+        if (json['profile'] != null) record(SyncKind.profile, json['profile']),
+        if (json['stats'] != null) record(SyncKind.stats, json['stats']),
+        for (final value in JsonReader.list(json, 'words'))
+          record(SyncKind.word, value),
+        for (final value in JsonReader.list(json, 'lessons'))
+          record(SyncKind.lesson, value),
+      ],
+      cursor: SyncCursor(
+        timestamp: timestamp.microsecondsSinceEpoch,
+        revision: revision,
+      ),
+    );
+  }
 }
 
 /// The remote value wins exact timestamp ties on every device.

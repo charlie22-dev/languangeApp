@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 
 import '../../../core/database/app_database.dart';
@@ -7,20 +9,40 @@ class LocalSyncStore {
   const LocalSyncStore(this.database);
   final AppDatabase database;
 
+  Future<SyncCursor> readCursor() async {
+    final row = await (database.select(
+      database.syncMetadata,
+    )..where((row) => row.key.equals('cursorV2'))).getSingleOrNull();
+    if (row == null) return const SyncCursor();
+    final value = jsonDecode(row.value) as Map<String, dynamic>;
+    return SyncCursor(
+      timestamp: value['timestamp'] as int,
+      revision: value['revision'] as int,
+    );
+  }
+
   Future<SyncSnapshot> snapshot({bool dirtyOnly = true}) =>
       database.transaction(() async {
         final statsQuery = database.select(database.userStats);
         final wordsQuery = database.select(database.wordProgress);
         final lessonsQuery = database.select(database.lessonProgress);
+        final profilesQuery = database.select(database.localProfiles);
         if (dirtyOnly) {
           statsQuery.where((row) => row.dirty.equals(true));
           wordsQuery.where((row) => row.dirty.equals(true));
           lessonsQuery.where((row) => row.dirty.equals(true));
+          profilesQuery.where((row) => row.dirty.equals(true));
         }
         final stats = await statsQuery.get();
         final words = await wordsQuery.get();
         final lessons = await lessonsQuery.get();
+        final profiles = await profilesQuery.get();
         return SyncSnapshot([
+          for (final row in profiles)
+            SyncRecord.fromJson(SyncKind.profile, {
+              'display_name': row.displayName,
+              'updated_at': row.updatedAt,
+            }),
           for (final row in stats)
             SyncRecord.fromJson(SyncKind.stats, {
               'xp': row.xp,
@@ -51,6 +73,7 @@ class LocalSyncStore {
   Future<void> merge(
     SyncSnapshot remote, {
     bool imported = false,
+    bool saveCursor = false,
   }) => database.transaction(() async {
     for (final row in remote.records) {
       final data = row.data;
@@ -58,6 +81,27 @@ class LocalSyncStore {
           ? null
           : DateTime.parse(data[key] as String).toUtc();
       switch (row.kind) {
+        case SyncKind.profile:
+          final current = await database
+              .select(database.localProfiles)
+              .getSingleOrNull();
+          if (!remoteWins(current?.updatedAt, row.updatedAt)) continue;
+          if (current != null &&
+              current.updatedAt == row.updatedAt &&
+              current.dirty == imported &&
+              current.displayName == data['display_name']) {
+            continue;
+          }
+          await database
+              .into(database.localProfiles)
+              .insertOnConflictUpdate(
+                LocalProfilesCompanion.insert(
+                  id: const Value(1),
+                  displayName: data['display_name'] as String,
+                  updatedAt: row.updatedAt,
+                  dirty: Value(imported),
+                ),
+              );
         case SyncKind.stats:
           final current = await database
               .select(database.userStats)
@@ -137,6 +181,19 @@ class LocalSyncStore {
               );
       }
     }
+    if (saveCursor) {
+      await database
+          .into(database.syncMetadata)
+          .insertOnConflictUpdate(
+            SyncMetadataCompanion.insert(
+              key: 'cursorV2',
+              value: jsonEncode({
+                'timestamp': remote.cursor.timestamp,
+                'revision': remote.cursor.revision,
+              }),
+            ),
+          );
+    }
   });
 
   Future<void> importLegacy(AppDatabase legacy, String uid) async {
@@ -161,7 +218,20 @@ class LocalSyncStore {
     await database.transaction(() async {
       if (ownsLegacy) {
         await merge(
-          await LocalSyncStore(legacy).snapshot(dirtyOnly: false),
+          SyncSnapshot(
+            (await LocalSyncStore(
+              legacy,
+            ).snapshot(dirtyOnly: false)).records.map(
+              (row) => row.updatedAt == 0
+                  ? SyncRecord.fromJson(row.kind, {
+                      ...row.toJson(),
+                      // Untimestamped legacy data is newer than empty signup
+                      // defaults, but older than actual timestamped cloud edits.
+                      'updated_at': 1,
+                    })
+                  : row,
+            ),
+          ),
           imported: true,
         );
       }
@@ -177,11 +247,13 @@ class LocalSyncStore {
       .customSelect(
         '''SELECT 'stats' AS kind, CAST(id AS TEXT) AS row_id, updated_at, dirty FROM user_stats
            UNION ALL SELECT 'word', word_id, updated_at, dirty FROM word_progress
-           UNION ALL SELECT 'lesson', lesson_id, updated_at, dirty FROM lesson_progress''',
+           UNION ALL SELECT 'lesson', lesson_id, updated_at, dirty FROM lesson_progress
+           UNION ALL SELECT 'profile', CAST(id AS TEXT), updated_at, dirty FROM local_profiles''',
         readsFrom: {
           database.userStats,
           database.wordProgress,
           database.lessonProgress,
+          database.localProfiles,
         },
       )
       .watch()
