@@ -1,3 +1,7 @@
+import '../../../shared/widgets/lingo_components.dart';
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,8 +20,8 @@ class DailyGoalScreen extends ConsumerWidget {
     final draft = ref.watch(onboardingFlowProvider);
     return OnboardingFrame(
       step: 3,
-      title: 'Make a little time for learning',
-      subtitle: 'Choose a daily goal that fits your day.',
+      title: context.l10n.text('ui761beeaed8'),
+      subtitle: context.l10n.text('ui59db5ecbf3'),
       onBack: draft.saving ? null : () => context.go(AppRoutes.languages),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -25,11 +29,11 @@ class DailyGoalScreen extends ConsumerWidget {
           for (final minutes in dailyGoalMinutes)
             ChoiceCard(
               key: ValueKey('goal-$minutes'),
-              title: '$minutes minutes',
+              title: context.l10n.text('uia1e6de2a3f', {'arg0': (minutes)}),
               subtitle: switch (minutes) {
-                5 => 'Start small',
-                10 => 'Build a steady habit',
-                _ => 'Make more time to practice',
+                5 => context.l10n.text('uib1a59fc993'),
+                10 => context.l10n.text('uic07031fb73'),
+                _ => context.l10n.text('uif3c636e0ef'),
               },
               icon: Icons.schedule,
               selected: minutes == draft.goalMinutes,
@@ -47,14 +51,18 @@ class DailyGoalScreen extends ConsumerWidget {
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: LingoSpace.s16),
           ],
-          const SizedBox(height: 12),
-          FilledButton(
+          const SizedBox(height: LingoSpace.s8),
+          LingoButton(
             onPressed: draft.saving
                 ? null
                 : () => ref.read(onboardingFlowProvider.notifier).finish(),
-            child: Text(draft.saving ? 'Saving…' : 'Start learning'),
+            child: Text(
+              draft.saving
+                  ? context.l10n.text('saving')
+                  : context.l10n.text('ui02d279ce2f'),
+            ),
           ),
         ],
       ),
