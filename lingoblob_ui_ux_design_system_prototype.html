@@ -1,0 +1,2278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LingoBlob — Flutter M3 Design System & Prototype Canvas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-canvas: #E9ECEF;
+      --bg-surface: #FFFFFF;
+      --border-figma: #D0D5DD;
+      --text-figma: #101828;
+
+      /* App Tokens - Light */
+      --app-bg: #FFF9E5;
+      --app-surface: #FFFFFF;
+      --app-surface-alt: #F3EBD3;
+      --app-primary: #B2EE05;
+      --app-primary-pressed: #8DBA00;
+      --app-navy: #0A1038;
+      --app-text: #0A1038;
+      --app-text-muted: #4A5178;
+      --app-accent: #8A9BFF;
+      --app-coral: #F4695F;
+      --app-success: #3DBE6B;
+      --app-border: #0A1038;
+      --app-disabled-bg: #E6DFC8;
+      --app-disabled-text: #8C887A;
+    }
+
+    .dark-tokens {
+      --app-bg: #0D1126;
+      --app-surface: #171D3B;
+      --app-surface-alt: #212952;
+      --app-primary: #B2EE05;
+      --app-primary-pressed: #8DBA00;
+      --app-navy: #0A1038;
+      --app-text: #FFF9E5;
+      --app-text-muted: #B4BCE0;
+      --app-accent: #8A9BFF;
+      --app-coral: #F4695F;
+      --app-success: #3DBE6B;
+      --app-border: #38437A;
+      --app-disabled-bg: #1E2547;
+      --app-disabled-text: #6D76A3;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    code, pre, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--text-figma);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* 390x844 Android Viewport Frame */
+    .phone-frame {
+      width: 390px;
+      height: 844px;
+      background-color: var(--app-bg);
+      color: var(--app-text);
+      border-radius: 44px;
+      border: 8px solid #1E2436;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      box-shadow: 0 20px 45px -15px rgba(10, 16, 56, 0.22);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .phone-scroll {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+    .phone-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Flat Neo-Brutalist / Playful M3 Surface Styling (NO Gradients or Drop Shadows inside app UI) */
+    .lb-card {
+      background-color: var(--app-surface);
+      border: 2px solid var(--app-border);
+      border-radius: 24px;
+    }
+
+    .lb-card-alt {
+      background-color: var(--app-surface-alt);
+      border: 2px solid var(--app-border);
+      border-radius: 24px;
+    }
+
+    .lb-btn {
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 16px;
+      min-height: 52px;
+      padding: 12px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease;
+      user-select: none;
+    }
+    .lb-btn:active {
+      transform: scale(0.95);
+    }
+
+    .lb-btn-primary {
+      background-color: #0A1038;
+      color: #FFF9E5;
+      border: 2px solid #0A1038;
+    }
+    .dark-tokens .lb-btn-primary {
+      background-color: #B2EE05;
+      color: #0A1038;
+      border: 2px solid #B2EE05;
+    }
+
+    .lb-btn-lime {
+      background-color: #B2EE05;
+      color: #0A1038;
+      border: 2px solid #0A1038;
+    }
+    .lb-btn-lime:active {
+      background-color: #8DBA00;
+    }
+
+    .lb-btn-secondary {
+      background-color: var(--app-surface);
+      color: var(--app-text);
+      border: 2px solid var(--app-border);
+    }
+
+    .lb-btn-ghost {
+      background-color: transparent;
+      color: var(--app-text);
+      border: 2px solid transparent;
+    }
+    .lb-btn-ghost:hover {
+      background-color: rgba(138, 155, 255, 0.14);
+    }
+
+    .lb-input {
+      background-color: var(--app-surface);
+      color: var(--app-text);
+      border: 2px solid var(--app-border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      width: 100%;
+      outline: none;
+    }
+    .lb-input:focus {
+      border-color: #8A9BFF;
+      background-color: var(--app-surface);
+    }
+    .lb-input-error {
+      border-color: #F4695F !important;
+      background-color: rgba(244, 105, 95, 0.08) !important;
+    }
+
+    .lb-chip {
+      border-radius: 999px;
+      border: 2px solid var(--app-border);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.1s ease, background-color 0.15s ease;
+    }
+    .lb-chip:active {
+      transform: scale(0.95);
+    }
+
+    /* 3D Flip Flashcard */
+    .flip-scene {
+      perspective: 1000px;
+    }
+    .flip-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+    .flip-card.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 24px;
+      border: 2px solid var(--app-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Micro-interaction Animations */
+    @keyframes popScale {
+      0% { transform: scale(0.85); }
+      55% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+    .animate-pop {
+      animation: popScale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes flamePulse {
+      0%, 100% { transform: scale(1) rotate(-2deg); }
+      50% { transform: scale(1.16) rotate(3deg); }
+    }
+    .animate-flame {
+      animation: flamePulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.9; }
+      70% { transform: scale(1.32); opacity: 0; }
+      100% { transform: scale(1.32); opacity: 0; }
+    }
+    .mic-pulse::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 999px;
+      border: 3px solid #F4695F;
+      animation: pulseRing 1.4s infinite;
+    }
+
+    @keyframes skeletonShimmer {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 0.95; }
+    }
+    .skeleton-pulse {
+      animation: skeletonShimmer 1.3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP FIGMA PRESENTATION BAR -->
+  <header class="sticky top-0 z-50 bg-[#0A1038] text-[#FFF9E5] border-b border-white/15 px-4 sm:px-6 py-3">
+    <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-[#B2EE05] border-2 border-[#FFF9E5] flex items-center justify-center">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <circle cx="11" cy="15" r="4.5" fill="#FFF9E5"/>
+            <circle cx="21" cy="15" r="4.5" fill="#FFF9E5"/>
+            <circle cx="11.5" cy="15.5" r="2.2" fill="#0A1038"/>
+            <circle cx="20.5" cy="15.5" r="2.2" fill="#0A1038"/>
+            <path d="M13 22C14.5 23.5 17.5 23.5 19 22" stroke="#0A1038" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-base tracking-tight">LingoBlob</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#8A9BFF] text-[#0A1038]">Figma Specs v1.0</span>
+          </div>
+          <p class="text-xs text-[#B4BCE0] hidden sm:block">Spanish for English Speakers • Flutter Material 3 • 390×844dp Android</p>
+        </div>
+      </div>
+
+      <!-- Primary Section Switcher -->
+      <nav class="flex items-center bg-[#171D3B] p-1 rounded-2xl border border-white/10" role="tablist" aria-label="Presentation Sections">
+        <button onclick="switchSection('system')" id="tab-system" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-[#B2EE05] text-[#0A1038]">
+          1. Design System
+        </button>
+        <button onclick="switchSection('screens')" id="tab-screens" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all text-[#FFF9E5] hover:bg-white/10">
+          2. All 14+ Screens
+        </button>
+        <button onclick="switchSection('ux')" id="tab-ux" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all text-[#FFF9E5] hover:bg-white/10">
+          3. UX Flows & Specs
+        </button>
+      </nav>
+
+      <!-- Global Theme Mode Toggle -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold text-[#B4BCE0] hidden md:inline">Theme Tokens:</span>
+        <button onclick="toggleThemeMode()" id="theme-toggle-btn" class="px-3.5 py-2 rounded-xl bg-[#171D3B] hover:bg-[#212952] border border-white/20 text-xs font-extrabold flex items-center gap-2 transition">
+          <span id="theme-dot" class="w-3 h-3 rounded-full bg-[#FFF9E5] border border-[#0A1038]"></span>
+          <span id="theme-label">Light Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CANVAS CONTAINER -->
+  <main id="canvas-root" class="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-8">
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 1: DESIGN SYSTEM                                              -->
+    <!-- ===================================================================== -->
+    <section id="section-system" class="space-y-10">
+
+      <!-- Section Intro Banner -->
+      <div class="bg-white border-2 border-[#0A1038] rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="space-y-2 max-w-2xl">
+          <span class="inline-block px-3 py-1 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold uppercase tracking-wider">Deliverable 01 • Flutter M3 Foundation</span>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-[#0A1038] tracking-tight">LingoBlob Design Language & Token System</h1>
+          <p class="text-sm sm:text-base text-[#4A5178] font-medium">
+            Playful, flat, high-contrast UI built strictly with standard Flutter Material 3 widgets (<code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded border">elevation: 0</code>, <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded border">BorderSide(width: 2)</code>). Toggle Light/Dark mode in the top bar to inspect live component token adaptation.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <div class="px-4 py-3 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038]">
+            <div class="text-[11px] font-bold uppercase text-[#4A5178]">Grid & Radii</div>
+            <div class="text-sm font-extrabold text-[#0A1038]">8pt Base • 24 / 16 / Pill</div>
+          </div>
+          <div class="px-4 py-3 rounded-2xl bg-[#8A9BFF]/25 border-2 border-[#0A1038]">
+            <div class="text-[11px] font-bold uppercase text-[#4A5178]">Iconography</div>
+            <div class="text-sm font-extrabold text-[#0A1038]">Rounded • 2.0px Stroke</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MASCOT EXPRESSION SHEET ("PIP") -->
+      <div class="bg-white border-2 border-[#0A1038] rounded-3xl p-6 sm:p-8 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-xl font-extrabold text-[#0A1038]">Original Mascot: "Pip" the Friendly Blob</h2>
+            <p class="text-sm text-[#4A5178]">Vector SVG mascot with 5 emotional states for Welcome, Empty States, Results, and Streak celebrations.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-[#FFF9E5] border-2 border-[#0A1038] text-xs font-extrabold text-[#0A1038]">100% Original Geometric SVG</span>
+        </div>
+        <div id="mascot-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- COLOR TOKENS TABLE + TYPE SCALE -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <!-- Color Tokens Table (7 cols) -->
+        <div class="xl:col-span-7 bg-white border-2 border-[#0A1038] rounded-3xl p-6 overflow-hidden flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0A1038]">Color Tokens (Flutter ThemeData Ready)</h2>
+              <p class="text-xs text-[#4A5178]">WCAG AA/AAA verified contrast pairs for Light & Dark ColorSchemes.</p>
+            </div>
+            <button onclick="copyFlutterTheme()" class="px-3 py-1.5 rounded-xl bg-[#0A1038] text-[#FFF9E5] text-xs font-extrabold hover:opacity-90 active:scale-95 transition">
+              Copy Dart ColorScheme
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+              <thead>
+                <tr class="border-b-2 border-[#0A1038] text-[#0A1038]">
+                  <th class="py-2.5 pr-3 font-extrabold">Token Role</th>
+                  <th class="py-2.5 px-3 font-extrabold">Light Hex</th>
+                  <th class="py-2.5 px-3 font-extrabold">Dark Hex</th>
+                  <th class="py-2.5 pl-3 font-extrabold">Flutter M3 Mapping</th>
+                </tr>
+              </thead>
+              <tbody id="color-tokens-body" class="divide-y divide-slate-200 font-medium">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Typography & Spacing Specs (5 cols) -->
+        <div class="xl:col-span-5 bg-white border-2 border-[#0A1038] rounded-3xl p-6 space-y-6">
+          <div>
+            <h2 class="text-xl font-extrabold text-[#0A1038]">Typography Scale</h2>
+            <p class="text-xs text-[#4A5178]">Plus Jakarta Sans • 800 ExtraBold Headings, 500–700 Body/UI</p>
+          </div>
+          <div class="space-y-3 divide-y divide-slate-200">
+            <div class="pt-2 flex items-baseline justify-between gap-4">
+              <div>
+                <div class="text-[32px] leading-[38px] font-extrabold text-[#0A1038] tracking-tight">Display Large</div>
+                <span class="text-xs text-[#4A5178]">32sp / 38lh • Weight 800 • -0.5px</span>
+              </div>
+              <span class="font-mono text-xs bg-slate-100 px-2 py-1 rounded">displayLarge</span>
+            </div>
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <div>
+                <div class="text-[24px] leading-[30px] font-extrabold text-[#0A1038]">Headline Medium</div>
+                <span class="text-xs text-[#4A5178]">24sp / 30lh • Weight 800 • -0.2px</span>
+              </div>
+              <span class="font-mono text-xs bg-slate-100 px-2 py-1 rounded">headlineMedium</span>
+            </div>
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <div>
+                <div class="text-[18px] leading-[24px] font-extrabold text-[#0A1038]">Title Large</div>
+                <span class="text-xs text-[#4A5178]">18sp / 24lh • Weight 800 • 0px</span>
+              </div>
+              <span class="font-mono text-xs bg-slate-100 px-2 py-1 rounded">titleLarge</span>
+            </div>
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <div>
+                <div class="text-[16px] leading-[22px] font-medium text-[#0A1038]">Body Large — Conversational copy</div>
+                <span class="text-xs text-[#4A5178]">16sp / 22lh • Weight 500 • 0px</span>
+              </div>
+              <span class="font-mono text-xs bg-slate-100 px-2 py-1 rounded">bodyLarge</span>
+            </div>
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <div>
+                <div class="text-[13px] leading-[18px] font-bold uppercase tracking-wider text-[#0A1038]">Label Large / Badges</div>
+                <span class="text-xs text-[#4A5178]">13sp / 18lh • Weight 700 • +0.5px</span>
+              </div>
+              <span class="font-mono text-xs bg-slate-100 px-2 py-1 rounded">labelLarge</span>
+            </div>
+          </div>
+
+          <!-- 8pt Grid & Shape Tokens -->
+          <div class="pt-3 border-t-2 border-[#0A1038] grid grid-cols-3 gap-2 text-center">
+            <div class="p-3 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038]">
+              <div class="text-xs font-bold text-[#4A5178]">Spacing</div>
+              <div class="text-sm font-extrabold text-[#0A1038]">8, 16, 24, 32dp</div>
+            </div>
+            <div class="p-3 rounded-2xl bg-[#B2EE05] border-2 border-[#0A1038]">
+              <div class="text-xs font-bold text-[#0A1038]">Corner Radii</div>
+              <div class="text-sm font-extrabold text-[#0A1038]">24 / 16 / 999</div>
+            </div>
+            <div class="p-3 rounded-2xl bg-[#8A9BFF]/30 border-2 border-[#0A1038]">
+              <div class="text-xs font-bold text-[#4A5178]">Elevation</div>
+              <div class="text-sm font-extrabold text-[#0A1038]">0dp + 2px Stroke</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE COMPONENT LIBRARY -->
+      <div class="bg-white border-2 border-[#0A1038] rounded-3xl p-6 sm:p-8 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#0A1038] pb-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-[#0A1038]">Interactive Component Library (All States)</h2>
+            <p class="text-xs sm:text-sm text-[#4A5178]">Live previews rendered inside the active theme surface (<span class="font-bold" id="active-surface-label">Warm Cream #FFF9E5</span>).</p>
+          </div>
+          <button onclick="showToast('Saved to your Spanish Deck! +10 XP')" class="px-4 py-2 rounded-xl bg-[#B2EE05] border-2 border-[#0A1038] text-xs font-extrabold text-[#0A1038] active:scale-95 transition">
+            Trigger Live Toast
+          </button>
+        </div>
+
+        <!-- Component Showcase Grid (Uses theme variables) -->
+        <div class="theme-scope rounded-3xl p-6 border-2 border-[#0A1038]" style="background-color: var(--app-bg); color: var(--app-text);">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            <!-- 1. Buttons -->
+            <div class="lb-card p-5 space-y-3">
+              <div class="text-xs font-extrabold uppercase tracking-wider opacity-70">01. Buttons (48dp+ Touch Target)</div>
+              <button class="lb-btn lb-btn-primary w-full">Primary Action (Navy / Lime)</button>
+              <button class="lb-btn lb-btn-lime w-full">Accent CTA (Lime #B2EE05)</button>
+              <button class="lb-btn lb-btn-secondary w-full">Secondary Outlined</button>
+              <button class="lb-btn lb-btn-ghost w-full">Ghost / Skip Action</button>
+            </div>
+
+            <!-- 2. Text Inputs -->
+            <div class="lb-card p-5 space-y-3">
+              <div class="text-xs font-extrabold uppercase tracking-wider opacity-70">02. Text Inputs (Default / Focus / Error)</div>
+              <div>
+                <label class="text-xs font-bold mb-1 block">Default Input</label>
+                <input type="text" class="lb-input" value="Sofia Martinez" readonly />
+              </div>
+              <div>
+                <label class="text-xs font-bold mb-1 block text-[#8A9BFF]">Focused Input (#8A9BFF Border)</label>
+                <input type="text" class="lb-input !border-[#8A9BFF]" value="sofia@lingoblob.app" readonly />
+              </div>
+              <div>
+                <label class="text-xs font-bold mb-1 block text-[#F4695F]">Error Input (#F4695F)</label>
+                <input type="text" class="lb-input lb-input-error" value="123" readonly />
+                <span class="text-[11px] font-bold text-[#F4695F] mt-1 block">Password must be at least 8 characters</span>
+              </div>
+            </div>
+
+            <!-- 3. Answer Option Cards -->
+            <div class="lb-card p-5 space-y-2.5">
+              <div class="text-xs font-extrabold uppercase tracking-wider opacity-70">03. Answer Option Cards</div>
+              <div class="p-3 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-bold text-sm flex justify-between items-center">
+                <span>1. La manzana (Default)</span>
+                <span class="w-6 h-6 rounded-full border-2 border-[var(--app-border)] text-xs flex items-center justify-center">A</span>
+              </div>
+              <div class="p-3 rounded-2xl border-2 border-[#0A1038] bg-[#8A9BFF]/30 font-extrabold text-sm flex justify-between items-center">
+                <span>2. El café con leche (Selected)</span>
+                <span class="w-6 h-6 rounded-full bg-[#0A1038] text-[#FFF9E5] text-xs flex items-center justify-center">B</span>
+              </div>
+              <div class="p-3 rounded-2xl border-2 border-[#0A1038] bg-[#3DBE6B] text-[#0A1038] font-extrabold text-sm flex justify-between items-center">
+                <span>3. Buenos días (Correct)</span>
+                <span>✓</span>
+              </div>
+              <div class="p-3 rounded-2xl border-2 border-[#0A1038] bg-[#F4695F] text-[#0A1038] font-extrabold text-sm flex justify-between items-center">
+                <span>4. Buenas noches (Wrong)</span>
+                <span>✕</span>
+              </div>
+            </div>
+
+            <!-- 4. Badges, Hearts, Progress & Chips -->
+            <div class="lb-card p-5 space-y-4">
+              <div class="text-xs font-extrabold uppercase tracking-wider opacity-70">04. Badges, Hearts, Progress & Chips</div>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-full bg-[#FF9F1C] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold flex items-center gap-1">
+                  🔥 14 Day Streak
+                </span>
+                <span class="px-3 py-1.5 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold flex items-center gap-1">
+                  ⚡ 1,240 XP
+                </span>
+                <span class="px-3 py-1.5 rounded-full bg-[#F4695F] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold flex items-center gap-1">
+                  ❤️ 5 Hearts
+                </span>
+              </div>
+              <!-- Progress Bar -->
+              <div>
+                <div class="flex justify-between text-xs font-extrabold mb-1">
+                  <span>Lesson Progress</span>
+                  <span>70%</span>
+                </div>
+                <div class="w-full h-4 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] overflow-hidden p-0.5">
+                  <div class="h-full bg-[#B2EE05] rounded-full border-r-2 border-[#0A1038]" style="width: 70%;"></div>
+                </div>
+              </div>
+              <!-- Chips -->
+              <div class="flex flex-wrap gap-2">
+                <span class="lb-chip bg-[#B2EE05] text-[#0A1038]">🇪🇸 Spanish</span>
+                <span class="lb-chip bg-[var(--app-surface)]">10 min/day</span>
+                <span class="lb-chip bg-[#8A9BFF]/30">☕ Café</span>
+              </div>
+            </div>
+
+            <!-- 5. Lesson Path Nodes & Chat Bubbles -->
+            <div class="lb-card p-5 space-y-4">
+              <div class="text-xs font-extrabold uppercase tracking-wider opacity-70">05. Path Nodes & AI Chat Bubbles</div>
+              <div class="flex items-center justify-around py-1">
+                <!-- Completed Node -->
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-14 h-14 rounded-full bg-[#3DBE6B] border-2 border-[#0A1038] flex items-center justify-center text-[#0A1038] font-extrabold text-lg">✓</div>
+                  <span class="text-[11px] font-extrabold">Completed</span>
+                </div>
+                <!-- Available Node -->
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-16 h-16 rounded-full bg-[#B2EE05] border-4 border-[#0A1038] flex items-center justify-center text-[#0A1038] font-extrabold text-xl">★</div>
+                  <span class="text-[11px] font-extrabold">Available</span>
+                </div>
+                <!-- Locked Node -->
+                <div class="flex flex-col items-center gap-1 opacity-60">
+                  <div class="w-14 h-14 rounded-full bg-[var(--app-disabled-bg)] border-2 border-[var(--app-border)] flex items-center justify-center font-extrabold text-sm">🔒</div>
+                  <span class="text-[11px] font-bold">Locked</span>
+                </div>
+              </div>
+              <!-- Chat Bubbles -->
+              <div class="space-y-2 pt-1">
+                <div class="p-3 rounded-2xl rounded-bl-sm bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] text-xs font-semibold max-w-[85%]">
+                  ¡Hola! ¿Qué te gustaría pedir hoy?
+                </div>
+                <div class="p-3 rounded-2xl rounded-br-sm bg-[#8A9BFF] text-[#0A1038] border-2 border-[#0A1038] text-xs font-extrabold max-w-[85%] ml-auto">
+                  Yo quiero un café con leche, por favor.
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. Interactive 3D Flashcard & Bottom Nav -->
+            <div class="lb-card p-5 space-y-4 flex flex-col justify-between">
+              <div class="text-xs font-extrabold uppercase tracking-wider opacity-70">06. Interactive Flashcard & Bottom Nav</div>
+              <div class="flip-scene h-28" onclick="this.querySelector('.flip-card').classList.toggle('is-flipped')">
+                <div class="flip-card">
+                  <div class="flip-face bg-[#FFF9E5] text-[#0A1038]">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#4A5178]">Tap to Flip • Front</span>
+                    <div class="text-xl font-extrabold mt-1">La biblioteca</div>
+                  </div>
+                  <div class="flip-face flip-back bg-[#B2EE05] text-[#0A1038]">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider">Back • Translation</span>
+                    <div class="text-lg font-extrabold mt-1">The library</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Bottom Nav Bar Preview -->
+              <div class="rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] p-2 flex justify-around text-xs font-extrabold">
+                <span class="px-3 py-1.5 rounded-xl bg-[#B2EE05] text-[#0A1038] border border-[#0A1038]">Learn</span>
+                <span class="px-3 py-1.5 opacity-70">Review</span>
+                <span class="px-3 py-1.5 opacity-70">Chat</span>
+                <span class="px-3 py-1.5 opacity-70">Profile</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 2: ALL SCREENS (390x844 INTERACTIVE FRAMES)                   -->
+    <!-- ===================================================================== -->
+    <section id="section-screens" class="hidden space-y-10">
+
+      <!-- Flow Filter Bar -->
+      <div class="bg-white border-2 border-[#0A1038] rounded-3xl p-5 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#8A9BFF] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold uppercase">Deliverable 02 • 390×844dp Android Frames</span>
+          <h1 class="text-2xl font-extrabold text-[#0A1038] mt-1">Complete Connected Screen Gallery (19 Interactive States)</h1>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="filterFlows('all')" class="flow-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-[#0A1038] text-[#FFF9E5]" data-flow="all">All Flows (19)</button>
+          <button onclick="filterFlows('flow-a')" class="flow-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-[#0A1038] hover:bg-slate-200" data-flow="flow-a">Flow A: Auth & Onboarding</button>
+          <button onclick="filterFlows('flow-b')" class="flow-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-[#0A1038] hover:bg-slate-200" data-flow="flow-b">Flow B: Learn & Lessons</button>
+          <button onclick="filterFlows('flow-c')" class="flow-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-[#0A1038] hover:bg-slate-200" data-flow="flow-c">Flow C: Review & AI Chat</button>
+          <button onclick="filterFlows('flow-d')" class="flow-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-[#0A1038] hover:bg-slate-200" data-flow="flow-d">Flow D: Profile & System</button>
+        </div>
+      </div>
+
+      <!-- =============================================================== -->
+      <!-- FLOW A: AUTH & ONBOARDING                                       -->
+      <!-- =============================================================== -->
+      <div class="flow-group space-y-6" data-group="flow-a">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-xs font-extrabold text-[#0A1038]">FLOW A</span>
+          <h2 class="text-xl font-extrabold text-[#0A1038]">Authentication & First-Time Onboarding</h2>
+        </div>
+
+        <div class="flex flex-wrap gap-8 justify-center xl:justify-start">
+
+          <!-- SCREEN 1: SPLASH -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame !bg-[#B2EE05] !text-[#0A1038] justify-between items-center p-8 relative">
+              <!-- Decorative corner circles -->
+              <div class="w-44 h-44 rounded-full bg-[#8A9BFF] border-2 border-[#0A1038] absolute -top-16 -left-16"></div>
+              <div class="w-36 h-36 rounded-full bg-[#FFF9E5] border-2 border-[#0A1038] absolute -bottom-12 -right-12"></div>
+              <div class="w-16 h-16 rounded-full bg-[#0A1038] absolute top-24 right-8"></div>
+
+              <div class="h-8"></div>
+              <div class="flex flex-col items-center text-center z-10 space-y-4">
+                <div id="splash-mascot"></div>
+                <h3 class="text-4xl font-extrabold tracking-tight text-[#0A1038]">LingoBlob</h3>
+                <p class="text-sm font-bold text-[#0A1038]/80">Bite-sized Spanish that sticks.</p>
+              </div>
+              <div class="z-10 w-36 h-2.5 rounded-full bg-[#0A1038]/20 overflow-hidden border border-[#0A1038]">
+                <div class="w-2/3 h-full bg-[#0A1038] rounded-full"></div>
+              </div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">01. Splash Screen</div>
+              <p class="text-[#4A5178] mt-0.5">Establishes playful lime-and-navy identity while checking cached auth token. Auto-transitions to Welcome or Home after 1.2s.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 2: WELCOME -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame justify-between relative">
+              <!-- Decorative corner shapes -->
+              <div class="w-40 h-40 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] absolute -top-14 -left-12"></div>
+              <div class="w-20 h-20 rounded-full bg-[#0A1038] absolute top-8 right-24"></div>
+              <div class="w-36 h-36 rounded-full bg-[#8A9BFF] border-2 border-[#0A1038] absolute top-4 -right-14"></div>
+
+              <div class="pt-44 px-7 text-center z-10 space-y-3">
+                <span class="inline-block px-3 py-1 rounded-full bg-[#8A9BFF]/25 border-2 border-[var(--app-border)] text-xs font-extrabold">🇪🇸 Spanish for English Speakers</span>
+                <h3 class="text-3xl font-extrabold leading-tight">Learn Spanish without the stress!</h3>
+                <p class="text-sm opacity-80 font-medium">5-minute playful lessons, smart flashcards, and stress-free AI chat.</p>
+              </div>
+
+              <div class="px-7 space-y-3 z-10">
+                <button onclick="showToast('Navigating to Sign Up...')" class="lb-btn lb-btn-primary w-full">Get Started — Sign Up</button>
+                <button onclick="showToast('Navigating to Log In...')" class="lb-btn lb-btn-secondary w-full">I Already Have an Account</button>
+              </div>
+
+              <!-- Bottom Mascot Peek -->
+              <div class="w-full h-36 bg-[#B2EE05] border-t-2 border-[#0A1038] rounded-t-[40px] flex items-center justify-center pt-2">
+                <div id="welcome-mascot"></div>
+              </div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">02. Welcome Screen</div>
+              <p class="text-[#4A5178] mt-0.5">Introduces Pip mascot with welcoming copy and clear primary/secondary CTAs. Tap either button to test interactive response.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: SIGN UP -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame !bg-[#B2EE05] !text-[#0A1038] p-6 justify-between">
+              <div class="flex items-center justify-between pt-4">
+                <button class="w-11 h-11 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] font-extrabold flex items-center justify-center" aria-label="Back">←</button>
+                <span class="text-xs font-extrabold uppercase tracking-wider bg-[#FFF9E5] px-3 py-1 rounded-full border-2 border-[#0A1038]">Step 1 of 3</span>
+              </div>
+
+              <div class="flex flex-col items-center text-center">
+                <div id="signup-mascot"></div>
+                <h3 class="text-2xl font-extrabold mt-2">Create your profile</h3>
+                <p class="text-xs font-bold opacity-80">Save your streak & XP across devices</p>
+              </div>
+
+              <div class="space-y-3">
+                <div>
+                  <label class="text-xs font-extrabold block mb-1">Your Name</label>
+                  <input type="text" class="lb-input !bg-[#FFF9E5] !text-[#0A1038] !border-[#0A1038]" value="Alex Rivera" />
+                </div>
+                <div>
+                  <label class="text-xs font-extrabold block mb-1">Email</label>
+                  <input type="email" class="lb-input !bg-[#FFF9E5] !text-[#0A1038] !border-[#0A1038]" value="alex.rivera@email.com" />
+                </div>
+                <div>
+                  <label class="text-xs font-extrabold block mb-1">Password</label>
+                  <input type="password" class="lb-input !bg-[#FFF9E5] !text-[#0A1038] !border-[#0A1038]" value="••••••••••" />
+                </div>
+
+                <button onclick="showToast('Account created! Let’s pick your goal.')" class="lb-btn !bg-[#0A1038] !text-[#FFF9E5] !border-[#0A1038] w-full mt-1">Create Account</button>
+
+                <div class="flex items-center gap-2 py-1">
+                  <div class="h-0.5 flex-1 bg-[#0A1038]/25"></div>
+                  <span class="text-xs font-extrabold">OR</span>
+                  <div class="h-0.5 flex-1 bg-[#0A1038]/25"></div>
+                </div>
+
+                <button onclick="showToast('Google OAuth triggered')" class="lb-btn !bg-[#FFF9E5] !text-[#0A1038] !border-[#0A1038] w-full">
+                  <span class="w-5 h-5 rounded-full bg-[#F4695F] text-white text-xs font-extrabold flex items-center justify-center">G</span>
+                  Continue with Google
+                </button>
+              </div>
+
+              <p class="text-center text-xs font-bold">Already have an account? <span class="underline font-extrabold">Log In</span></p>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">03. Sign Up Screen</div>
+              <p class="text-[#4A5178] mt-0.5">Collects name, email, and password with high-contrast Warm Cream inputs on Lime canvas, plus 1-tap Google OAuth.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 4: LOG IN & FORGOT PASSWORD -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-6 justify-between">
+              <div class="pt-4 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase tracking-wider opacity-70">Auth State Switcher</span>
+                  <div class="flex gap-1 bg-[var(--app-surface-alt)] p-1 rounded-xl border border-[var(--app-border)]">
+                    <button onclick="setAuthSubState('login')" id="auth-btn-login" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-[#0A1038] text-[#FFF9E5]">Log In</button>
+                    <button onclick="setAuthSubState('forgot')" id="auth-btn-forgot" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold">Forgot</button>
+                    <button onclick="setAuthSubState('sent')" id="auth-btn-sent" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold">Sent</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Substate: Log In -->
+              <div id="auth-sub-login" class="space-y-4 my-auto">
+                <div class="space-y-1">
+                  <h3 class="text-3xl font-extrabold">Welcome back!</h3>
+                  <p class="text-sm opacity-75 font-medium">Pip kept your 14-day streak warm.</p>
+                </div>
+                <div class="space-y-3">
+                  <div>
+                    <label class="text-xs font-extrabold block mb-1">Email</label>
+                    <input type="email" class="lb-input" value="alex.rivera@email.com" />
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-1">
+                      <label class="text-xs font-extrabold">Password</label>
+                      <button onclick="setAuthSubState('forgot')" class="text-xs font-extrabold text-[#8A9BFF] underline">Forgot password?</button>
+                    </div>
+                    <input type="password" class="lb-input" value="••••••••••" />
+                  </div>
+                </div>
+                <button onclick="showToast('Logged in!')" class="lb-btn lb-btn-lime w-full">Log In</button>
+                <button class="lb-btn lb-btn-secondary w-full">Continue with Google</button>
+              </div>
+
+              <!-- Substate: Forgot Password -->
+              <div id="auth-sub-forgot" class="hidden space-y-4 my-auto">
+                <div class="w-14 h-14 rounded-2xl bg-[#8A9BFF]/30 border-2 border-[var(--app-border)] flex items-center justify-center text-2xl">🔑</div>
+                <h3 class="text-2xl font-extrabold">Reset password</h3>
+                <p class="text-sm opacity-80">Enter your email and we’ll send a magic reset link right away.</p>
+                <div>
+                  <label class="text-xs font-extrabold block mb-1">Account Email</label>
+                  <input type="email" class="lb-input" value="alex.rivera@email.com" />
+                </div>
+                <button onclick="setAuthSubState('sent')" class="lb-btn lb-btn-primary w-full">Send Reset Link</button>
+                <button onclick="setAuthSubState('login')" class="lb-btn lb-btn-ghost w-full">Back to Log In</button>
+              </div>
+
+              <!-- Substate: Email Sent -->
+              <div id="auth-sub-sent" class="hidden space-y-4 my-auto text-center items-center flex flex-col">
+                <div class="w-20 h-20 rounded-full bg-[#3DBE6B] border-2 border-[#0A1038] flex items-center justify-center text-3xl text-[#0A1038]">✉️</div>
+                <h3 class="text-2xl font-extrabold">Check your inbox!</h3>
+                <p class="text-sm opacity-80 max-w-xs">We sent a password reset link to <strong class="font-extrabold">alex.rivera@email.com</strong>.</p>
+                <button onclick="setAuthSubState('login')" class="lb-btn lb-btn-lime w-full mt-2">Return to Log In</button>
+              </div>
+
+              <div class="h-4"></div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">04. Log In, Forgot Password & Email Sent</div>
+              <p class="text-[#4A5178] mt-0.5">Interactive 3-state auth flow: toggle between Log In, Forgot Password, and Email Sent confirmation inside the frame.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 5: ONBOARDING -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-6 justify-between">
+              <!-- Top Progress Dots -->
+              <div class="pt-4 flex items-center justify-between">
+                <button onclick="setOnboardStep(1)" class="w-11 h-11 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center" aria-label="Previous step">←</button>
+                <div class="flex items-center gap-2">
+                  <span id="ob-dot-1" class="w-8 h-3 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] transition-all"></span>
+                  <span id="ob-dot-2" class="w-3 h-3 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] transition-all"></span>
+                </div>
+                <span class="text-xs font-extrabold opacity-70" id="ob-step-label">1 / 2</span>
+              </div>
+
+              <!-- Step 1: Choose Language -->
+              <div id="ob-step-1" class="space-y-4 my-auto">
+                <div class="flex items-center gap-3">
+                  <div id="onboard-mascot"></div>
+                  <div class="lb-card p-3 rounded-2xl text-xs font-bold">
+                    “¡Hola! Which language do you want to learn first?”
+                  </div>
+                </div>
+                <div class="space-y-2.5">
+                  <div onclick="selectOnboardLang(this)" class="ob-lang-card p-4 rounded-2xl border-2 border-[#0A1038] bg-[#B2EE05] text-[#0A1038] flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-3">
+                      <span class="text-2xl">🇪🇸</span>
+                      <div>
+                        <div class="font-extrabold text-base">Spanish</div>
+                        <div class="text-xs font-bold opacity-80">420k active learners</div>
+                      </div>
+                    </div>
+                    <span class="w-6 h-6 rounded-full bg-[#0A1038] text-[#FFF9E5] text-xs flex items-center justify-center font-extrabold">✓</span>
+                  </div>
+                  <div onclick="selectOnboardLang(this)" class="ob-lang-card p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-3">
+                      <span class="text-2xl">🇫🇷</span>
+                      <div>
+                        <div class="font-extrabold text-base">French</div>
+                        <div class="text-xs opacity-70">Coming soon</div>
+                      </div>
+                    </div>
+                    <span class="w-6 h-6 rounded-full border-2 border-[var(--app-border)]"></span>
+                  </div>
+                  <div onclick="selectOnboardLang(this)" class="ob-lang-card p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-3">
+                      <span class="text-2xl">🇯🇵</span>
+                      <div>
+                        <div class="font-extrabold text-base">Japanese</div>
+                        <div class="text-xs opacity-70">Coming soon</div>
+                      </div>
+                    </div>
+                    <span class="w-6 h-6 rounded-full border-2 border-[var(--app-border)]"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Choose Daily Goal -->
+              <div id="ob-step-2" class="hidden space-y-4 my-auto">
+                <h3 class="text-2xl font-extrabold">Pick a daily goal</h3>
+                <p class="text-sm opacity-80">Short daily habits beat long cram sessions.</p>
+                <div class="space-y-3">
+                  <div onclick="selectGoalCard(this)" class="goal-card p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] flex items-center justify-between cursor-pointer">
+                    <div>
+                      <div class="font-extrabold text-base">5 min / day</div>
+                      <div class="text-xs opacity-75">Casual • 1 lesson a day</div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-[var(--app-surface-alt)] text-xs font-extrabold">Relaxed</span>
+                  </div>
+                  <div onclick="selectGoalCard(this)" class="goal-card p-4 rounded-2xl border-2 border-[#0A1038] bg-[#B2EE05] text-[#0A1038] flex items-center justify-between cursor-pointer">
+                    <div>
+                      <div class="font-extrabold text-base">10 min / day</div>
+                      <div class="text-xs font-bold opacity-85">Regular • Recommended</div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-[#0A1038] text-[#FFF9E5] text-xs font-extrabold">Popular</span>
+                  </div>
+                  <div onclick="selectGoalCard(this)" class="goal-card p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] flex items-center justify-between cursor-pointer">
+                    <div>
+                      <div class="font-extrabold text-base">15 min / day</div>
+                      <div class="text-xs opacity-75">Serious • Fast fluency</div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-[var(--app-surface-alt)] text-xs font-extrabold">Intense</span>
+                  </div>
+                </div>
+              </div>
+
+              <button id="ob-next-btn" onclick="advanceOnboarding()" class="lb-btn lb-btn-primary w-full">Continue</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">05. Onboarding (Language & Daily Goal)</div>
+              <p class="text-[#4A5178] mt-0.5">Two-step setup with animated progress pills. Tap Continue to switch between Language Selection and 5/10/15-min Daily Goal.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- =============================================================== -->
+      <!-- FLOW B: CORE LEARNING & LESSON TYPES                            -->
+      <!-- =============================================================== -->
+      <div class="flow-group space-y-6" data-group="flow-b">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-xs font-extrabold text-[#0A1038]">FLOW B</span>
+          <h2 class="text-xl font-extrabold text-[#0A1038]">Home Path, 6 Interactive Lesson Types, Feedback Sheets & Celebrations</h2>
+        </div>
+
+        <div class="flex flex-wrap gap-8 justify-center xl:justify-start">
+
+          <!-- SCREEN 6: HOME / LEARN TAB -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame justify-between">
+              <!-- Top Stats Bar -->
+              <div class="px-5 pt-5 pb-3 border-b-2 border-[var(--app-border)] bg-[var(--app-surface)] flex items-center justify-between">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFF9E5] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold">
+                  <span>🇪🇸</span> <span>ES</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="px-3 py-1.5 rounded-full bg-[#FF9F1C] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold">🔥 14</span>
+                  <span class="px-3 py-1.5 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold">⚡ 1,240</span>
+                  <span class="px-3 py-1.5 rounded-full bg-[#F4695F] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold">❤️ 5</span>
+                </div>
+              </div>
+
+              <div class="phone-scroll px-5 py-4 space-y-5">
+                <!-- Daily Goal Ring Card -->
+                <div class="lb-card p-4 flex items-center justify-between">
+                  <div class="space-y-1">
+                    <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#8A9BFF]">Daily Goal</span>
+                    <div class="text-base font-extrabold">7 / 10 mins today</div>
+                    <p class="text-xs opacity-75">1 more lesson to extend your streak!</p>
+                  </div>
+                  <!-- SVG Progress Ring -->
+                  <div class="relative w-16 h-16 flex items-center justify-center">
+                    <svg class="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                      <circle cx="32" cy="32" r="26" stroke="var(--app-surface-alt)" stroke-width="7" fill="none"/>
+                      <circle cx="32" cy="32" r="26" stroke="#B2EE05" stroke-width="7" stroke-dasharray="163" stroke-dashoffset="49" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    <span class="absolute text-xs font-extrabold">70%</span>
+                  </div>
+                </div>
+
+                <!-- Unit 1 Header -->
+                <div class="p-4 rounded-3xl bg-[#8A9BFF] text-[#0A1038] border-2 border-[#0A1038] flex items-center justify-between">
+                  <div>
+                    <div class="text-[11px] font-extrabold uppercase tracking-wider">Unit 1 • Basics</div>
+                    <div class="text-lg font-extrabold">Greetings & Café</div>
+                  </div>
+                  <span class="px-3 py-1.5 rounded-xl bg-[#FFF9E5] border-2 border-[#0A1038] text-xs font-extrabold">Guide</span>
+                </div>
+
+                <!-- Winding Lesson Path -->
+                <div class="flex flex-col items-center space-y-5 py-2 relative">
+                  <!-- Node 1: Completed -->
+                  <div class="flex flex-col items-center -translate-x-8">
+                    <button onclick="showToast('Lesson 1: Completed (3/3 Stars)')" class="w-16 h-16 rounded-full bg-[#3DBE6B] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-xl flex items-center justify-center active:scale-95 transition">✓</button>
+                    <span class="text-xs font-extrabold mt-1">Say Hello ⭐⭐⭐</span>
+                  </div>
+
+                  <!-- Node 2: Completed -->
+                  <div class="flex flex-col items-center translate-x-10">
+                    <button onclick="showToast('Lesson 2: Completed (3/3 Stars)')" class="w-16 h-16 rounded-full bg-[#3DBE6B] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-xl flex items-center justify-center active:scale-95 transition">✓</button>
+                    <span class="text-xs font-extrabold mt-1">Polite Words ⭐⭐⭐</span>
+                  </div>
+
+                  <!-- Node 3: Available / Current -->
+                  <div class="flex flex-col items-center -translate-x-4 relative">
+                    <span class="px-2.5 py-0.5 rounded-full bg-[#0A1038] text-[#B2EE05] text-[10px] font-extrabold uppercase mb-1">Start Here</span>
+                    <button onclick="showToast('Starting Lesson 3: Ordering Coffee!')" class="w-20 h-20 rounded-full bg-[#B2EE05] border-4 border-[#0A1038] text-[#0A1038] font-extrabold text-2xl flex items-center justify-center active:scale-95 transition">☕</button>
+                    <span class="text-xs font-extrabold mt-1">Ordering Coffee</span>
+                  </div>
+
+                  <!-- Node 4: Locked -->
+                  <div class="flex flex-col items-center translate-x-12 opacity-60">
+                    <div class="w-16 h-16 rounded-full bg-[var(--app-disabled-bg)] border-2 border-[var(--app-border)] flex items-center justify-center text-lg">🔒</div>
+                    <span class="text-xs font-bold mt-1">Numbers 1–10</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Nav -->
+              <div class="px-4 py-2.5 bg-[var(--app-surface)] border-t-2 border-[var(--app-border)] flex justify-around text-xs font-extrabold">
+                <span class="px-3.5 py-2 rounded-2xl bg-[#B2EE05] text-[#0A1038] border-2 border-[#0A1038]">🏠 Learn</span>
+                <span class="px-3.5 py-2 opacity-65">🗂️ Review</span>
+                <span class="px-3.5 py-2 opacity-65">💬 Chat</span>
+                <span class="px-3.5 py-2 opacity-65">👤 Profile</span>
+              </div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">06. Home / Learn Tab</div>
+              <p class="text-[#4A5178] mt-0.5">Features streak/XP pills, daily goal ring, Unit 1 banner, and winding path nodes (completed with stars, active lime CTA, locked).</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 7a: LESSON - MULTIPLE CHOICE -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-5 justify-between">
+              <!-- Lesson Top Chrome -->
+              <div class="pt-3 flex items-center gap-3">
+                <button onclick="showToast('Quit Lesson dialog triggered')" class="w-10 h-10 rounded-xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center" aria-label="Close lesson">✕</button>
+                <div class="flex-1 h-3.5 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] overflow-hidden">
+                  <div class="w-1/3 h-full bg-[#B2EE05]"></div>
+                </div>
+                <span class="text-xs font-extrabold text-[#F4695F]">❤️ 5</span>
+              </div>
+
+              <div class="space-y-4 my-auto">
+                <span class="px-3 py-1 rounded-full bg-[#8A9BFF]/25 border border-[var(--app-border)] text-xs font-extrabold">Select the correct translation</span>
+                <div class="lb-card p-4 flex items-center gap-3">
+                  <button onclick="showToast('Playing audio: Buenos días')" class="w-12 h-12 rounded-2xl bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] flex items-center justify-center text-lg font-extrabold shrink-0" aria-label="Play audio">🔊</button>
+                  <div>
+                    <div class="text-xl font-extrabold">“Buenos días”</div>
+                    <div class="text-xs opacity-70">Tap speaker to listen</div>
+                  </div>
+                </div>
+
+                <div id="mc-options" class="space-y-2.5">
+                  <button onclick="selectMcOption(this, false)" class="mc-opt w-full p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] text-left font-extrabold text-sm flex justify-between items-center">
+                    <span>Good night</span>
+                    <span class="w-6 h-6 rounded-full border-2 border-[var(--app-border)] text-xs flex items-center justify-center">1</span>
+                  </button>
+                  <button onclick="selectMcOption(this, true)" class="mc-opt w-full p-4 rounded-2xl border-2 border-[#0A1038] bg-[#8A9BFF]/30 text-left font-extrabold text-sm flex justify-between items-center">
+                    <span>Good morning</span>
+                    <span class="w-6 h-6 rounded-full bg-[#0A1038] text-[#FFF9E5] text-xs flex items-center justify-center">2</span>
+                  </button>
+                  <button onclick="selectMcOption(this, false)" class="mc-opt w-full p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] text-left font-extrabold text-sm flex justify-between items-center">
+                    <span>See you tomorrow</span>
+                    <span class="w-6 h-6 rounded-full border-2 border-[var(--app-border)] text-xs flex items-center justify-center">3</span>
+                  </button>
+                </div>
+              </div>
+
+              <button onclick="checkMcDemo()" id="mc-check-btn" class="lb-btn lb-btn-lime w-full">Check Answer</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">07a. Lesson: Multiple Choice</div>
+              <p class="text-[#4A5178] mt-0.5">Standard lesson chrome (close, progress bar, hearts) with audio prompt card and interactive answer cards. Tap Check Answer to validate.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 7b: LESSON - MATCH PAIRS -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-5 justify-between">
+              <div class="pt-3 flex items-center gap-3">
+                <button class="w-10 h-10 rounded-xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center">✕</button>
+                <div class="flex-1 h-3.5 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] overflow-hidden">
+                  <div class="w-1/2 h-full bg-[#B2EE05]"></div>
+                </div>
+                <span class="text-xs font-extrabold text-[#F4695F]">❤️ 5</span>
+              </div>
+
+              <div class="space-y-4 my-auto">
+                <h3 class="text-xl font-extrabold">Tap the matching pairs</h3>
+                <div class="grid grid-cols-2 gap-3" id="match-pairs-grid">
+                  <!-- Left Column (Spanish) -->
+                  <div class="space-y-2.5">
+                    <button class="w-full p-3.5 rounded-2xl border-2 border-[#0A1038] bg-[#3DBE6B]/30 text-sm font-extrabold opacity-60 line-through">El agua ✓</button>
+                    <button onclick="showToast('Selected: El pan')" class="w-full p-3.5 rounded-2xl border-2 border-[#0A1038] bg-[#8A9BFF]/35 text-sm font-extrabold">El pan</button>
+                    <button class="w-full p-3.5 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] text-sm font-extrabold">La leche</button>
+                    <button class="w-full p-3.5 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] text-sm font-extrabold">Gracias</button>
+                  </div>
+                  <!-- Right Column (English) -->
+                  <div class="space-y-2.5">
+                    <button class="w-full p-3.5 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] text-sm font-extrabold">Thank you</button>
+                    <button class="w-full p-3.5 rounded-2xl border-2 border-[#0A1038] bg-[#3DBE6B]/30 text-sm font-extrabold opacity-60 line-through">Water ✓</button>
+                    <button onclick="showToast('Matched: El pan = Bread!')" class="w-full p-3.5 rounded-2xl border-2 border-[#0A1038] bg-[#B2EE05] text-[#0A1038] text-sm font-extrabold">Bread</button>
+                    <button class="w-full p-3.5 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] text-sm font-extrabold">Milk</button>
+                  </div>
+                </div>
+              </div>
+
+              <button class="lb-btn lb-btn-primary w-full">Continue</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">07b. Lesson: Match Pairs</div>
+              <p class="text-[#4A5178] mt-0.5">Two-column tap-to-match grid showing completed green strikethrough state, active periwinkle selection, and tactile 48dp+ cards.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 7c: LESSON - FILL IN THE BLANK -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-5 justify-between">
+              <div class="pt-3 flex items-center gap-3">
+                <button class="w-10 h-10 rounded-xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center">✕</button>
+                <div class="flex-1 h-3.5 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] overflow-hidden">
+                  <div class="w-2/3 h-full bg-[#B2EE05]"></div>
+                </div>
+                <span class="text-xs font-extrabold text-[#F4695F]">❤️ 5</span>
+              </div>
+
+              <div class="space-y-5 my-auto">
+                <h3 class="text-xl font-extrabold">Complete the sentence</h3>
+                <p class="text-xs font-bold opacity-75">“I would like a coffee, please.”</p>
+
+                <!-- Sentence Card with Slot -->
+                <div class="lb-card p-5 text-lg font-extrabold leading-relaxed flex flex-wrap items-center gap-2">
+                  <span>Yo</span>
+                  <span id="blank-slot" class="px-4 py-1 rounded-xl bg-[#B2EE05] text-[#0A1038] border-2 border-[#0A1038] min-w-[90px] text-center">quiero</span>
+                  <span>un café, por favor.</span>
+                </div>
+
+                <!-- Word Bank Chips -->
+                <div class="flex flex-wrap gap-2.5 justify-center pt-2">
+                  <button onclick="document.getElementById('blank-slot').textContent='quiero'" class="lb-chip bg-[#B2EE05] text-[#0A1038]">quiero</button>
+                  <button onclick="document.getElementById('blank-slot').textContent='tengo'" class="lb-chip bg-[var(--app-surface)]">tengo</button>
+                  <button onclick="document.getElementById('blank-slot').textContent='eres'" class="lb-chip bg-[var(--app-surface)]">eres</button>
+                  <button onclick="document.getElementById('blank-slot').textContent='somos'" class="lb-chip bg-[var(--app-surface)]">somos</button>
+                </div>
+              </div>
+
+              <button onclick="showToast('Correct! Yo quiero un café.')" class="lb-btn lb-btn-lime w-full">Check</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">07c. Lesson: Fill in the Blank</div>
+              <p class="text-[#4A5178] mt-0.5">Cloze sentence card with highlighted target slot and interactive pill word-bank chips below. Tap any word chip to swap the slot.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 7d: LESSON - TYPE THE TRANSLATION -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-5 justify-between">
+              <div class="pt-3 flex items-center gap-3">
+                <button class="w-10 h-10 rounded-xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center">✕</button>
+                <div class="flex-1 h-3.5 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] overflow-hidden">
+                  <div class="w-3/4 h-full bg-[#B2EE05]"></div>
+                </div>
+                <span class="text-xs font-extrabold text-[#F4695F]">❤️ 5</span>
+              </div>
+
+              <div class="space-y-4 my-auto">
+                <h3 class="text-xl font-extrabold">Write this in Spanish</h3>
+                <div class="lb-card p-4 flex items-center gap-3">
+                  <div id="type-mascot"></div>
+                  <div class="text-base font-extrabold">“Where is the train station?”</div>
+                </div>
+
+                <textarea id="spanish-textarea" rows="3" class="lb-input font-semibold" placeholder="Type in Spanish...">¿Dónde está la estación de tren?</textarea>
+
+                <!-- Spanish Accent Helper Bar -->
+                <div class="flex gap-1.5 justify-between">
+                  <button onclick="appendAccent('á')" class="flex-1 py-2 rounded-xl bg-[var(--app-surface)] border-2 border-[var(--app-border)] font-extrabold text-sm">á</button>
+                  <button onclick="appendAccent('é')" class="flex-1 py-2 rounded-xl bg-[var(--app-surface)] border-2 border-[var(--app-border)] font-extrabold text-sm">é</button>
+                  <button onclick="appendAccent('í')" class="flex-1 py-2 rounded-xl bg-[var(--app-surface)] border-2 border-[var(--app-border)] font-extrabold text-sm">í</button>
+                  <button onclick="appendAccent('ó')" class="flex-1 py-2 rounded-xl bg-[var(--app-surface)] border-2 border-[var(--app-border)] font-extrabold text-sm">ó</button>
+                  <button onclick="appendAccent('ú')" class="flex-1 py-2 rounded-xl bg-[var(--app-surface)] border-2 border-[var(--app-border)] font-extrabold text-sm">ú</button>
+                  <button onclick="appendAccent('ñ')" class="flex-1 py-2 rounded-xl bg-[var(--app-surface)] border-2 border-[var(--app-border)] font-extrabold text-sm">ñ</button>
+                  <button onclick="appendAccent('¿')" class="flex-1 py-2 rounded-xl bg-[var(--app-surface)] border-2 border-[var(--app-border)] font-extrabold text-sm">¿</button>
+                </div>
+              </div>
+
+              <button onclick="showToast('Great spelling! Accent marks spot on.')" class="lb-btn lb-btn-lime w-full">Check</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">07d. Lesson: Type Translation</div>
+              <p class="text-[#4A5178] mt-0.5">Free-text translation input paired with quick-insert Spanish diacritic keys (á, é, í, ó, ú, ñ, ¿) above the keyboard.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 7e: LESSON - LISTENING -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-5 justify-between">
+              <div class="pt-3 flex items-center gap-3">
+                <button class="w-10 h-10 rounded-xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center">✕</button>
+                <div class="flex-1 h-3.5 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] overflow-hidden">
+                  <div class="w-5/6 h-full bg-[#B2EE05]"></div>
+                </div>
+                <span class="text-xs font-extrabold text-[#F4695F]">❤️ 5</span>
+              </div>
+
+              <div class="space-y-4 my-auto">
+                <h3 class="text-xl font-extrabold">Tap what you hear</h3>
+
+                <!-- Audio Control Card -->
+                <div class="lb-card p-5 flex items-center justify-center gap-4">
+                  <button onclick="showToast('Playing normal speed (1.0x)')" class="w-16 h-16 rounded-2xl bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-2xl font-extrabold flex items-center justify-center active:scale-95 transition" aria-label="Play audio normal speed">🔊</button>
+                  <button onclick="showToast('Playing slow speed (0.6x)')" class="px-4 h-16 rounded-2xl bg-[#8A9BFF] border-2 border-[#0A1038] text-[#0A1038] text-sm font-extrabold flex items-center gap-1.5 active:scale-95 transition" aria-label="Play audio slow speed">🐢 <span>0.6x</span></button>
+                </div>
+
+                <!-- Built Sentence Box -->
+                <div class="min-h-[64px] p-3.5 rounded-2xl border-2 border-dashed border-[var(--app-border)] bg-[var(--app-surface-alt)] flex flex-wrap gap-2 items-center">
+                  <span class="lb-chip bg-[#B2EE05] text-[#0A1038]">La cuenta</span>
+                  <span class="lb-chip bg-[#B2EE05] text-[#0A1038]">por favor</span>
+                </div>
+
+                <!-- Word Chips -->
+                <div class="flex flex-wrap gap-2 justify-center">
+                  <span class="lb-chip bg-[var(--app-surface)]">el menú</span>
+                  <span class="lb-chip bg-[var(--app-surface)]">mucho gusto</span>
+                  <span class="lb-chip bg-[var(--app-surface)]">buenas</span>
+                </div>
+              </div>
+
+              <button class="lb-btn lb-btn-lime w-full">Check</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">07e. Lesson: Listening Comprehension</div>
+              <p class="text-[#4A5178] mt-0.5">Features a large 1.0x speaker CTA alongside a 0.6x turtle slow-playback button and tap-to-assemble word chips.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 7f: LESSON - SPEAKING -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-5 justify-between">
+              <div class="pt-3 flex items-center gap-3">
+                <button class="w-10 h-10 rounded-xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center">✕</button>
+                <div class="flex-1 h-3.5 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] overflow-hidden">
+                  <div class="w-11/12 h-full bg-[#B2EE05]"></div>
+                </div>
+                <span class="text-xs font-extrabold text-[#F4695F]">❤️ 5</span>
+              </div>
+
+              <div class="space-y-4 my-auto text-center">
+                <span class="px-3 py-1 rounded-full bg-[#8A9BFF]/25 border border-[var(--app-border)] text-xs font-extrabold">Speak this phrase aloud</span>
+                <div class="lb-card p-5 space-y-1">
+                  <div class="text-xl font-extrabold">“Me gustaría pagar con tarjeta.”</div>
+                  <div class="text-xs opacity-70">I would like to pay by card.</div>
+                </div>
+
+                <!-- Interactive Mic Button + States -->
+                <div class="py-4 flex flex-col items-center space-y-3">
+                  <div class="relative">
+                    <button id="speak-mic-btn" onclick="cycleSpeakState()" class="w-24 h-24 rounded-full bg-[#B2EE05] border-4 border-[#0A1038] text-[#0A1038] text-3xl font-extrabold flex items-center justify-center relative z-10 active:scale-95 transition" aria-label="Tap to record voice">
+                      🎙️
+                    </button>
+                  </div>
+                  <div id="speak-status-label" class="text-xs font-extrabold">Tap mic to record (or cycle states)</div>
+                </div>
+
+                <!-- Pronunciation Score Card -->
+                <div id="speak-score-card" class="p-3.5 rounded-2xl bg-[#3DBE6B]/25 border-2 border-[#0A1038] flex items-center justify-between">
+                  <span class="text-xs font-extrabold">Pronunciation Match</span>
+                  <span class="px-3 py-1 rounded-full bg-[#3DBE6B] text-[#0A1038] border border-[#0A1038] text-xs font-extrabold">94% Great!</span>
+                </div>
+              </div>
+
+              <button class="lb-btn lb-btn-lime w-full">Continue</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">07f. Lesson: Speaking & Pronunciation</div>
+              <p class="text-[#4A5178] mt-0.5">Tap the microphone to toggle between Idle, Live Recording pulse, and 94% Pronunciation Score feedback pill.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 8: ANSWER FEEDBACK SHEETS & QUIT DIALOG -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-4 justify-between relative">
+              <div class="pt-2 flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase opacity-70">Overlay States</span>
+                <div class="flex gap-1 bg-[var(--app-surface-alt)] p-1 rounded-xl border border-[var(--app-border)]">
+                  <button onclick="setFeedbackOverlay('correct')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold bg-[#3DBE6B] text-[#0A1038]">Correct</button>
+                  <button onclick="setFeedbackOverlay('wrong')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold bg-[#F4695F] text-[#0A1038]">Wrong</button>
+                  <button onclick="setFeedbackOverlay('quit')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold bg-[#0A1038] text-[#FFF9E5]">Quit Modal</button>
+                </div>
+              </div>
+
+              <!-- Background dimmed lesson context -->
+              <div class="lb-card p-4 opacity-40 my-auto">
+                <div class="text-sm font-extrabold">Translate: “La manzana roja”</div>
+                <div class="mt-2 p-3 rounded-xl border border-[var(--app-border)] text-xs">The red apple</div>
+              </div>
+
+              <!-- Sheet 1: Correct Bottom Sheet -->
+              <div id="fb-sheet-correct" class="rounded-t-3xl rounded-b-2xl bg-[#3DBE6B] text-[#0A1038] border-2 border-[#0A1038] p-5 space-y-3 animate-pop">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-[#0A1038] text-[#B2EE05] flex items-center justify-center font-extrabold">✓</span>
+                    <span class="text-lg font-extrabold">¡Excelente! Spot on.</span>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-[#FFF9E5] border border-[#0A1038] text-xs font-extrabold">+10 XP</span>
+                </div>
+                <p class="text-xs font-bold">Meaning: “The red apple”</p>
+                <button class="lb-btn !bg-[#0A1038] !text-[#FFF9E5] w-full">Continue</button>
+              </div>
+
+              <!-- Sheet 2: Wrong Bottom Sheet -->
+              <div id="fb-sheet-wrong" class="hidden rounded-t-3xl rounded-b-2xl bg-[#F4695F] text-[#0A1038] border-2 border-[#0A1038] p-5 space-y-3 animate-pop">
+                <div class="flex items-center gap-2">
+                  <span class="w-8 h-8 rounded-full bg-[#0A1038] text-[#F4695F] flex items-center justify-center font-extrabold">✕</span>
+                  <span class="text-lg font-extrabold">Not quite — keep going!</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038]">
+                  <div class="text-[11px] font-extrabold uppercase text-[#4A5178]">Correct Answer:</div>
+                  <div class="text-sm font-extrabold text-[#0A1038]">The red apple</div>
+                </div>
+                <button class="lb-btn !bg-[#0A1038] !text-[#FFF9E5] w-full">Got It</button>
+              </div>
+
+              <!-- Dialog 3: Quit Lesson Modal -->
+              <div id="fb-sheet-quit" class="hidden lb-card p-5 space-y-4 text-center animate-pop">
+                <div id="quit-mascot" class="flex justify-center"></div>
+                <h4 class="text-lg font-extrabold">Wait — leave lesson?</h4>
+                <p class="text-xs opacity-80">You’re 80% done! Progress from this lesson won’t be saved.</p>
+                <div class="space-y-2">
+                  <button onclick="setFeedbackOverlay('correct')" class="lb-btn lb-btn-lime w-full">Keep Learning</button>
+                  <button class="lb-btn lb-btn-ghost text-[#F4695F] w-full">Quit Lesson</button>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">08. Feedback Bottom Sheets & Quit Dialog</div>
+              <p class="text-[#4A5178] mt-0.5">Use the top pills to toggle between the Success Green sheet, Coral correction sheet, and encouraging Quit Confirmation modal.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 9: LESSON RESULTS & STREAK CELEBRATION -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-6 justify-between text-center relative">
+              <div class="w-32 h-32 rounded-full bg-[#8A9BFF]/30 border-2 border-[var(--app-border)] absolute -top-10 -right-10"></div>
+
+              <div class="pt-4 space-y-2 z-10">
+                <div id="results-mascot" class="flex justify-center"></div>
+                <span class="inline-block px-3 py-1 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold">Lesson Complete!</span>
+                <h3 class="text-3xl font-extrabold">¡Fantástico, Alex!</h3>
+              </div>
+
+              <!-- Metrics Row -->
+              <div class="grid grid-cols-2 gap-3 z-10">
+                <div class="lb-card p-4 bg-[#B2EE05] text-[#0A1038]">
+                  <div class="text-xs font-extrabold uppercase">Total XP</div>
+                  <div class="text-2xl font-extrabold mt-1">⚡ +25 XP</div>
+                </div>
+                <div class="lb-card p-4">
+                  <div class="text-xs font-extrabold uppercase opacity-70">Accuracy</div>
+                  <div class="text-2xl font-extrabold mt-1 text-[#3DBE6B]">🎯 92%</div>
+                </div>
+              </div>
+
+              <!-- Daily Goal & Streak Extended Card -->
+              <div class="lb-card p-4 space-y-3 text-left z-10">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-2xl animate-flame">🔥</span>
+                    <div>
+                      <div class="text-sm font-extrabold">15-Day Streak Extended!</div>
+                      <div class="text-xs opacity-75">Daily Goal Reached (10/10 mins)</div>
+                    </div>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-[#3DBE6B] text-[#0A1038] border border-[#0A1038] text-xs font-extrabold">Done</span>
+                </div>
+                <div class="flex justify-between pt-1">
+                  <span class="w-8 h-8 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold flex items-center justify-center">M</span>
+                  <span class="w-8 h-8 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold flex items-center justify-center">T</span>
+                  <span class="w-8 h-8 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold flex items-center justify-center">W</span>
+                  <span class="w-8 h-8 rounded-full bg-[#FF9F1C] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold flex items-center justify-center">T</span>
+                  <span class="w-8 h-8 rounded-full bg-[var(--app-surface-alt)] border border-[var(--app-border)] text-xs font-bold flex items-center justify-center">F</span>
+                  <span class="w-8 h-8 rounded-full bg-[var(--app-surface-alt)] border border-[var(--app-border)] text-xs font-bold flex items-center justify-center">S</span>
+                  <span class="w-8 h-8 rounded-full bg-[var(--app-surface-alt)] border border-[var(--app-border)] text-xs font-bold flex items-center justify-center">S</span>
+                </div>
+              </div>
+
+              <button class="lb-btn lb-btn-primary w-full z-10">Claim XP & Continue</button>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">09. Lesson Results, Goal & Streak Celebration</div>
+              <p class="text-[#4A5178] mt-0.5">Combines celebratory Pip mascot, XP & accuracy cards, Daily Goal completion badge, and weekly streak tracker.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- =============================================================== -->
+      <!-- FLOW C: REVIEW & AI CHAT                                        -->
+      <!-- =============================================================== -->
+      <div class="flow-group space-y-6" data-group="flow-c">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-xs font-extrabold text-[#0A1038]">FLOW C</span>
+          <h2 class="text-xl font-extrabold text-[#0A1038]">Spaced-Repetition Review & AI Conversation Tutor</h2>
+        </div>
+
+        <div class="flex flex-wrap gap-8 justify-center xl:justify-start">
+
+          <!-- SCREEN 10: REVIEW TAB (FLASHCARDS + STATES) -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame justify-between">
+              <div class="px-5 pt-5 pb-3 border-b-2 border-[var(--app-border)] bg-[var(--app-surface)] flex items-center justify-between">
+                <h3 class="text-lg font-extrabold">Smart Review</h3>
+                <div class="flex gap-1 bg-[var(--app-surface-alt)] p-1 rounded-xl border border-[var(--app-border)]">
+                  <button onclick="setReviewState('card')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold bg-[#0A1038] text-[#FFF9E5]">Card</button>
+                  <button onclick="setReviewState('summary')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold">Done</button>
+                  <button onclick="setReviewState('empty')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold">Empty</button>
+                </div>
+              </div>
+
+              <!-- Review State 1: Active Flashcard -->
+              <div id="rev-state-card" class="p-5 flex-1 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs font-extrabold">
+                  <span class="px-3 py-1 rounded-full bg-[#8A9BFF]/30 border border-[var(--app-border)]">12 Cards Due Today</span>
+                  <span>3 / 12</span>
+                </div>
+
+                <!-- Interactive 3D Flip Card -->
+                <div class="flip-scene h-72 my-3" onclick="this.querySelector('.flip-card').classList.toggle('is-flipped')">
+                  <div class="flip-card">
+                    <div class="flip-face bg-[var(--app-surface)] text-center space-y-3">
+                      <span class="px-3 py-1 rounded-full bg-[#FFF9E5] text-[#0A1038] border border-[#0A1038] text-[11px] font-extrabold">SPANISH • TAP TO FLIP</span>
+                      <div class="text-3xl font-extrabold">La cuenta</div>
+                      <button onclick="event.stopPropagation(); showToast('🔊 La cuenta')" class="w-11 h-11 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] font-extrabold">🔊</button>
+                    </div>
+                    <div class="flip-face flip-back bg-[#B2EE05] text-[#0A1038] text-center space-y-3">
+                      <span class="px-3 py-1 rounded-full bg-[#FFF9E5] border border-[#0A1038] text-[11px] font-extrabold">ENGLISH MEANING</span>
+                      <div class="text-2xl font-extrabold">The bill / check</div>
+                      <div class="p-3 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] text-xs font-bold">
+                        “¿Nos trae la cuenta, por favor?”<br/>
+                        <span class="opacity-70 font-medium">Can you bring us the bill, please?</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SRS Rating Buttons -->
+                <div class="grid grid-cols-4 gap-2">
+                  <button onclick="showToast('Rated: Again (<1m)')" class="py-3 rounded-2xl bg-[#F4695F] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-xs flex flex-col items-center">
+                    <span>Again</span><span class="text-[10px] opacity-80">1m</span>
+                  </button>
+                  <button onclick="showToast('Rated: Hard (12h)')" class="py-3 rounded-2xl bg-[#FF9F1C] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-xs flex flex-col items-center">
+                    <span>Hard</span><span class="text-[10px] opacity-80">12h</span>
+                  </button>
+                  <button onclick="showToast('Rated: Good (2d)')" class="py-3 rounded-2xl bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-xs flex flex-col items-center">
+                    <span>Good</span><span class="text-[10px] opacity-80">2d</span>
+                  </button>
+                  <button onclick="showToast('Rated: Easy (5d)')" class="py-3 rounded-2xl bg-[#3DBE6B] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-xs flex flex-col items-center">
+                    <span>Easy</span><span class="text-[10px] opacity-80">5d</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Review State 2: Session Summary -->
+              <div id="rev-state-summary" class="hidden p-6 flex-1 flex flex-col justify-center items-center text-center space-y-4">
+                <div id="review-done-mascot"></div>
+                <h4 class="text-2xl font-extrabold">Deck Cleared!</h4>
+                <p class="text-xs opacity-80">You reviewed 12 cards with 91% recall accuracy.</p>
+                <div class="lb-card p-4 w-full flex justify-around">
+                  <div><div class="text-lg font-extrabold text-[#3DBE6B]">11</div><div class="text-[11px] font-bold">Mastered</div></div>
+                  <div><div class="text-lg font-extrabold text-[#FF9F1C]">1</div><div class="text-[11px] font-bold">Review Soon</div></div>
+                </div>
+                <button onclick="setReviewState('card')" class="lb-btn lb-btn-lime w-full">Back to Cards</button>
+              </div>
+
+              <!-- Review State 3: Empty State -->
+              <div id="rev-state-empty" class="hidden p-6 flex-1 flex flex-col justify-center items-center text-center space-y-4">
+                <div id="review-empty-mascot"></div>
+                <h4 class="text-2xl font-extrabold">Nothing due right now!</h4>
+                <p class="text-xs opacity-80 max-w-xs">Pip says your memory is super fresh. Come back tomorrow or learn new words in a lesson.</p>
+                <button onclick="setReviewState('card')" class="lb-btn lb-btn-primary w-full">Practice Extra Cards</button>
+              </div>
+
+              <div class="px-4 py-2.5 bg-[var(--app-surface)] border-t-2 border-[var(--app-border)] flex justify-around text-xs font-extrabold">
+                <span class="px-3.5 py-2 opacity-65">🏠 Learn</span>
+                <span class="px-3.5 py-2 rounded-2xl bg-[#B2EE05] text-[#0A1038] border-2 border-[#0A1038]">🗂️ Review</span>
+                <span class="px-3.5 py-2 opacity-65">💬 Chat</span>
+                <span class="px-3.5 py-2 opacity-65">👤 Profile</span>
+              </div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">10. Review Tab (3D Flashcard, Summary & Empty)</div>
+              <p class="text-[#4A5178] mt-0.5">Tap the flashcard to flip between Spanish prompt and English example sentence, rate recall (Again/Hard/Good/Easy), or toggle Summary/Empty states.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 11: AI CHAT TAB -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame justify-between">
+              <div class="px-5 pt-5 pb-3 border-b-2 border-[var(--app-border)] bg-[var(--app-surface)] space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-[#3DBE6B] border border-[#0A1038]"></span>
+                    <h3 class="text-base font-extrabold">AI Roleplay • Madrid Café</h3>
+                  </div>
+                  <button onclick="showToast('Saved “pedir” to Flashcards!')" class="px-2.5 py-1 rounded-full bg-[#B2EE05] border border-[#0A1038] text-[#0A1038] text-[11px] font-extrabold">+ Save Word</button>
+                </div>
+                <!-- Scenario Picker Chips -->
+                <div class="flex gap-1.5 overflow-x-auto pb-1">
+                  <span class="lb-chip !py-1 !px-3 !text-xs bg-[#B2EE05] text-[#0A1038] shrink-0">☕ Café</span>
+                  <span class="lb-chip !py-1 !px-3 !text-xs bg-[var(--app-surface)] shrink-0">🚕 Taxi</span>
+                  <span class="lb-chip !py-1 !px-3 !text-xs bg-[var(--app-surface)] shrink-0">🏨 Hotel</span>
+                </div>
+              </div>
+
+              <!-- Conversation View -->
+              <div class="phone-scroll p-4 space-y-3">
+                <!-- AI Message -->
+                <div class="space-y-1.5 max-w-[86%]">
+                  <div class="p-3.5 rounded-2xl rounded-bl-sm bg-[var(--app-surface)] border-2 border-[var(--app-border)] text-xs font-semibold space-y-2">
+                    <p>¡Buenos días! Bienvenido al café. ¿Qué deseas <span class="underline decoration-2 decoration-[#8A9BFF] font-extrabold">pedir</span> hoy?</p>
+                    <div class="flex items-center gap-2 pt-1 border-t border-[var(--app-border)]/20">
+                      <button onclick="document.getElementById('chat-trans-pill').classList.toggle('hidden')" class="text-[11px] font-extrabold text-[#8A9BFF]">🌐 Tap to translate</button>
+                      <button onclick="showToast('Saved “pedir = to order”')" class="text-[11px] font-extrabold text-[#3DBE6B]">🔖 Save “pedir”</button>
+                    </div>
+                  </div>
+                  <div id="chat-trans-pill" class="px-3 py-2 rounded-xl bg-[#8A9BFF]/25 border border-[var(--app-border)] text-[11px] font-bold">
+                    “Good morning! Welcome to the café. What would you like to order today?”
+                  </div>
+                </div>
+
+                <!-- User Message + Expandable Grammar Correction Card -->
+                <div class="space-y-1.5 max-w-[88%] ml-auto">
+                  <div class="p-3.5 rounded-2xl rounded-br-sm bg-[#8A9BFF] text-[#0A1038] border-2 border-[#0A1038] text-xs font-extrabold">
+                    Yo quiero una café grande, por favor.
+                  </div>
+                  <!-- Expandable Correction Card -->
+                  <div class="rounded-2xl bg-[#FFF9E5] text-[#0A1038] border-2 border-[#0A1038] p-3 text-xs space-y-1.5">
+                    <button onclick="document.getElementById('grammar-detail').classList.toggle('hidden')" class="w-full flex items-center justify-between font-extrabold text-[#F4695F]">
+                      <span>✨ Tiny tip: “un café” (tap to expand)</span>
+                      <span>▾</span>
+                    </button>
+                    <div id="grammar-detail" class="text-[11px] font-medium text-[#0A1038] pt-1 border-t border-[#0A1038]/20">
+                      <strong>Café</strong> is masculine, so use <span class="px-1.5 py-0.5 rounded bg-[#B2EE05] font-extrabold">un café</span> instead of <em>una café</em>.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chat Input & Mic -->
+              <div class="p-3 bg-[var(--app-surface)] border-t-2 border-[var(--app-border)] flex items-center gap-2">
+                <input type="text" class="lb-input !py-2.5 !text-xs" placeholder="Reply in Spanish..." />
+                <button onclick="showToast('Voice-to-Spanish active')" class="w-11 h-11 rounded-2xl bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] font-extrabold flex items-center justify-center shrink-0" aria-label="Voice input">🎙️</button>
+              </div>
+
+              <div class="px-4 py-2 bg-[var(--app-surface)] border-t border-[var(--app-border)]/30 flex justify-around text-xs font-extrabold">
+                <span class="px-3.5 py-1.5 opacity-65">🏠 Learn</span>
+                <span class="px-3.5 py-1.5 opacity-65">🗂️ Review</span>
+                <span class="px-3.5 py-1.5 rounded-2xl bg-[#B2EE05] text-[#0A1038] border-2 border-[#0A1038]">💬 Chat</span>
+                <span class="px-3.5 py-1.5 opacity-65">👤 Profile</span>
+              </div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">11. AI Chat Tab (Roleplay, Inline Correction & Save Word)</div>
+              <p class="text-[#4A5178] mt-0.5">Includes scenario chips, tap-to-translate toggle, expandable grammar tip card under user messages, and 1-tap Save Word to deck.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- =============================================================== -->
+      <!-- FLOW D: PROFILE, SETTINGS & SYSTEM STATES                       -->
+      <!-- =============================================================== -->
+      <div class="flow-group space-y-6" data-group="flow-d">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-xs font-extrabold text-[#0A1038]">FLOW D</span>
+          <h2 class="text-xl font-extrabold text-[#0A1038]">Profile Analytics, Settings & System / Permission States</h2>
+        </div>
+
+        <div class="flex flex-wrap gap-8 justify-center xl:justify-start">
+
+          <!-- SCREEN 12: PROFILE -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame justify-between">
+              <div class="phone-scroll p-5 space-y-4">
+                <!-- Header Card -->
+                <div class="lb-card p-5 flex items-center gap-4 bg-[#8A9BFF] text-[#0A1038]">
+                  <div class="w-16 h-16 rounded-2xl bg-[#B2EE05] border-2 border-[#0A1038] flex items-center justify-center shrink-0" id="profile-avatar-mascot"></div>
+                  <div>
+                    <h3 class="text-xl font-extrabold">Alex Rivera</h3>
+                    <p class="text-xs font-bold opacity-85">Learning Spanish • Joined Oct 2026</p>
+                    <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-[#FFF9E5] border border-[#0A1038] text-[11px] font-extrabold">Level 6 Explorer</span>
+                  </div>
+                </div>
+
+                <!-- 2x2 Stats Grid -->
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="lb-card p-3.5">
+                    <div class="text-xs font-bold opacity-70">Current Streak</div>
+                    <div class="text-xl font-extrabold mt-0.5">🔥 15 Days</div>
+                  </div>
+                  <div class="lb-card p-3.5">
+                    <div class="text-xs font-bold opacity-70">Longest Streak</div>
+                    <div class="text-xl font-extrabold mt-0.5">🏆 22 Days</div>
+                  </div>
+                  <div class="lb-card p-3.5">
+                    <div class="text-xs font-bold opacity-70">Total XP</div>
+                    <div class="text-xl font-extrabold mt-0.5">⚡ 1,240 XP</div>
+                  </div>
+                  <div class="lb-card p-3.5">
+                    <div class="text-xs font-bold opacity-70">Words Learned</div>
+                    <div class="text-xl font-extrabold mt-0.5">📚 148 Words</div>
+                  </div>
+                </div>
+
+                <!-- 7-Day Activity Chart -->
+                <div class="lb-card p-4 space-y-3">
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm font-extrabold">7-Day XP Activity</span>
+                    <span class="text-xs font-extrabold text-[#3DBE6B]">+310 XP this week</span>
+                  </div>
+                  <div class="h-32 flex items-end justify-between gap-2 pt-4 px-1">
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="w-full bg-[#B2EE05] border-2 border-[#0A1038] rounded-t-xl" style="height: 55px;"></div>
+                      <span class="text-[11px] font-extrabold">M</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="w-full bg-[#B2EE05] border-2 border-[#0A1038] rounded-t-xl" style="height: 82px;"></div>
+                      <span class="text-[11px] font-extrabold">T</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="w-full bg-[#B2EE05] border-2 border-[#0A1038] rounded-t-xl" style="height: 45px;"></div>
+                      <span class="text-[11px] font-extrabold">W</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="w-full bg-[#8A9BFF] border-2 border-[#0A1038] rounded-t-xl" style="height: 96px;"></div>
+                      <span class="text-[11px] font-extrabold">T</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="w-full bg-[#B2EE05] border-2 border-[#0A1038] rounded-t-xl" style="height: 68px;"></div>
+                      <span class="text-[11px] font-extrabold">F</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="w-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] rounded-t-xl" style="height: 24px;"></div>
+                      <span class="text-[11px] font-bold opacity-60">S</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="w-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] rounded-t-xl" style="height: 24px;"></div>
+                      <span class="text-[11px] font-bold opacity-60">S</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="px-4 py-2.5 bg-[var(--app-surface)] border-t-2 border-[var(--app-border)] flex justify-around text-xs font-extrabold">
+                <span class="px-3.5 py-2 opacity-65">🏠 Learn</span>
+                <span class="px-3.5 py-2 opacity-65">🗂️ Review</span>
+                <span class="px-3.5 py-2 opacity-65">💬 Chat</span>
+                <span class="px-3.5 py-2 rounded-2xl bg-[#B2EE05] text-[#0A1038] border-2 border-[#0A1038]">👤 Profile</span>
+              </div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">12. Profile & 7-Day Activity Chart</div>
+              <p class="text-[#4A5178] mt-0.5">Displays learner badge, 2×2 metric cards (current/longest streak, XP, words learned), and flat Neo-Brutalist 7-day bar chart.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 13: SETTINGS -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-5 justify-between">
+              <div class="pt-3 flex items-center gap-3">
+                <button class="w-10 h-10 rounded-xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] font-extrabold flex items-center justify-center">←</button>
+                <h3 class="text-xl font-extrabold">Settings</h3>
+              </div>
+
+              <div class="space-y-3 my-auto">
+                <div class="lb-card p-4 flex items-center justify-between">
+                  <div>
+                    <div class="text-sm font-extrabold">Daily Reminder</div>
+                    <div class="text-xs opacity-75">Gentle nudge from Pip</div>
+                  </div>
+                  <span class="px-3 py-1.5 rounded-xl bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold">7:30 PM</span>
+                </div>
+
+                <div class="lb-card p-4 flex items-center justify-between">
+                  <div>
+                    <div class="text-sm font-extrabold">Dark Mode</div>
+                    <div class="text-xs opacity-75">Switch palette tokens live</div>
+                  </div>
+                  <button onclick="toggleThemeMode()" class="w-14 h-8 rounded-full bg-[#0A1038] border-2 border-[var(--app-border)] p-1 flex items-center transition">
+                    <span class="w-5 h-5 rounded-full bg-[#B2EE05] block"></span>
+                  </button>
+                </div>
+
+                <div class="lb-card p-4 flex items-center justify-between">
+                  <div>
+                    <div class="text-sm font-extrabold">Sound Effects</div>
+                    <div class="text-xs opacity-75">Celebration chimes & taps</div>
+                  </div>
+                  <button onclick="this.classList.toggle('opacity-50'); showToast('Sound toggled')" class="w-14 h-8 rounded-full bg-[#3DBE6B] border-2 border-[#0A1038] p-1 flex justify-end items-center">
+                    <span class="w-5 h-5 rounded-full bg-[#FFF9E5] border border-[#0A1038] block"></span>
+                  </button>
+                </div>
+
+                <div class="pt-3 space-y-2.5">
+                  <button onclick="showToast('Logged out safely')" class="lb-btn lb-btn-secondary w-full">Log Out</button>
+                  <button onclick="showToast('Reset Progress confirmation required')" class="lb-btn !bg-[#F4695F]/15 !text-[#F4695F] !border-[#F4695F] w-full">Reset Spanish Progress</button>
+                </div>
+              </div>
+
+              <p class="text-center text-[11px] opacity-60 font-bold">LingoBlob v1.0.0 • Flutter Material 3</p>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">13. Settings Screen</div>
+              <p class="text-[#4A5178] mt-0.5">Clean grouped cards for reminder time picker, live Dark Mode switch, sound toggle, Log Out, and Coral-outlined Reset Progress.</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 14: SYSTEM STATES, PERMISSIONS & OFFLINE -->
+          <div class="w-[390px] space-y-3">
+            <div class="phone-frame p-4 justify-between">
+              <div class="pt-2 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase opacity-70">System States</span>
+                  <div class="flex gap-1 bg-[var(--app-surface-alt)] p-1 rounded-xl border border-[var(--app-border)]">
+                    <button onclick="setSysState('skeleton')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold bg-[#0A1038] text-[#FFF9E5]">Skeleton</button>
+                    <button onclick="setSysState('error')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold">Offline/Err</button>
+                    <button onclick="setSysState('perms')" class="px-2 py-1 rounded-lg text-[10px] font-extrabold">Perms</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- State 1: Loading Skeletons -->
+              <div id="sys-state-skeleton" class="space-y-3 my-auto">
+                <div class="text-xs font-extrabold opacity-75">Loading Lesson Path Skeleton...</div>
+                <div class="lb-card p-4 space-y-3">
+                  <div class="h-4 w-1/3 rounded-full bg-[var(--app-surface-alt)] skeleton-pulse"></div>
+                  <div class="h-6 w-2/3 rounded-full bg-[var(--app-surface-alt)] skeleton-pulse"></div>
+                </div>
+                <div class="flex flex-col items-center space-y-4 py-3">
+                  <div class="w-16 h-16 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] skeleton-pulse"></div>
+                  <div class="w-16 h-16 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] skeleton-pulse translate-x-8"></div>
+                  <div class="w-16 h-16 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] skeleton-pulse -translate-x-6"></div>
+                </div>
+              </div>
+
+              <!-- State 2: Offline Banner + Error Retry -->
+              <div id="sys-state-error" class="hidden space-y-4 my-auto">
+                <!-- Persistent Offline Banner -->
+                <div class="p-3 rounded-2xl bg-[#FF9F1C] text-[#0A1038] border-2 border-[#0A1038] flex items-center gap-2.5 text-xs font-extrabold">
+                  <span>📡</span>
+                  <span>You’re offline — downloaded lessons still work!</span>
+                </div>
+
+                <!-- Error Retry Card -->
+                <div class="lb-card p-5 text-center space-y-3">
+                  <div id="error-mascot" class="flex justify-center"></div>
+                  <h4 class="text-lg font-extrabold">Couldn’t load AI Tutor</h4>
+                  <p class="text-xs opacity-75">Check your connection and give it another try.</p>
+                  <button onclick="showToast('Retrying connection...')" class="lb-btn lb-btn-lime w-full">Retry Now</button>
+                </div>
+              </div>
+
+              <!-- State 3: Mic & Notification Permission Explainers -->
+              <div id="sys-state-perms" class="hidden space-y-3 my-auto">
+                <div class="lb-card p-4 space-y-2.5">
+                  <div class="flex items-center gap-3">
+                    <span class="w-11 h-11 rounded-2xl bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] flex items-center justify-center text-xl">🎙️</span>
+                    <div>
+                      <div class="text-sm font-extrabold">Microphone Access</div>
+                      <div class="text-[11px] opacity-75">Needed for speaking exercises & AI voice chat.</div>
+                    </div>
+                  </div>
+                  <button onclick="showToast('System Mic Permission Dialog')" class="lb-btn lb-btn-primary !min-h-[44px] !py-2 !text-xs w-full">Allow Microphone</button>
+                </div>
+
+                <div class="lb-card p-4 space-y-2.5">
+                  <div class="flex items-center gap-3">
+                    <span class="w-11 h-11 rounded-2xl bg-[#8A9BFF] border-2 border-[#0A1038] text-[#0A1038] flex items-center justify-center text-xl">🔔</span>
+                    <div>
+                      <div class="text-sm font-extrabold">Friendly Reminders</div>
+                      <div class="text-[11px] opacity-75">1 cheerful reminder a day to protect your streak.</div>
+                    </div>
+                  </div>
+                  <button onclick="showToast('System Notification Permission Dialog')" class="lb-btn lb-btn-lime !min-h-[44px] !py-2 !text-xs w-full">Enable Reminders</button>
+                </div>
+              </div>
+
+              <div class="h-2"></div>
+            </div>
+            <div class="bg-white border-2 border-[#0A1038] rounded-2xl p-3.5 text-xs">
+              <div class="font-extrabold text-[#0A1038]">14. System States (Skeleton, Offline/Error, Permissions)</div>
+              <p class="text-[#4A5178] mt-0.5">Toggle between shimmering loading skeletons, offline banner + retry card, and pre-permission explainer sheets for Mic & Notifications.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 3: UX FLOWS, MICRO-INTERACTIONS & ACCESSIBILITY               -->
+    <!-- ===================================================================== -->
+    <section id="section-ux" class="hidden space-y-8">
+
+      <!-- 1. ONE-PAGE USER FLOW DIAGRAM -->
+      <div class="bg-white border-2 border-[#0A1038] rounded-3xl p-6 sm:p-8 space-y-5">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] text-[#0A1038] text-xs font-extrabold uppercase">Deliverable 03 • Information Architecture</span>
+          <h2 class="text-2xl font-extrabold text-[#0A1038] mt-1">End-to-End User Flow & Daily Return Loop</h2>
+          <p class="text-sm text-[#4A5178]">Maps both First-Time Activation (Splash → First Finished Lesson) and the Daily Habit Retention Loop.</p>
+        </div>
+
+        <div class="overflow-x-auto pb-2">
+          <svg viewBox="0 0 1120 340" class="w-full min-w-[900px] h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background Lanes -->
+            <rect x="8" y="8" width="1104" height="150" rx="24" fill="#FFF9E5" stroke="#0A1038" stroke-width="2"/>
+            <text x="28" y="36" fill="#0A1038" font-size="12" font-weight="800" letter-spacing="1">LANE 1: FIRST LAUNCH → FIRST FINISHED LESSON</text>
+
+            <rect x="8" y="178" width="1104" height="152" rx="24" fill="#8A9BFF" fill-opacity="0.14" stroke="#0A1038" stroke-width="2"/>
+            <text x="28" y="206" fill="#0A1038" font-size="12" font-weight="800" letter-spacing="1">LANE 2: DAILY RETURN LOOP (RETENTION & HABIT)</text>
+
+            <!-- Lane 1 Nodes -->
+            <g transform="translate(28, 56)">
+              <rect width="130" height="74" rx="16" fill="#B2EE05" stroke="#0A1038" stroke-width="2"/>
+              <text x="65" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">1. Splash</text>
+              <text x="65" y="52" text-anchor="middle" fill="#0A1038" font-size="11" font-weight="600">Auth check (1.2s)</text>
+            </g>
+            <path d="M158 93H196" stroke="#0A1038" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+            <g transform="translate(198, 56)">
+              <rect width="145" height="74" rx="16" fill="#FFFFFF" stroke="#0A1038" stroke-width="2"/>
+              <text x="72" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">2. Welcome & Auth</text>
+              <text x="72" y="52" text-anchor="middle" fill="#4A5178" font-size="11" font-weight="600">Sign Up / Google</text>
+            </g>
+            <path d="M343 93H381" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(383, 56)">
+              <rect width="155" height="74" rx="16" fill="#FFFFFF" stroke="#0A1038" stroke-width="2"/>
+              <text x="77" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">3. Onboarding</text>
+              <text x="77" y="52" text-anchor="middle" fill="#4A5178" font-size="11" font-weight="600">Spanish + 10m Goal</text>
+            </g>
+            <path d="M538 93H576" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(578, 56)">
+              <rect width="155" height="74" rx="16" fill="#8A9BFF" stroke="#0A1038" stroke-width="2"/>
+              <text x="77" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">4. Learn Path</text>
+              <text x="77" y="52" text-anchor="middle" fill="#0A1038" font-size="11" font-weight="600">Tap Active Node 1</text>
+            </g>
+            <path d="M733 93H771" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(773, 56)">
+              <rect width="155" height="74" rx="16" fill="#FFFFFF" stroke="#0A1038" stroke-width="2"/>
+              <text x="77" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">5. 6 Exercise Types</text>
+              <text x="77" y="52" text-anchor="middle" fill="#4A5178" font-size="11" font-weight="600">Instant Sheets</text>
+            </g>
+            <path d="M928 93H962" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(964, 56)">
+              <rect width="130" height="74" rx="16" fill="#3DBE6B" stroke="#0A1038" stroke-width="2"/>
+              <text x="65" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">6. Results + XP</text>
+              <text x="65" y="52" text-anchor="middle" fill="#0A1038" font-size="11" font-weight="600">Streak Day 1!</text>
+            </g>
+
+            <!-- Lane 2 Nodes (Daily Return Loop) -->
+            <g transform="translate(28, 228)">
+              <rect width="175" height="74" rx="16" fill="#FFFFFF" stroke="#0A1038" stroke-width="2"/>
+              <text x="87" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">1. Friendly Push (7:30p)</text>
+              <text x="87" y="52" text-anchor="middle" fill="#4A5178" font-size="11" font-weight="600">Opens Home Path</text>
+            </g>
+            <path d="M203 265H245" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(247, 228)">
+              <rect width="185" height="74" rx="16" fill="#B2EE05" stroke="#0A1038" stroke-width="2"/>
+              <text x="92" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">2. Next Lesson Node</text>
+              <text x="92" y="52" text-anchor="middle" fill="#0A1038" font-size="11" font-weight="600">5–10 min Core Practice</text>
+            </g>
+            <path d="M432 265H474" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(476, 228)">
+              <rect width="185" height="74" rx="16" fill="#FFFFFF" stroke="#0A1038" stroke-width="2"/>
+              <text x="92" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">3. Smart Review Deck</text>
+              <text x="92" y="52" text-anchor="middle" fill="#4A5178" font-size="11" font-weight="600">SRS Cards Due Today</text>
+            </g>
+            <path d="M661 265H703" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(705, 228)">
+              <rect width="185" height="74" rx="16" fill="#8A9BFF" stroke="#0A1038" stroke-width="2"/>
+              <text x="92" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">4. AI Roleplay Chat</text>
+              <text x="92" y="52" text-anchor="middle" fill="#0A1038" font-size="11" font-weight="600">Save New Vocab</text>
+            </g>
+            <path d="M890 265H932" stroke="#0A1038" stroke-width="2.5"/>
+
+            <g transform="translate(934, 228)">
+              <rect width="160" height="74" rx="16" fill="#FF9F1C" stroke="#0A1038" stroke-width="2"/>
+              <text x="80" y="34" text-anchor="middle" fill="#0A1038" font-size="13" font-weight="800">5. Streak Extended</text>
+              <text x="80" y="52" text-anchor="middle" fill="#0A1038" font-size="11" font-weight="600">Goal Ring 100%</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 2. INTERACTIVE MICRO-INTERACTIONS SANDBOX + ACCESSIBILITY CHECKLIST -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Micro-interactions Sandbox -->
+        <div class="bg-white border-2 border-[#0A1038] rounded-3xl p-6 space-y-5">
+          <div>
+            <h3 class="text-xl font-extrabold text-[#0A1038]">Micro-Interactions Sandbox (Flutter Animation Specs)</h3>
+            <p class="text-xs text-[#4A5178]">Click each card below to test the exact tactile physics curve.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- 1. Button Press Squash -->
+            <div class="p-4 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] space-y-2">
+              <div class="text-xs font-extrabold uppercase text-[#4A5178]">01. Tactile Button Press</div>
+              <button class="lb-btn lb-btn-lime w-full !min-h-[46px]">Press & Hold Me</button>
+              <p class="text-[11px] text-[#4A5178]"><code>ScaleTransition(0.95)</code> • 120ms <code>Curves.easeOutBack</code> + light haptic impact.</p>
+            </div>
+
+            <!-- 2. Correct-Answer Pop -->
+            <div class="p-4 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] space-y-2">
+              <div class="text-xs font-extrabold uppercase text-[#4A5178]">02. Correct-Answer Pop</div>
+              <button onclick="const el=this.querySelector('span'); el.classList.remove('animate-pop'); void el.offsetWidth; el.classList.add('animate-pop');" class="w-full py-2.5 rounded-2xl bg-[#3DBE6B] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-sm">
+                <span class="inline-block">✓ ¡Correcto! +10 XP</span>
+              </button>
+              <p class="text-[11px] text-[#4A5178]">Spring overshoot <code>0.85 → 1.08 → 1.0</code> over 350ms + chime.</p>
+            </div>
+
+            <!-- 3. 3D Flashcard Flip -->
+            <div class="p-4 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] space-y-2">
+              <div class="text-xs font-extrabold uppercase text-[#4A5178]">03. 3D Flashcard Flip</div>
+              <div class="flip-scene h-12" onclick="this.querySelector('.flip-card').classList.toggle('is-flipped')">
+                <div class="flip-card">
+                  <div class="flip-face bg-white text-[#0A1038] !p-2 font-extrabold text-xs">Tap: El gato</div>
+                  <div class="flip-face flip-back bg-[#8A9BFF] text-[#0A1038] !p-2 font-extrabold text-xs">The cat</div>
+                </div>
+              </div>
+              <p class="text-[11px] text-[#4A5178]">Y-axis <code>Matrix4.rotationY(π)</code> with perspective <code>0.001</code> (550ms).</p>
+            </div>
+
+            <!-- 4. Streak Flame Pulse -->
+            <div class="p-4 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] space-y-2">
+              <div class="text-xs font-extrabold uppercase text-[#4A5178]">04. Streak Flame Pulse</div>
+              <div class="py-2 rounded-2xl bg-[#FF9F1C] border-2 border-[#0A1038] text-[#0A1038] font-extrabold text-sm flex items-center justify-center gap-2">
+                <span class="text-xl animate-flame inline-block">🔥</span> <span>15 Day Streak!</span>
+              </div>
+              <p class="text-[11px] text-[#4A5178]">Gentle idle scale <code>1.0 → 1.16</code> + 3° tilt loop on celebration.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accessibility & Flutter Implementation Rules -->
+        <div class="bg-white border-2 border-[#0A1038] rounded-3xl p-6 space-y-4">
+          <div>
+            <h3 class="text-xl font-extrabold text-[#0A1038]">Accessibility & Flutter M3 Engineering Rules</h3>
+            <p class="text-xs text-[#4A5178]">Built to pass WCAG 2.1 AA and Android Accessibility Scanner out of the box.</p>
+          </div>
+
+          <ul class="space-y-3 text-sm">
+            <li class="p-3.5 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] flex items-start gap-3">
+              <span class="px-2.5 py-1 rounded-lg bg-[#B2EE05] border border-[#0A1038] font-extrabold text-xs shrink-0">48dp+</span>
+              <div>
+                <div class="font-extrabold text-[#0A1038]">Minimum 48×48dp Touch Targets</div>
+                <p class="text-xs text-[#4A5178] mt-0.5">All buttons, close icons, word-bank chips, and path nodes enforce <code>minimumSize: Size(48, 48)</code> with at least 8dp separation.</p>
+              </div>
+            </li>
+            <li class="p-3.5 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] flex items-start gap-3">
+              <span class="px-2.5 py-1 rounded-lg bg-[#3DBE6B] border border-[#0A1038] font-extrabold text-xs shrink-0">≥ 4.5:1</span>
+              <div>
+                <div class="font-extrabold text-[#0A1038]">High-Contrast Text Pairs (14.8:1 Primary)</div>
+                <p class="text-xs text-[#4A5178] mt-0.5">Deep Navy <code>#0A1038</code> on Warm Cream <code>#FFF9E5</code> achieves <strong>15.9:1</strong> contrast; Navy on Lime <code>#B2EE05</code> achieves <strong>12.4:1</strong>.</p>
+              </div>
+            </li>
+            <li class="p-3.5 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] flex items-start gap-3">
+              <span class="px-2.5 py-1 rounded-lg bg-[#8A9BFF] border border-[#0A1038] font-extrabold text-xs shrink-0">A11y</span>
+              <div>
+                <div class="font-extrabold text-[#0A1038]">Semantic Labels & Dual-Encoded Status</div>
+                <p class="text-xs text-[#4A5178] mt-0.5">Every <code>IconButton</code> includes a <code>tooltip</code> / <code>Semantics(label)</code>. Correct/Wrong states pair color with explicit <code>✓</code> / <code>✕</code> icons.</p>
+              </div>
+            </li>
+            <li class="p-3.5 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] flex items-start gap-3">
+              <span class="px-2.5 py-1 rounded-lg bg-[#FF9F1C] border border-[#0A1038] font-extrabold text-xs shrink-0">200%</span>
+              <div>
+                <div class="font-extrabold text-[#0A1038]">Dynamic Text Scaling Support</div>
+                <p class="text-xs text-[#4A5178] mt-0.5">Flexible <code>Wrap</code> chips, scrollable containers, and non-clipped button heights support Android font scaling up to 2.0×.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- NON-BLOCKING TOAST NOTIFICATION -->
+  <div id="global-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-200 translate-y-3">
+    <div class="px-5 py-3 rounded-2xl bg-[#0A1038] text-[#FFF9E5] border-2 border-[#B2EE05] text-xs sm:text-sm font-extrabold flex items-center gap-2.5">
+      <span class="w-2.5 h-2.5 rounded-full bg-[#B2EE05]"></span>
+      <span id="global-toast-text">Action triggered</span>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. ORIGINAL MASCOT SVG GENERATOR ("PIP" THE FRIENDLY BLOB)
+    // =========================================================================
+    function renderPipMascot(mood = 'happy', size = 84) {
+      let leftEye = `<circle cx="34" cy="46" r="11" fill="#FFF9E5" stroke="#0A1038" stroke-width="2.5"/><circle cx="36" cy="46" r="5.5" fill="#0A1038"/><circle cx="38" cy="44" r="2" fill="#FFF9E5"/>`;
+      let rightEye = `<circle cx="62" cy="46" r="11" fill="#FFF9E5" stroke="#0A1038" stroke-width="2.5"/><circle cx="60" cy="46" r="5.5" fill="#0A1038"/><circle cx="62" cy="44" r="2" fill="#FFF9E5"/>`;
+      let mouth = `<path d="M41 63C44 67 52 67 55 63" stroke="#0A1038" stroke-width="3" stroke-linecap="round"/>`;
+      let extra = ``;
+      let bodyColor = `#B2EE05`;
+
+      if (mood === 'thinking') {
+        leftEye = `<circle cx="34" cy="44" r="11" fill="#FFF9E5" stroke="#0A1038" stroke-width="2.5"/><circle cx="36" cy="41" r="5" fill="#0A1038"/>`;
+        rightEye = `<circle cx="62" cy="44" r="11" fill="#FFF9E5" stroke="#0A1038" stroke-width="2.5"/><circle cx="64" cy="41" r="5" fill="#0A1038"/>`;
+        mouth = `<path d="M44 64H53" stroke="#0A1038" stroke-width="3" stroke-linecap="round"/>`;
+        extra = `<circle cx="82" cy="20" r="5" fill="#8A9BFF" stroke="#0A1038" stroke-width="2"/><circle cx="74" cy="30" r="3" fill="#8A9BFF" stroke="#0A1038" stroke-width="1.5"/>`;
+      } else if (mood === 'celebrating') {
+        leftEye = `<path d="M26 47C29 41 39 41 42 47" stroke="#0A1038" stroke-width="3.5" stroke-linecap="round"/>`;
+        rightEye = `<path d="M54 47C57 41 67 41 70 47" stroke="#0A1038" stroke-width="3.5" stroke-linecap="round"/>`;
+        mouth = `<path d="M39 58C41 69 55 69 57 58Z" fill="#F4695F" stroke="#0A1038" stroke-width="2.5"/>`;
+        extra = `<path d="M16 24L22 30M80 24L74 30M48 8V15" stroke="#8A9BFF" stroke-width="3.5" stroke-linecap="round"/>`;
+      } else if (mood === 'sad') {
+        bodyColor = `#8A9BFF`;
+        leftEye = `<circle cx="34" cy="48" r="10" fill="#FFF9E5" stroke="#0A1038" stroke-width="2.5"/><circle cx="34" cy="50" r="5" fill="#0A1038"/>`;
+        rightEye = `<circle cx="62" cy="48" r="10" fill="#FFF9E5" stroke="#0A1038" stroke-width="2.5"/><circle cx="62" cy="50" r="5" fill="#0A1038"/>`;
+        mouth = `<path d="M41 67C44 62 52 62 55 67" stroke="#0A1038" stroke-width="3" stroke-linecap="round"/>`;
+      } else if (mood === 'sleepy') {
+        leftEye = `<path d="M26 48C30 52 38 52 42 48" stroke="#0A1038" stroke-width="3" stroke-linecap="round"/>`;
+        rightEye = `<path d="M54 48C58 52 66 52 70 48" stroke="#0A1038" stroke-width="3" stroke-linecap="round"/>`;
+        mouth = `<circle cx="48" cy="63" r="4" fill="#0A1038"/>`;
+        extra = `<text x="72" y="26" fill="#0A1038" font-size="13" font-weight="800">zZ</text>`;
+      }
+
+      return `
+        <svg width="${size}" height="${size}" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Pip mascot ${mood}">
+          <!-- Blob Silhouette with Cute Top Sprout -->
+          <path d="M48 16C45 10 38 11 40 18C23 21 14 35 14 54C14 73 27 84 48 84C69 84 82 73 82 54C82 35 73 21 56 18C58 11 51 10 48 16Z" fill="${bodyColor}" stroke="#0A1038" stroke-width="3"/>
+          <!-- Rosy Cheeks -->
+          <ellipse cx="25" cy="57" rx="4.5" ry="2.5" fill="#F4695F" fill-opacity="0.55"/>
+          <ellipse cx="71" cy="57" rx="4.5" ry="2.5" fill="#F4695F" fill-opacity="0.55"/>
+          ${leftEye}
+          ${rightEye}
+          ${mouth}
+          ${extra}
+        </svg>
+      `;
+    }
+
+    // =========================================================================
+    // 2. COLOR TOKENS & MASCOT SHEET DATA
+    // =========================================================================
+    const colorTokens = [
+      { name: 'Primary Brand', light: '#B2EE05', dark: '#B2EE05', flutter: 'colorScheme.primary' },
+      { name: 'On Primary / Ink', light: '#0A1038', dark: '#0A1038', flutter: 'colorScheme.onPrimary' },
+      { name: 'Pressed Primary', light: '#8DBA00', dark: '#8DBA00', flutter: 'ButtonStyle.overlayColor' },
+      { name: 'Canvas Background', light: '#FFF9E5', dark: '#0D1126', flutter: 'scaffoldBackgroundColor' },
+      { name: 'Card Surface', light: '#FFFFFF', dark: '#171D3B', flutter: 'colorScheme.surface' },
+      { name: 'Surface Variant', light: '#F3EBD3', dark: '#212952', flutter: 'colorScheme.surfaceContainerHighest' },
+      { name: 'Primary Text', light: '#0A1038', dark: '#FFF9E5', flutter: 'colorScheme.onSurface' },
+      { name: 'Secondary Accent', light: '#8A9BFF', dark: '#8A9BFF', flutter: 'colorScheme.secondary' },
+      { name: 'Error / Wrong', light: '#F4695F', dark: '#F4695F', flutter: 'colorScheme.error' },
+      { name: 'Success / Mastered', light: '#3DBE6B', dark: '#3DBE6B', flutter: 'CustomExtension.success' },
+    ];
+
+    function initDesignSystem() {
+      // Populate Color Tokens Table
+      const tbody = document.getElementById('color-tokens-body');
+      tbody.innerHTML = colorTokens.map(t => `
+        <tr>
+          <td class="py-2.5 pr-3 font-extrabold text-[#0A1038]">${t.name}</td>
+          <td class="py-2.5 px-3">
+            <span class="inline-flex items-center gap-2 font-mono text-xs">
+              <span class="w-4 h-4 rounded-md border border-[#0A1038]" style="background:${t.light}"></span>${t.light}
+            </span>
+          </td>
+          <td class="py-2.5 px-3">
+            <span class="inline-flex items-center gap-2 font-mono text-xs">
+              <span class="w-4 h-4 rounded-md border border-[#0A1038]" style="background:${t.dark}"></span>${t.dark}
+            </span>
+          </td>
+          <td class="py-2.5 pl-3 font-mono text-xs text-[#4A5178]">${t.flutter}</td>
+        </tr>
+      `).join('');
+
+      // Populate Mascot Expression Sheet
+      const moods = [
+        { id: 'happy', label: 'Happy', use: 'Welcome, Lesson Prompts' },
+        { id: 'thinking', label: 'Thinking', use: 'Typing & Grammar Hints' },
+        { id: 'celebrating', label: 'Celebrating', use: 'Results & Streak Extended' },
+        { id: 'sad', label: 'Sad / Encouraging', use: 'Quit Dialog & Offline Error' },
+        { id: 'sleepy', label: 'Sleepy', use: 'Review Empty State' },
+      ];
+      document.getElementById('mascot-grid').innerHTML = moods.map(m => `
+        <div class="p-4 rounded-2xl bg-[#FFF9E5] border-2 border-[#0A1038] flex flex-col items-center text-center space-y-2">
+          ${renderPipMascot(m.id, 88)}
+          <div class="font-extrabold text-sm text-[#0A1038]">${m.label}</div>
+          <div class="text-[11px] font-medium text-[#4A5178]">${m.use}</div>
+        </div>
+      `).join('');
+
+      // Inject Mascots into Screens
+      document.getElementById('splash-mascot').innerHTML = renderPipMascot('happy', 112);
+      document.getElementById('welcome-mascot').innerHTML = renderPipMascot('happy', 116);
+      document.getElementById('signup-mascot').innerHTML = renderPipMascot('celebrating', 84);
+      document.getElementById('onboard-mascot').innerHTML = renderPipMascot('happy', 64);
+      document.getElementById('type-mascot').innerHTML = renderPipMascot('thinking', 56);
+      document.getElementById('quit-mascot').innerHTML = renderPipMascot('sad', 72);
+      document.getElementById('results-mascot').innerHTML = renderPipMascot('celebrating', 96);
+      document.getElementById('review-done-mascot').innerHTML = renderPipMascot('celebrating', 88);
+      document.getElementById('review-empty-mascot').innerHTML = renderPipMascot('sleepy', 88);
+      document.getElementById('profile-avatar-mascot').innerHTML = renderPipMascot('happy', 52);
+      document.getElementById('error-mascot').innerHTML = renderPipMascot('sad', 72);
+    }
+
+    // =========================================================================
+    // 3. NAVIGATION, THEME & INTERACTIVE SCREEN HANDLERS
+    // =========================================================================
+    let isDarkMode = false;
+
+    function switchSection(sectionId) {
+      ['system', 'screens', 'ux'].forEach(id => {
+        document.getElementById(`section-${id}`).classList.toggle('hidden', id !== sectionId);
+        const btn = document.getElementById(`tab-${id}`);
+        if (id === sectionId) {
+          btn.classList.add('bg-[#B2EE05]', 'text-[#0A1038]');
+          btn.classList.remove('text-[#FFF9E5]', 'hover:bg-white/10');
+        } else {
+          btn.classList.remove('bg-[#B2EE05]', 'text-[#0A1038]');
+          btn.classList.add('text-[#FFF9E5]', 'hover:bg-white/10');
+        }
+      });
+    }
+
+    function toggleThemeMode() {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle('dark-tokens', isDarkMode);
+      document.getElementById('theme-label').textContent = isDarkMode ? 'Dark Mode' : 'Light Mode';
+      document.getElementById('theme-dot').style.backgroundColor = isDarkMode ? '#0D1126' : '#FFF9E5';
+      const surfLabel = document.getElementById('active-surface-label');
+      if (surfLabel) {
+        surfLabel.textContent = isDarkMode ? 'Midnight Navy #0D1126' : 'Warm Cream #FFF9E5';
+      }
+      showToast(isDarkMode ? 'Switched all frames to Dark Mode' : 'Switched all frames to Light Mode');
+    }
+
+    function filterFlows(flow) {
+      document.querySelectorAll('.flow-filter-btn').forEach(btn => {
+        const active = btn.dataset.flow === flow;
+        btn.className = active
+          ? 'flow-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-[#0A1038] text-[#FFF9E5]'
+          : 'flow-filter-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-[#0A1038] hover:bg-slate-200';
+      });
+      document.querySelectorAll('.flow-group').forEach(group => {
+        group.classList.toggle('hidden', flow !== 'all' && group.dataset.group !== flow);
+      });
+    }
+
+    function setAuthSubState(state) {
+      ['login', 'forgot', 'sent'].forEach(s => {
+        document.getElementById(`auth-sub-${s}`).classList.toggle('hidden', s !== state);
+        const btn = document.getElementById(`auth-btn-${s}`);
+        btn.className = s === state
+          ? 'px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-[#0A1038] text-[#FFF9E5]'
+          : 'px-2.5 py-1 rounded-lg text-[11px] font-extrabold';
+      });
+    }
+
+    let onboardStep = 1;
+    function setOnboardStep(step) {
+      onboardStep = step;
+      document.getElementById('ob-step-1').classList.toggle('hidden', step !== 1);
+      document.getElementById('ob-step-2').classList.toggle('hidden', step !== 2);
+      document.getElementById('ob-step-label').textContent = `${step} / 2`;
+      document.getElementById('ob-dot-1').className = step === 1
+        ? 'w-8 h-3 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] transition-all'
+        : 'w-3 h-3 rounded-full bg-[#3DBE6B] border-2 border-[#0A1038] transition-all';
+      document.getElementById('ob-dot-2').className = step === 2
+        ? 'w-8 h-3 rounded-full bg-[#B2EE05] border-2 border-[#0A1038] transition-all'
+        : 'w-3 h-3 rounded-full bg-[var(--app-surface-alt)] border-2 border-[var(--app-border)] transition-all';
+      document.getElementById('ob-next-btn').textContent = step === 1 ? 'Continue' : 'Start First Lesson';
+    }
+
+    function advanceOnboarding() {
+      if (onboardStep === 1) {
+        setOnboardStep(2);
+      } else {
+        showToast('Onboarding complete! Opening Unit 1...');
+        setOnboardStep(1);
+      }
+    }
+
+    function selectGoalCard(el) {
+      document.querySelectorAll('.goal-card').forEach(c => {
+        c.className = 'goal-card p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] flex items-center justify-between cursor-pointer';
+      });
+      el.className = 'goal-card p-4 rounded-2xl border-2 border-[#0A1038] bg-[#B2EE05] text-[#0A1038] flex items-center justify-between cursor-pointer';
+    }
+
+    function selectOnboardLang(el) {
+      showToast('Spanish selected! (French & Japanese coming soon)');
+    }
+
+    let mcIsCorrect = true;
+    function selectMcOption(btn, isCorrect) {
+      mcIsCorrect = isCorrect;
+      document.querySelectorAll('.mc-opt').forEach(opt => {
+        opt.className = 'mc-opt w-full p-4 rounded-2xl border-2 border-[var(--app-border)] bg-[var(--app-surface)] text-left font-extrabold text-sm flex justify-between items-center';
+      });
+      btn.className = 'mc-opt w-full p-4 rounded-2xl border-2 border-[#0A1038] bg-[#8A9BFF]/30 text-left font-extrabold text-sm flex justify-between items-center';
+    }
+
+    function checkMcDemo() {
+      if (mcIsCorrect) {
+        showToast('¡Excelente! "Buenos días" = Good morning (+10 XP)');
+      } else {
+        showToast('Not quite — "Buenos días" means Good morning');
+      }
+    }
+
+    function appendAccent(char) {
+      const ta = document.getElementById('spanish-textarea');
+      ta.value += char;
+      ta.focus();
+    }
+
+    let speakPhase = 0;
+    function cycleSpeakState() {
+      speakPhase = (speakPhase + 1) % 3;
+      const btn = document.getElementById('speak-mic-btn');
+      const label = document.getElementById('speak-status-label');
+      const card = document.getElementById('speak-score-card');
+      if (speakPhase === 1) {
+        btn.classList.add('mic-pulse', '!bg-[#F4695F]');
+        label.textContent = 'Listening... Speak now';
+        card.classList.add('opacity-30');
+      } else if (speakPhase === 2) {
+        btn.classList.remove('mic-pulse', '!bg-[#F4695F]');
+        label.textContent = 'Recorded! Tap mic to retry';
+        card.classList.remove('opacity-30');
+      } else {
+        btn.classList.remove('mic-pulse', '!bg-[#F4695F]');
+        label.textContent = 'Tap mic to record';
+      }
+    }
+
+    function setFeedbackOverlay(mode) {
+      ['correct', 'wrong', 'quit'].forEach(m => {
+        document.getElementById(`fb-sheet-${m}`).classList.toggle('hidden', m !== mode);
+      });
+    }
+
+    function setReviewState(mode) {
+      ['card', 'summary', 'empty'].forEach(m => {
+        document.getElementById(`rev-state-${m}`).classList.toggle('hidden', m !== mode);
+      });
+    }
+
+    function setSysState(mode) {
+      ['skeleton', 'error', 'perms'].forEach(m => {
+        document.getElementById(`sys-state-${m}`).classList.toggle('hidden', m !== mode);
+      });
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('global-toast');
+      document.getElementById('global-toast-text').textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-3');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-3');
+      }, 2400);
+    }
+
+    function copyFlutterTheme() {
+      const dartSnippet = `final lightColorScheme = ColorScheme.light(
+  primary: Color(0xFFB2EE05),
+  onPrimary: Color(0xFF0A1038),
+  secondary: Color(0xFF8A9BFF),
+  onSecondary: Color(0xFF0A1038),
+  surface: Color(0xFFFFFFFF),
+  onSurface: Color(0xFF0A1038),
+  error: Color(0xFFF4695F),
+);`;
+      const el = document.createElement('textarea');
+      el.value = dartSnippet;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showToast('Flutter ColorScheme copied to clipboard!');
+    }
+
+    // Boot
+    window.addEventListener('DOMContentLoaded', initDesignSystem);
+  </script>
+</body>
+</html>
