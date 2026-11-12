@@ -1,9 +1,13 @@
+import '../../../core/localization/lingo_localizations.dart';
+import '../../../core/theme/lingo_tokens.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_routes.dart';
 import '../../../shared/widgets/lesson_path_node.dart';
 import '../domain/learning_path.dart';
+import '../../../shared/widgets/lingo_components.dart';
 
 class LearningPathView extends StatelessWidget {
   const LearningPathView({
@@ -20,12 +24,17 @@ class LearningPathView extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 600),
       child: ListView.builder(
         key: const PageStorageKey('learning-path'),
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+        padding: const EdgeInsets.fromLTRB(
+          LingoSpace.s24,
+          LingoSpace.s8,
+          LingoSpace.s24,
+          LingoSpace.s32,
+        ),
         itemCount: path.units.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: 28),
+              padding: const EdgeInsets.only(bottom: LingoSpace.s24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -33,10 +42,12 @@ class LearningPathView extends StatelessWidget {
                     path.course.title,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Your daily goal: $goalMinutes minutes',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  const SizedBox(height: LingoSpace.s8),
+                  DailyGoalCard(
+                    minutes: goalMinutes,
+                    label: context.l10n.text('uied25d2bddd', {
+                      'arg0': (goalMinutes),
+                    }),
                   ),
                 ],
               ),
@@ -70,10 +81,11 @@ class _UnitSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(LingoSpace.s16),
           decoration: BoxDecoration(
-            color: colors.primaryContainer,
-            borderRadius: BorderRadius.circular(20),
+            color: colors.secondaryContainer,
+            borderRadius: BorderRadius.circular(LingoRadii.card),
+            border: Border.all(color: colors.outline, width: LingoSpace.border),
           ),
           child: Semantics(
             header: true,
@@ -81,48 +93,94 @@ class _UnitSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'UNIT $number',
+                  context.l10n.text('uiabbfe9b13c', {'arg0': (number)}),
                   style: TextStyle(
-                    color: colors.onPrimaryContainer,
+                    color: colors.onSecondaryContainer,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: LingoSpace.s8),
                 Text(
                   unit.unit.title,
                   style: Theme.of(context).textTheme.titleLarge
-                      ?.copyWith(color: colors.onPrimaryContainer),
+                      ?.copyWith(color: colors.onSecondaryContainer),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: LingoSpace.s24),
         for (var i = 0; i < unit.lessons.length; i++) ...[
           if (i > 0)
-            Center(
-              child: ExcludeSemantics(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 16),
-                  width: 3,
-                  height: 28,
-                  color: colors.outlineVariant,
+            ExcludeSemantics(
+              child: SizedBox(
+                height: LingoSpace.s32,
+                width: double.infinity,
+                child: CustomPaint(
+                  painter: _PathConnector(
+                    from: _nodeAlignment(i - 1),
+                    to: _nodeAlignment(i),
+                    color: colors.outline,
+                  ),
                 ),
               ),
             ),
-          LessonPathNode(
-            key: ValueKey('lesson-node-${unit.lessons[i].lesson.id}'),
-            entry: unit.lessons[i],
-            number: offset + i + 1,
-            onPressed: unit.lessons[i].availability == LessonAvailability.locked
-                ? null
-                : () => context.push(
-                    AppRoutes.lessonLocation(unit.lessons[i].lesson.id),
-                  ),
+          Align(
+            alignment: Alignment(_nodeAlignment(i), 0),
+            child: FractionallySizedBox(
+              widthFactor: .7,
+              child: LessonPathNode(
+                key: ValueKey('lesson-node-${unit.lessons[i].lesson.id}'),
+                entry: unit.lessons[i],
+                number: offset + i + 1,
+                onPressed:
+                    unit.lessons[i].availability == LessonAvailability.locked
+                    ? null
+                    : () => context.push(
+                        AppRoutes.lessonLocation(unit.lessons[i].lesson.id),
+                      ),
+              ),
+            ),
           ),
         ],
-        const SizedBox(height: 36),
+        const SizedBox(height: LingoSpace.s32),
       ],
     );
   }
+}
+
+double _nodeAlignment(int index) => switch (index % 3) {
+  0 => -.85,
+  1 => .85,
+  _ => 0,
+};
+
+class _PathConnector extends CustomPainter {
+  const _PathConnector({
+    required this.from,
+    required this.to,
+    required this.color,
+  });
+  final double from;
+  final double to;
+  final Color color;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final x1 = size.width * (.5 + from * .15);
+    final x2 = size.width * (.5 + to * .15);
+    final path = Path()
+      ..moveTo(x1, 0)
+      ..cubicTo(x1, size.height * .5, x2, size.height * .5, x2, size.height);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = color
+        ..strokeWidth = LingoSpace.border
+        ..style = PaintingStyle.stroke,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_PathConnector old) =>
+      old.from != from || old.to != to || old.color != color;
 }
