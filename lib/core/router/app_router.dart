@@ -1,4 +1,13 @@
+import '../../shared/widgets/lingo_components.dart';
+import '../localization/lingo_localizations.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/chat/presentation/chat_screen.dart';
+import '../../features/dev/presentation/components_screen.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -149,8 +158,25 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/chat',
+                builder: (context, state) => const ChatScreen(),
+              ),
+            ],
+          ),
         ],
       ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      if (kDebugMode)
+        GoRoute(
+          path: '/dev/components',
+          builder: (context, state) => const ComponentsScreen(),
+        ),
       GoRoute(
         path: AppRoutes.lesson,
         builder: (context, state) =>
@@ -162,11 +188,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
     errorBuilder: (context, state) => PlaceholderPage(
-      title: 'Page not found',
-      message: 'This page is unavailable.',
-      action: FilledButton(
+      title: context.l10n.text('uibc3023b360'),
+      message: context.l10n.text('ui54089b3094'),
+      action: LingoButton(
         onPressed: () => context.go(AppRoutes.home),
-        child: const Text('Go to Learn'),
+        child: Text(context.l10n.text('uia2b44457dc')),
       ),
     ),
   );
