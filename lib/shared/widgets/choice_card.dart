@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/lingo_tokens.dart';
+import 'lingo_components.dart';
+
 class ChoiceCard extends StatelessWidget {
   const ChoiceCard({
     super.key,
@@ -14,51 +17,57 @@ class ChoiceCard extends StatelessWidget {
   final bool selected;
   final VoidCallback? onTap;
   final IconData icon;
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final foreground = selected ? colors.onPrimary : colors.onSurface;
     return Semantics(
       selected: selected,
       button: true,
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 12),
-        color: selected ? colors.primaryContainer : colors.surfaceContainerLow,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            color: selected ? colors.primary : colors.outlineVariant,
-            width: selected ? 2 : 1,
+      enabled: onTap != null,
+      child: PressFeedback(
+        enabled: onTap != null,
+        child: Card(
+          color: selected ? colors.primaryContainer : colors.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(LingoRadii.control),
+            side: BorderSide(color: colors.outline, width: LingoSpace.border),
           ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                Icon(icon, color: colors.primary),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(subtitle),
-                    ],
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(LingoSpace.s16),
+              child: Row(
+                children: [
+                  Icon(icon, color: foreground),
+                  const SizedBox(width: LingoSpace.s16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: foreground),
+                        ),
+                        const SizedBox(height: LingoSpace.s8),
+                        Text(
+                          subtitle,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: foreground),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Icon(
-                  selected ? Icons.check_circle : Icons.radio_button_unchecked,
-                  color: colors.primary,
-                ),
-              ],
+                  const SizedBox(width: LingoSpace.s8),
+                  Icon(
+                    selected
+                        ? Icons.check_circle
+                        : Icons.radio_button_unchecked,
+                    color: foreground,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
