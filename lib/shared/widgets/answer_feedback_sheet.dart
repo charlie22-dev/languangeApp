@@ -85,6 +85,12 @@ class _AnswerFeedbackSheetState extends ConsumerState<AnswerFeedbackSheet> {
                 ),
               ],
             ),
+            if (feedback.speechScore != null)
+              Text(
+                context.l10n.text('speechMatchScore', {
+                  'score': (feedback.speechScore! * 100).round(),
+                }),
+              ),
             const SizedBox(height: LingoSpace.s8),
             Text(
               context.l10n.text('uid23f4d3d4e', {
