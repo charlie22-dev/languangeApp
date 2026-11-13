@@ -9,6 +9,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:myapp/features/activity/data/activity_providers.dart';
 import 'package:myapp/features/notifications/data/reminder_service.dart';
+import 'package:myapp/features/audio/data/audio_service.dart';
+import 'package:myapp/features/audio/data/speech_service.dart';
+import 'package:myapp/features/chat/data/chat_api.dart';
 
 import 'support/reminder_fixtures.dart';
 
@@ -45,6 +48,9 @@ class AppHarness {
     DateTime Function()? clock,
     AuthRepository? authRepository,
     bool useRealAuth = false,
+    AudioService? audioService,
+    SpeechService? speechService,
+    ChatApi? chatApi,
   }) {
     SharedPreferences.setMockInitialValues({});
     this.course = course ?? sampleCourse();
@@ -52,6 +58,12 @@ class AppHarness {
     database = AppDatabase.forTesting(NativeDatabase.memory());
     container = ProviderContainer(
       overrides: [
+        if (chatApi != null)
+          chatApiProvider.overrideWith((ref) async => chatApi),
+        if (audioService != null)
+          audioServiceProvider.overrideWithValue(audioService),
+        if (speechService != null)
+          speechServiceProvider.overrideWithValue(speechService),
         localTodayProvider.overrideWith(
           (ref) => ref.watch(clockProvider)().toLocal(),
         ),
