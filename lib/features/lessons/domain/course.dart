@@ -8,6 +8,7 @@ final class Course {
     required this.title,
     required this.targetLanguage,
     required this.nativeLanguage,
+    this.targetLocale,
     required List<Word> words,
     required List<Unit> units,
   }) : words = List.unmodifiable(words),
@@ -17,6 +18,7 @@ final class Course {
   final String title;
   final String targetLanguage;
   final String nativeLanguage;
+  final String? targetLocale;
   final List<Word> words;
   final List<Unit> units;
 
@@ -29,6 +31,9 @@ final class Course {
       title: JsonReader.text(json, 'title'),
       targetLanguage: JsonReader.text(json, 'targetLanguage'),
       nativeLanguage: JsonReader.text(json, 'nativeLanguage'),
+      targetLocale: json['targetLocale'] == null
+          ? null
+          : JsonReader.text(json, 'targetLocale'),
       words: JsonReader.list(json, 'words')
           .map((value) => Word.fromJson(JsonReader.object(value, 'word')))
           .toList(),
@@ -61,6 +66,7 @@ final class Course {
     'title': title,
     'targetLanguage': targetLanguage,
     'nativeLanguage': nativeLanguage,
+    if (targetLocale != null) 'targetLocale': targetLocale,
     'words': words.map((word) => word.toJson()).toList(),
     'units': units.map((unit) => unit.toJson()).toList(),
   };
