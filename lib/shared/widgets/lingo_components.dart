@@ -299,26 +299,43 @@ class ChatBubble extends StatelessWidget {
 
 /// Shows a real target, never an invented elapsed-minutes percentage.
 class DailyGoalCard extends StatelessWidget {
-  const DailyGoalCard({super.key, required this.minutes, required this.label});
+  const DailyGoalCard({
+    super.key,
+    required this.minutes,
+    required this.label,
+    this.detail,
+    this.progress = 0,
+    this.complete = false,
+  });
   final int minutes;
   final String label;
+  final String? detail;
+  final double progress;
+  final bool complete;
   @override
   Widget build(BuildContext context) => LingoPanel(
     child: Row(
       children: [
         Expanded(
-          child: Text(label, style: Theme.of(context).textTheme.titleLarge),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: Theme.of(context).textTheme.titleLarge),
+              if (detail != null) Text(detail!),
+            ],
+          ),
         ),
         const SizedBox(width: LingoSpace.s16),
         Semantics(
-          label: context.l10n.text('goalTarget'),
+          label: label,
+          value: '${(progress * 100).round()}%',
           child: SizedBox.square(
             dimension: LingoSpace.node,
             child: CustomPaint(
-              painter: _GoalRing(Theme.of(context).colorScheme),
+              painter: _GoalRing(Theme.of(context).colorScheme, progress),
               child: Center(
                 child: Icon(
-                  Icons.schedule,
+                  complete ? Icons.check : Icons.bolt,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
@@ -331,7 +348,8 @@ class DailyGoalCard extends StatelessWidget {
 }
 
 class _GoalRing extends CustomPainter {
-  const _GoalRing(this.colors);
+  const _GoalRing(this.colors, this.progress);
+  final double progress;
   final ColorScheme colors;
   @override
   void paint(Canvas canvas, Size size) {
@@ -352,8 +370,24 @@ class _GoalRing extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = LingoSpace.border,
     );
+    final arc = Rect.fromCircle(
+      center: rect.center,
+      radius: size.shortestSide / 2 - LingoSpace.s8,
+    );
+    canvas.drawArc(
+      arc,
+      -math.pi / 2,
+      math.pi * 2 * progress.clamp(0, 1),
+      false,
+      Paint()
+        ..color = colors.onSurface
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = LingoSpace.s8
+        ..strokeCap = StrokeCap.round,
+    );
   }
 
   @override
-  bool shouldRepaint(_GoalRing oldDelegate) => oldDelegate.colors != colors;
+  bool shouldRepaint(_GoalRing oldDelegate) =>
+      oldDelegate.colors != colors || oldDelegate.progress != progress;
 }
