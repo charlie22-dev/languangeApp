@@ -1,3 +1,4 @@
+import '../../../shared/widgets/audio_speaker_button.dart';
 import '../../../shared/widgets/lingo_components.dart';
 import '../../../core/localization/lingo_localizations.dart';
 import '../../../core/theme/lingo_tokens.dart';
@@ -115,6 +116,12 @@ class _ReviewCardContent extends ConsumerWidget {
           label: context.l10n.text('uiafc2256d66'),
         ),
         const SizedBox(height: LingoSpace.s24),
+        AudioSpeakerButton(
+          key: ValueKey('audio-${session.currentCard!.id}'),
+          text: session.currentCard!.text,
+          audioUrl: session.currentCard!.audioUrl,
+          enabled: !session.saving,
+        ),
         FlippableFlashcard(
           key: ValueKey(session.currentCard!.id),
           word: session.currentCard!,
