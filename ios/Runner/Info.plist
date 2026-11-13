@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Use your microphone to practice speaking lesson phrases. You can skip speaking exercises.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Convert your spoken practice phrase to text so you can compare it with the lesson. Your device may use its speech recognition provider.</string>
 </dict>
 </plist>
