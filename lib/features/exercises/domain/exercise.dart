@@ -12,11 +12,105 @@ sealed class Exercise {
       'matchPairs' => MatchPairs.fromJson(json),
       'fillInBlank' => FillInBlank.fromJson(json),
       'typeTranslation' => TypeTranslation.fromJson(json),
+      'listening' => Listening.fromJson(json),
+      'speaking' => Speaking.fromJson(json),
       final type => throw FormatException('Unknown exercise type $type ($id)'),
     };
   }
 
   JsonMap toJson();
+}
+
+final class Listening extends Exercise {
+  Listening({
+    required super.id,
+    required this.audioText,
+    this.audioUrl,
+    required List<String> acceptedAnswers,
+    List<String> options = const [],
+  }) : acceptedAnswers = List.unmodifiable(acceptedAnswers),
+       options = List.unmodifiable(options) {
+    if (audioText.trim().isEmpty ||
+        acceptedAnswers.isEmpty ||
+        acceptedAnswers.any((s) => s.trim().isEmpty) ||
+        (options.isNotEmpty &&
+            (options.length < 2 || !options.any(acceptedAnswers.contains)))) {
+      throw const FormatException('Invalid listening answers/options');
+    }
+    JsonReader.unique(options, 'listening option');
+  }
+  final String audioText;
+  final String? audioUrl;
+  final List<String> acceptedAnswers, options;
+  factory Listening.fromJson(JsonMap json) => Listening(
+    id: JsonReader.text(json, 'id'),
+    audioText: JsonReader.text(json, 'audioText'),
+    audioUrl: json['audioUrl'] == null
+        ? null
+        : JsonReader.text(json, 'audioUrl'),
+    acceptedAnswers: JsonReader.strings(json, 'acceptedAnswers'),
+    options: json['options'] == null
+        ? const []
+        : JsonReader.strings(json, 'options'),
+  );
+  @override
+  JsonMap toJson() => {
+    'id': id,
+    'type': 'listening',
+    'audioText': audioText,
+    'acceptedAnswers': acceptedAnswers.toList(),
+    if (options.isNotEmpty) 'options': options.toList(),
+    if (audioUrl != null) 'audioUrl': audioUrl,
+  };
+}
+
+final class Speaking extends Exercise {
+  Speaking({
+    required super.id,
+    required this.phrase,
+    this.audioUrl,
+    this.minimumScore = .8,
+    List<String> acceptedAnswers = const [],
+  }) : acceptedAnswers = List.unmodifiable(acceptedAnswers) {
+    if (acceptedAnswers.any((answer) => answer.trim().isEmpty) ||
+        phrase.trim().isEmpty ||
+        phrase.length > 300 ||
+        !minimumScore.isFinite ||
+        minimumScore < 0 ||
+        minimumScore > 1) {
+      throw const FormatException('Invalid speaking phrase or threshold');
+    }
+  }
+  final String phrase;
+  final String? audioUrl;
+  final double minimumScore;
+  final List<String> acceptedAnswers;
+  factory Speaking.fromJson(JsonMap json) {
+    final score = json['minimumScore'];
+    if (score != null && score is! num) {
+      throw const FormatException('Invalid minimumScore');
+    }
+    return Speaking(
+      id: JsonReader.text(json, 'id'),
+      phrase: JsonReader.text(json, 'phrase'),
+      audioUrl: json['audioUrl'] == null
+          ? null
+          : JsonReader.text(json, 'audioUrl'),
+      minimumScore: (score as num?)?.toDouble() ?? .8,
+      acceptedAnswers: json['acceptedAnswers'] == null
+          ? const []
+          : JsonReader.strings(json, 'acceptedAnswers'),
+    );
+  }
+  @override
+  JsonMap toJson() => {
+    'id': id,
+    'type': 'speaking',
+    'phrase': phrase,
+    'minimumScore': minimumScore,
+    if (acceptedAnswers.isNotEmpty) 'acceptedAnswers': acceptedAnswers.toList(),
+    if (audioUrl != null) 'audioUrl': audioUrl,
+  };
 }
 
 final class MultipleChoice extends Exercise {
