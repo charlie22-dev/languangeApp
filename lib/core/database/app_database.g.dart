@@ -2217,6 +2217,972 @@ class DailyActivitiesCompanion extends UpdateCompanion<DailyActivityRow> {
   }
 }
 
+class $ChatEntriesTable extends ChatEntries
+    with TableInfo<$ChatEntriesTable, ChatEntryRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ChatEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _scenarioMeta = const VerificationMeta(
+    'scenario',
+  );
+  @override
+  late final GeneratedColumn<String> scenario = GeneratedColumn<String>(
+    'scenario',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _contentMeta = const VerificationMeta(
+    'content',
+  );
+  @override
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+    'content',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('sent'),
+  );
+  static const VerificationMeta _metadataMeta = const VerificationMeta(
+    'metadata',
+  );
+  @override
+  late final GeneratedColumn<String> metadata = GeneratedColumn<String>(
+    'metadata',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('{}'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    scenario,
+    role,
+    content,
+    status,
+    metadata,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'chat_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ChatEntryRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('scenario')) {
+      context.handle(
+        _scenarioMeta,
+        scenario.isAcceptableOrUnknown(data['scenario']!, _scenarioMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_scenarioMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('content')) {
+      context.handle(
+        _contentMeta,
+        content.isAcceptableOrUnknown(data['content']!, _contentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('metadata')) {
+      context.handle(
+        _metadataMeta,
+        metadata.isAcceptableOrUnknown(data['metadata']!, _metadataMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ChatEntryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ChatEntryRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      scenario: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}scenario'],
+      )!,
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      content: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}content'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      metadata: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}metadata'],
+      )!,
+    );
+  }
+
+  @override
+  $ChatEntriesTable createAlias(String alias) {
+    return $ChatEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
+  final int id;
+  final String scenario;
+  final String role;
+  final String content;
+  final String status;
+  final String metadata;
+  const ChatEntryRow({
+    required this.id,
+    required this.scenario,
+    required this.role,
+    required this.content,
+    required this.status,
+    required this.metadata,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['scenario'] = Variable<String>(scenario);
+    map['role'] = Variable<String>(role);
+    map['content'] = Variable<String>(content);
+    map['status'] = Variable<String>(status);
+    map['metadata'] = Variable<String>(metadata);
+    return map;
+  }
+
+  ChatEntriesCompanion toCompanion(bool nullToAbsent) {
+    return ChatEntriesCompanion(
+      id: Value(id),
+      scenario: Value(scenario),
+      role: Value(role),
+      content: Value(content),
+      status: Value(status),
+      metadata: Value(metadata),
+    );
+  }
+
+  factory ChatEntryRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ChatEntryRow(
+      id: serializer.fromJson<int>(json['id']),
+      scenario: serializer.fromJson<String>(json['scenario']),
+      role: serializer.fromJson<String>(json['role']),
+      content: serializer.fromJson<String>(json['content']),
+      status: serializer.fromJson<String>(json['status']),
+      metadata: serializer.fromJson<String>(json['metadata']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'scenario': serializer.toJson<String>(scenario),
+      'role': serializer.toJson<String>(role),
+      'content': serializer.toJson<String>(content),
+      'status': serializer.toJson<String>(status),
+      'metadata': serializer.toJson<String>(metadata),
+    };
+  }
+
+  ChatEntryRow copyWith({
+    int? id,
+    String? scenario,
+    String? role,
+    String? content,
+    String? status,
+    String? metadata,
+  }) => ChatEntryRow(
+    id: id ?? this.id,
+    scenario: scenario ?? this.scenario,
+    role: role ?? this.role,
+    content: content ?? this.content,
+    status: status ?? this.status,
+    metadata: metadata ?? this.metadata,
+  );
+  ChatEntryRow copyWithCompanion(ChatEntriesCompanion data) {
+    return ChatEntryRow(
+      id: data.id.present ? data.id.value : this.id,
+      scenario: data.scenario.present ? data.scenario.value : this.scenario,
+      role: data.role.present ? data.role.value : this.role,
+      content: data.content.present ? data.content.value : this.content,
+      status: data.status.present ? data.status.value : this.status,
+      metadata: data.metadata.present ? data.metadata.value : this.metadata,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatEntryRow(')
+          ..write('id: $id, ')
+          ..write('scenario: $scenario, ')
+          ..write('role: $role, ')
+          ..write('content: $content, ')
+          ..write('status: $status, ')
+          ..write('metadata: $metadata')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, scenario, role, content, status, metadata);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChatEntryRow &&
+          other.id == this.id &&
+          other.scenario == this.scenario &&
+          other.role == this.role &&
+          other.content == this.content &&
+          other.status == this.status &&
+          other.metadata == this.metadata);
+}
+
+class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
+  final Value<int> id;
+  final Value<String> scenario;
+  final Value<String> role;
+  final Value<String> content;
+  final Value<String> status;
+  final Value<String> metadata;
+  const ChatEntriesCompanion({
+    this.id = const Value.absent(),
+    this.scenario = const Value.absent(),
+    this.role = const Value.absent(),
+    this.content = const Value.absent(),
+    this.status = const Value.absent(),
+    this.metadata = const Value.absent(),
+  });
+  ChatEntriesCompanion.insert({
+    this.id = const Value.absent(),
+    required String scenario,
+    required String role,
+    required String content,
+    this.status = const Value.absent(),
+    this.metadata = const Value.absent(),
+  }) : scenario = Value(scenario),
+       role = Value(role),
+       content = Value(content);
+  static Insertable<ChatEntryRow> custom({
+    Expression<int>? id,
+    Expression<String>? scenario,
+    Expression<String>? role,
+    Expression<String>? content,
+    Expression<String>? status,
+    Expression<String>? metadata,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (scenario != null) 'scenario': scenario,
+      if (role != null) 'role': role,
+      if (content != null) 'content': content,
+      if (status != null) 'status': status,
+      if (metadata != null) 'metadata': metadata,
+    });
+  }
+
+  ChatEntriesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? scenario,
+    Value<String>? role,
+    Value<String>? content,
+    Value<String>? status,
+    Value<String>? metadata,
+  }) {
+    return ChatEntriesCompanion(
+      id: id ?? this.id,
+      scenario: scenario ?? this.scenario,
+      role: role ?? this.role,
+      content: content ?? this.content,
+      status: status ?? this.status,
+      metadata: metadata ?? this.metadata,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (scenario.present) {
+      map['scenario'] = Variable<String>(scenario.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (metadata.present) {
+      map['metadata'] = Variable<String>(metadata.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('scenario: $scenario, ')
+          ..write('role: $role, ')
+          ..write('content: $content, ')
+          ..write('status: $status, ')
+          ..write('metadata: $metadata')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SavedVocabularyTable extends SavedVocabulary
+    with TableInfo<$SavedVocabularyTable, SavedVocabularyRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SavedVocabularyTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _wordIdMeta = const VerificationMeta('wordId');
+  @override
+  late final GeneratedColumn<String> wordId = GeneratedColumn<String>(
+    'word_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _courseIdMeta = const VerificationMeta(
+    'courseId',
+  );
+  @override
+  late final GeneratedColumn<String> courseId = GeneratedColumn<String>(
+    'course_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _wordTextMeta = const VerificationMeta(
+    'wordText',
+  );
+  @override
+  late final GeneratedColumn<String> wordText = GeneratedColumn<String>(
+    'text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _translationMeta = const VerificationMeta(
+    'translation',
+  );
+  @override
+  late final GeneratedColumn<String> translation = GeneratedColumn<String>(
+    'translation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _exampleMeta = const VerificationMeta(
+    'example',
+  );
+  @override
+  late final GeneratedColumn<String> example = GeneratedColumn<String>(
+    'example',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _exampleTranslationMeta =
+      const VerificationMeta('exampleTranslation');
+  @override
+  late final GeneratedColumn<String> exampleTranslation =
+      GeneratedColumn<String>(
+        'example_translation',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    wordId,
+    courseId,
+    wordText,
+    translation,
+    example,
+    exampleTranslation,
+    deleted,
+    updatedAt,
+    dirty,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'saved_vocabulary';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SavedVocabularyRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('word_id')) {
+      context.handle(
+        _wordIdMeta,
+        wordId.isAcceptableOrUnknown(data['word_id']!, _wordIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_wordIdMeta);
+    }
+    if (data.containsKey('course_id')) {
+      context.handle(
+        _courseIdMeta,
+        courseId.isAcceptableOrUnknown(data['course_id']!, _courseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_courseIdMeta);
+    }
+    if (data.containsKey('text')) {
+      context.handle(
+        _wordTextMeta,
+        wordText.isAcceptableOrUnknown(data['text']!, _wordTextMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_wordTextMeta);
+    }
+    if (data.containsKey('translation')) {
+      context.handle(
+        _translationMeta,
+        translation.isAcceptableOrUnknown(
+          data['translation']!,
+          _translationMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_translationMeta);
+    }
+    if (data.containsKey('example')) {
+      context.handle(
+        _exampleMeta,
+        example.isAcceptableOrUnknown(data['example']!, _exampleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exampleMeta);
+    }
+    if (data.containsKey('example_translation')) {
+      context.handle(
+        _exampleTranslationMeta,
+        exampleTranslation.isAcceptableOrUnknown(
+          data['example_translation']!,
+          _exampleTranslationMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_exampleTranslationMeta);
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {wordId};
+  @override
+  SavedVocabularyRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SavedVocabularyRow(
+      wordId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}word_id'],
+      )!,
+      courseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}course_id'],
+      )!,
+      wordText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}text'],
+      )!,
+      translation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}translation'],
+      )!,
+      example: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}example'],
+      )!,
+      exampleTranslation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}example_translation'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
+    );
+  }
+
+  @override
+  $SavedVocabularyTable createAlias(String alias) {
+    return $SavedVocabularyTable(attachedDatabase, alias);
+  }
+}
+
+class SavedVocabularyRow extends DataClass
+    implements Insertable<SavedVocabularyRow> {
+  final String wordId;
+  final String courseId;
+  final String wordText;
+  final String translation;
+  final String example;
+  final String exampleTranslation;
+  final bool deleted;
+  final int updatedAt;
+  final bool dirty;
+  const SavedVocabularyRow({
+    required this.wordId,
+    required this.courseId,
+    required this.wordText,
+    required this.translation,
+    required this.example,
+    required this.exampleTranslation,
+    required this.deleted,
+    required this.updatedAt,
+    required this.dirty,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['word_id'] = Variable<String>(wordId);
+    map['course_id'] = Variable<String>(courseId);
+    map['text'] = Variable<String>(wordText);
+    map['translation'] = Variable<String>(translation);
+    map['example'] = Variable<String>(example);
+    map['example_translation'] = Variable<String>(exampleTranslation);
+    map['deleted'] = Variable<bool>(deleted);
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['dirty'] = Variable<bool>(dirty);
+    return map;
+  }
+
+  SavedVocabularyCompanion toCompanion(bool nullToAbsent) {
+    return SavedVocabularyCompanion(
+      wordId: Value(wordId),
+      courseId: Value(courseId),
+      wordText: Value(wordText),
+      translation: Value(translation),
+      example: Value(example),
+      exampleTranslation: Value(exampleTranslation),
+      deleted: Value(deleted),
+      updatedAt: Value(updatedAt),
+      dirty: Value(dirty),
+    );
+  }
+
+  factory SavedVocabularyRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SavedVocabularyRow(
+      wordId: serializer.fromJson<String>(json['wordId']),
+      courseId: serializer.fromJson<String>(json['courseId']),
+      wordText: serializer.fromJson<String>(json['wordText']),
+      translation: serializer.fromJson<String>(json['translation']),
+      example: serializer.fromJson<String>(json['example']),
+      exampleTranslation: serializer.fromJson<String>(
+        json['exampleTranslation'],
+      ),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'wordId': serializer.toJson<String>(wordId),
+      'courseId': serializer.toJson<String>(courseId),
+      'wordText': serializer.toJson<String>(wordText),
+      'translation': serializer.toJson<String>(translation),
+      'example': serializer.toJson<String>(example),
+      'exampleTranslation': serializer.toJson<String>(exampleTranslation),
+      'deleted': serializer.toJson<bool>(deleted),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'dirty': serializer.toJson<bool>(dirty),
+    };
+  }
+
+  SavedVocabularyRow copyWith({
+    String? wordId,
+    String? courseId,
+    String? wordText,
+    String? translation,
+    String? example,
+    String? exampleTranslation,
+    bool? deleted,
+    int? updatedAt,
+    bool? dirty,
+  }) => SavedVocabularyRow(
+    wordId: wordId ?? this.wordId,
+    courseId: courseId ?? this.courseId,
+    wordText: wordText ?? this.wordText,
+    translation: translation ?? this.translation,
+    example: example ?? this.example,
+    exampleTranslation: exampleTranslation ?? this.exampleTranslation,
+    deleted: deleted ?? this.deleted,
+    updatedAt: updatedAt ?? this.updatedAt,
+    dirty: dirty ?? this.dirty,
+  );
+  SavedVocabularyRow copyWithCompanion(SavedVocabularyCompanion data) {
+    return SavedVocabularyRow(
+      wordId: data.wordId.present ? data.wordId.value : this.wordId,
+      courseId: data.courseId.present ? data.courseId.value : this.courseId,
+      wordText: data.wordText.present ? data.wordText.value : this.wordText,
+      translation: data.translation.present
+          ? data.translation.value
+          : this.translation,
+      example: data.example.present ? data.example.value : this.example,
+      exampleTranslation: data.exampleTranslation.present
+          ? data.exampleTranslation.value
+          : this.exampleTranslation,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SavedVocabularyRow(')
+          ..write('wordId: $wordId, ')
+          ..write('courseId: $courseId, ')
+          ..write('wordText: $wordText, ')
+          ..write('translation: $translation, ')
+          ..write('example: $example, ')
+          ..write('exampleTranslation: $exampleTranslation, ')
+          ..write('deleted: $deleted, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    wordId,
+    courseId,
+    wordText,
+    translation,
+    example,
+    exampleTranslation,
+    deleted,
+    updatedAt,
+    dirty,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SavedVocabularyRow &&
+          other.wordId == this.wordId &&
+          other.courseId == this.courseId &&
+          other.wordText == this.wordText &&
+          other.translation == this.translation &&
+          other.example == this.example &&
+          other.exampleTranslation == this.exampleTranslation &&
+          other.deleted == this.deleted &&
+          other.updatedAt == this.updatedAt &&
+          other.dirty == this.dirty);
+}
+
+class SavedVocabularyCompanion extends UpdateCompanion<SavedVocabularyRow> {
+  final Value<String> wordId;
+  final Value<String> courseId;
+  final Value<String> wordText;
+  final Value<String> translation;
+  final Value<String> example;
+  final Value<String> exampleTranslation;
+  final Value<bool> deleted;
+  final Value<int> updatedAt;
+  final Value<bool> dirty;
+  final Value<int> rowid;
+  const SavedVocabularyCompanion({
+    this.wordId = const Value.absent(),
+    this.courseId = const Value.absent(),
+    this.wordText = const Value.absent(),
+    this.translation = const Value.absent(),
+    this.example = const Value.absent(),
+    this.exampleTranslation = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SavedVocabularyCompanion.insert({
+    required String wordId,
+    required String courseId,
+    required String wordText,
+    required String translation,
+    required String example,
+    required String exampleTranslation,
+    this.deleted = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : wordId = Value(wordId),
+       courseId = Value(courseId),
+       wordText = Value(wordText),
+       translation = Value(translation),
+       example = Value(example),
+       exampleTranslation = Value(exampleTranslation);
+  static Insertable<SavedVocabularyRow> custom({
+    Expression<String>? wordId,
+    Expression<String>? courseId,
+    Expression<String>? wordText,
+    Expression<String>? translation,
+    Expression<String>? example,
+    Expression<String>? exampleTranslation,
+    Expression<bool>? deleted,
+    Expression<int>? updatedAt,
+    Expression<bool>? dirty,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (wordId != null) 'word_id': wordId,
+      if (courseId != null) 'course_id': courseId,
+      if (wordText != null) 'text': wordText,
+      if (translation != null) 'translation': translation,
+      if (example != null) 'example': example,
+      if (exampleTranslation != null) 'example_translation': exampleTranslation,
+      if (deleted != null) 'deleted': deleted,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (dirty != null) 'dirty': dirty,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SavedVocabularyCompanion copyWith({
+    Value<String>? wordId,
+    Value<String>? courseId,
+    Value<String>? wordText,
+    Value<String>? translation,
+    Value<String>? example,
+    Value<String>? exampleTranslation,
+    Value<bool>? deleted,
+    Value<int>? updatedAt,
+    Value<bool>? dirty,
+    Value<int>? rowid,
+  }) {
+    return SavedVocabularyCompanion(
+      wordId: wordId ?? this.wordId,
+      courseId: courseId ?? this.courseId,
+      wordText: wordText ?? this.wordText,
+      translation: translation ?? this.translation,
+      example: example ?? this.example,
+      exampleTranslation: exampleTranslation ?? this.exampleTranslation,
+      deleted: deleted ?? this.deleted,
+      updatedAt: updatedAt ?? this.updatedAt,
+      dirty: dirty ?? this.dirty,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (wordId.present) {
+      map['word_id'] = Variable<String>(wordId.value);
+    }
+    if (courseId.present) {
+      map['course_id'] = Variable<String>(courseId.value);
+    }
+    if (wordText.present) {
+      map['text'] = Variable<String>(wordText.value);
+    }
+    if (translation.present) {
+      map['translation'] = Variable<String>(translation.value);
+    }
+    if (example.present) {
+      map['example'] = Variable<String>(example.value);
+    }
+    if (exampleTranslation.present) {
+      map['example_translation'] = Variable<String>(exampleTranslation.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SavedVocabularyCompanion(')
+          ..write('wordId: $wordId, ')
+          ..write('courseId: $courseId, ')
+          ..write('wordText: $wordText, ')
+          ..write('translation: $translation, ')
+          ..write('example: $example, ')
+          ..write('exampleTranslation: $exampleTranslation, ')
+          ..write('deleted: $deleted, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -2226,6 +3192,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
   late final $LocalProfilesTable localProfiles = $LocalProfilesTable(this);
   late final $DailyActivitiesTable dailyActivities = $DailyActivitiesTable(
+    this,
+  );
+  late final $ChatEntriesTable chatEntries = $ChatEntriesTable(this);
+  late final $SavedVocabularyTable savedVocabulary = $SavedVocabularyTable(
     this,
   );
   @override
@@ -2239,6 +3209,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     syncMetadata,
     localProfiles,
     dailyActivities,
+    chatEntries,
+    savedVocabulary,
   ];
 }
 
@@ -3524,6 +4496,527 @@ typedef $$DailyActivitiesTableProcessedTableManager =
       DailyActivityRow,
       PrefetchHooks Function()
     >;
+typedef $$ChatEntriesTableCreateCompanionBuilder =
+    ChatEntriesCompanion Function({
+      Value<int> id,
+      required String scenario,
+      required String role,
+      required String content,
+      Value<String> status,
+      Value<String> metadata,
+    });
+typedef $$ChatEntriesTableUpdateCompanionBuilder =
+    ChatEntriesCompanion Function({
+      Value<int> id,
+      Value<String> scenario,
+      Value<String> role,
+      Value<String> content,
+      Value<String> status,
+      Value<String> metadata,
+    });
+
+class $$ChatEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $ChatEntriesTable> {
+  $$ChatEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scenario => $composableBuilder(
+    column: $table.scenario,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get metadata => $composableBuilder(
+    column: $table.metadata,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ChatEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ChatEntriesTable> {
+  $$ChatEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scenario => $composableBuilder(
+    column: $table.scenario,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get content => $composableBuilder(
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get metadata => $composableBuilder(
+    column: $table.metadata,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ChatEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ChatEntriesTable> {
+  $$ChatEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get scenario =>
+      $composableBuilder(column: $table.scenario, builder: (column) => column);
+
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<String> get content =>
+      $composableBuilder(column: $table.content, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get metadata =>
+      $composableBuilder(column: $table.metadata, builder: (column) => column);
+}
+
+class $$ChatEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ChatEntriesTable,
+          ChatEntryRow,
+          $$ChatEntriesTableFilterComposer,
+          $$ChatEntriesTableOrderingComposer,
+          $$ChatEntriesTableAnnotationComposer,
+          $$ChatEntriesTableCreateCompanionBuilder,
+          $$ChatEntriesTableUpdateCompanionBuilder,
+          (
+            ChatEntryRow,
+            BaseReferences<_$AppDatabase, $ChatEntriesTable, ChatEntryRow>,
+          ),
+          ChatEntryRow,
+          PrefetchHooks Function()
+        > {
+  $$ChatEntriesTableTableManager(_$AppDatabase db, $ChatEntriesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ChatEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ChatEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ChatEntriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> scenario = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<String> content = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> metadata = const Value.absent(),
+              }) => ChatEntriesCompanion(
+                id: id,
+                scenario: scenario,
+                role: role,
+                content: content,
+                status: status,
+                metadata: metadata,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String scenario,
+                required String role,
+                required String content,
+                Value<String> status = const Value.absent(),
+                Value<String> metadata = const Value.absent(),
+              }) => ChatEntriesCompanion.insert(
+                id: id,
+                scenario: scenario,
+                role: role,
+                content: content,
+                status: status,
+                metadata: metadata,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ChatEntriesTable, ChatEntryRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ChatEntriesTable,
+                    ChatEntryRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ChatEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ChatEntriesTable,
+      ChatEntryRow,
+      $$ChatEntriesTableFilterComposer,
+      $$ChatEntriesTableOrderingComposer,
+      $$ChatEntriesTableAnnotationComposer,
+      $$ChatEntriesTableCreateCompanionBuilder,
+      $$ChatEntriesTableUpdateCompanionBuilder,
+      (
+        ChatEntryRow,
+        BaseReferences<_$AppDatabase, $ChatEntriesTable, ChatEntryRow>,
+      ),
+      ChatEntryRow,
+      PrefetchHooks Function()
+    >;
+typedef $$SavedVocabularyTableCreateCompanionBuilder =
+    SavedVocabularyCompanion Function({
+      required String wordId,
+      required String courseId,
+      required String wordText,
+      required String translation,
+      required String example,
+      required String exampleTranslation,
+      Value<bool> deleted,
+      Value<int> updatedAt,
+      Value<bool> dirty,
+      Value<int> rowid,
+    });
+typedef $$SavedVocabularyTableUpdateCompanionBuilder =
+    SavedVocabularyCompanion Function({
+      Value<String> wordId,
+      Value<String> courseId,
+      Value<String> wordText,
+      Value<String> translation,
+      Value<String> example,
+      Value<String> exampleTranslation,
+      Value<bool> deleted,
+      Value<int> updatedAt,
+      Value<bool> dirty,
+      Value<int> rowid,
+    });
+
+class $$SavedVocabularyTableFilterComposer
+    extends Composer<_$AppDatabase, $SavedVocabularyTable> {
+  $$SavedVocabularyTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get wordId => $composableBuilder(
+    column: $table.wordId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get courseId => $composableBuilder(
+    column: $table.courseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get wordText => $composableBuilder(
+    column: $table.wordText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get translation => $composableBuilder(
+    column: $table.translation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get example => $composableBuilder(
+    column: $table.example,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exampleTranslation => $composableBuilder(
+    column: $table.exampleTranslation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SavedVocabularyTableOrderingComposer
+    extends Composer<_$AppDatabase, $SavedVocabularyTable> {
+  $$SavedVocabularyTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get wordId => $composableBuilder(
+    column: $table.wordId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get courseId => $composableBuilder(
+    column: $table.courseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get wordText => $composableBuilder(
+    column: $table.wordText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get translation => $composableBuilder(
+    column: $table.translation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get example => $composableBuilder(
+    column: $table.example,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exampleTranslation => $composableBuilder(
+    column: $table.exampleTranslation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SavedVocabularyTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SavedVocabularyTable> {
+  $$SavedVocabularyTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get wordId =>
+      $composableBuilder(column: $table.wordId, builder: (column) => column);
+
+  GeneratedColumn<String> get courseId =>
+      $composableBuilder(column: $table.courseId, builder: (column) => column);
+
+  GeneratedColumn<String> get wordText =>
+      $composableBuilder(column: $table.wordText, builder: (column) => column);
+
+  GeneratedColumn<String> get translation => $composableBuilder(
+    column: $table.translation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get example =>
+      $composableBuilder(column: $table.example, builder: (column) => column);
+
+  GeneratedColumn<String> get exampleTranslation => $composableBuilder(
+    column: $table.exampleTranslation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
+}
+
+class $$SavedVocabularyTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SavedVocabularyTable,
+          SavedVocabularyRow,
+          $$SavedVocabularyTableFilterComposer,
+          $$SavedVocabularyTableOrderingComposer,
+          $$SavedVocabularyTableAnnotationComposer,
+          $$SavedVocabularyTableCreateCompanionBuilder,
+          $$SavedVocabularyTableUpdateCompanionBuilder,
+          (
+            SavedVocabularyRow,
+            BaseReferences<
+              _$AppDatabase,
+              $SavedVocabularyTable,
+              SavedVocabularyRow
+            >,
+          ),
+          SavedVocabularyRow,
+          PrefetchHooks Function()
+        > {
+  $$SavedVocabularyTableTableManager(
+    _$AppDatabase db,
+    $SavedVocabularyTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SavedVocabularyTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SavedVocabularyTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SavedVocabularyTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> wordId = const Value.absent(),
+                Value<String> courseId = const Value.absent(),
+                Value<String> wordText = const Value.absent(),
+                Value<String> translation = const Value.absent(),
+                Value<String> example = const Value.absent(),
+                Value<String> exampleTranslation = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SavedVocabularyCompanion(
+                wordId: wordId,
+                courseId: courseId,
+                wordText: wordText,
+                translation: translation,
+                example: example,
+                exampleTranslation: exampleTranslation,
+                deleted: deleted,
+                updatedAt: updatedAt,
+                dirty: dirty,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String wordId,
+                required String courseId,
+                required String wordText,
+                required String translation,
+                required String example,
+                required String exampleTranslation,
+                Value<bool> deleted = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SavedVocabularyCompanion.insert(
+                wordId: wordId,
+                courseId: courseId,
+                wordText: wordText,
+                translation: translation,
+                example: example,
+                exampleTranslation: exampleTranslation,
+                deleted: deleted,
+                updatedAt: updatedAt,
+                dirty: dirty,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SavedVocabularyTable, SavedVocabularyRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $SavedVocabularyTable,
+                    SavedVocabularyRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SavedVocabularyTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SavedVocabularyTable,
+      SavedVocabularyRow,
+      $$SavedVocabularyTableFilterComposer,
+      $$SavedVocabularyTableOrderingComposer,
+      $$SavedVocabularyTableAnnotationComposer,
+      $$SavedVocabularyTableCreateCompanionBuilder,
+      $$SavedVocabularyTableUpdateCompanionBuilder,
+      (
+        SavedVocabularyRow,
+        BaseReferences<
+          _$AppDatabase,
+          $SavedVocabularyTable,
+          SavedVocabularyRow
+        >,
+      ),
+      SavedVocabularyRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3540,4 +5033,8 @@ class $AppDatabaseManager {
       $$LocalProfilesTableTableManager(_db, _db.localProfiles);
   $$DailyActivitiesTableTableManager get dailyActivities =>
       $$DailyActivitiesTableTableManager(_db, _db.dailyActivities);
+  $$ChatEntriesTableTableManager get chatEntries =>
+      $$ChatEntriesTableTableManager(_db, _db.chatEntries);
+  $$SavedVocabularyTableTableManager get savedVocabulary =>
+      $$SavedVocabularyTableTableManager(_db, _db.savedVocabulary);
 }

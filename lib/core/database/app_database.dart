@@ -100,6 +100,31 @@ class LocalProfiles extends Table {
   List<String> get customConstraints => ['CHECK (id = 1)'];
 }
 
+@DataClassName('ChatEntryRow')
+class ChatEntries extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get scenario => text()();
+  TextColumn get role => text()();
+  TextColumn get content => text()();
+  TextColumn get status => text().withDefault(const Constant('sent'))();
+  TextColumn get metadata => text().withDefault(const Constant('{}'))();
+}
+
+@DataClassName('SavedVocabularyRow')
+class SavedVocabulary extends Table {
+  TextColumn get wordId => text()();
+  TextColumn get courseId => text()();
+  TextColumn get wordText => text().named('text')();
+  TextColumn get translation => text()();
+  TextColumn get example => text()();
+  TextColumn get exampleTranslation => text()();
+  BoolColumn get deleted => boolean().withDefault(const Constant(false))();
+  IntColumn get updatedAt => integer().withDefault(const Constant(0))();
+  BoolColumn get dirty => boolean().withDefault(const Constant(true))();
+  @override
+  Set<Column> get primaryKey => {wordId};
+}
+
 @DriftDatabase(
   tables: [
     LessonProgress,
@@ -108,6 +133,8 @@ class LocalProfiles extends Table {
     SyncMetadata,
     LocalProfiles,
     DailyActivities,
+    ChatEntries,
+    SavedVocabulary,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -129,7 +156,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -155,6 +182,10 @@ class AppDatabase extends _$AppDatabase {
         await migrator.addColumn(wordProgress, wordProgress.deleted);
         await migrator.createTable(dailyActivities);
         await customStatement('UPDATE user_stats SET longest_streak = streak');
+      }
+      if (from < 5) {
+        await migrator.createTable(chatEntries);
+        await migrator.createTable(savedVocabulary);
       }
     },
   );
