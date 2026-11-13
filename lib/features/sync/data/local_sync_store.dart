@@ -26,18 +26,27 @@ class LocalSyncStore {
         final statsQuery = database.select(database.userStats);
         final wordsQuery = database.select(database.wordProgress);
         final lessonsQuery = database.select(database.lessonProgress);
+        final activitiesQuery = database.select(database.dailyActivities);
         final profilesQuery = database.select(database.localProfiles);
         if (dirtyOnly) {
+          activitiesQuery.where((row) => row.dirty.equals(true));
           statsQuery.where((row) => row.dirty.equals(true));
           wordsQuery.where((row) => row.dirty.equals(true));
           lessonsQuery.where((row) => row.dirty.equals(true));
           profilesQuery.where((row) => row.dirty.equals(true));
         }
+        final activities = await activitiesQuery.get();
         final stats = await statsQuery.get();
         final words = await wordsQuery.get();
         final lessons = await lessonsQuery.get();
         final profiles = await profilesQuery.get();
         return SyncSnapshot([
+          for (final row in activities)
+            SyncRecord.fromJson(SyncKind.activity, {
+              'activity_date': row.activityDate,
+              'xp': row.xp,
+              'updated_at': row.updatedAt,
+            }),
           for (final row in profiles)
             SyncRecord.fromJson(SyncKind.profile, {
               'display_name': row.displayName,
@@ -47,12 +56,14 @@ class LocalSyncStore {
             SyncRecord.fromJson(SyncKind.stats, {
               'xp': row.xp,
               'streak': row.streak,
+              'longest_streak': row.longestStreak,
               'last_active_date': row.lastActiveDate?.toUtc().toIso8601String(),
               'updated_at': row.updatedAt,
             }),
           for (final row in words)
             SyncRecord.fromJson(SyncKind.word, {
               'word_id': row.wordId,
+              'deleted': row.deleted,
               'ease_factor': row.easeFactor,
               'interval_days': row.intervalDays,
               'repetitions': row.repetitions,
@@ -81,6 +92,27 @@ class LocalSyncStore {
           ? null
           : DateTime.parse(data[key] as String).toUtc();
       switch (row.kind) {
+        case SyncKind.activity:
+          final current = await (database.select(
+            database.dailyActivities,
+          )..where((r) => r.activityDate.equals(row.id))).getSingleOrNull();
+          if (!remoteWins(current?.updatedAt, row.updatedAt)) continue;
+          if (current != null &&
+              current.updatedAt == row.updatedAt &&
+              current.dirty == imported &&
+              current.xp == data['xp']) {
+            continue;
+          }
+          await database
+              .into(database.dailyActivities)
+              .insertOnConflictUpdate(
+                DailyActivitiesCompanion.insert(
+                  activityDate: row.id,
+                  xp: Value(data['xp'] as int),
+                  updatedAt: Value(row.updatedAt),
+                  dirty: Value(imported),
+                ),
+              );
         case SyncKind.profile:
           final current = await database
               .select(database.localProfiles)
@@ -112,6 +144,7 @@ class LocalSyncStore {
               current.dirty == imported &&
               current.xp == data['xp'] &&
               current.streak == data['streak'] &&
+              current.longestStreak == data['longest_streak'] &&
               current.lastActiveDate?.toUtc() == date('last_active_date')) {
             continue;
           }
@@ -122,6 +155,7 @@ class LocalSyncStore {
                   id: const Value(1),
                   xp: Value(data['xp'] as int),
                   streak: Value(data['streak'] as int),
+                  longestStreak: Value(data['longest_streak'] as int),
                   lastActiveDate: Value(date('last_active_date')),
                   updatedAt: Value(row.updatedAt),
                   dirty: Value(imported),
@@ -135,6 +169,7 @@ class LocalSyncStore {
           if (current != null &&
               current.updatedAt == row.updatedAt &&
               current.dirty == imported &&
+              current.deleted == data['deleted'] &&
               current.easeFactor == data['ease_factor'] &&
               current.intervalDays == data['interval_days'] &&
               current.repetitions == data['repetitions'] &&
@@ -146,6 +181,7 @@ class LocalSyncStore {
               .insertOnConflictUpdate(
                 WordProgressCompanion.insert(
                   wordId: row.id,
+                  deleted: Value(data['deleted'] as bool),
                   easeFactor: Value(data['ease_factor'] as double),
                   intervalDays: Value(data['interval_days'] as int),
                   repetitions: Value(data['repetitions'] as int),
@@ -248,12 +284,14 @@ class LocalSyncStore {
         '''SELECT 'stats' AS kind, CAST(id AS TEXT) AS row_id, updated_at, dirty FROM user_stats
            UNION ALL SELECT 'word', word_id, updated_at, dirty FROM word_progress
            UNION ALL SELECT 'lesson', lesson_id, updated_at, dirty FROM lesson_progress
+           UNION ALL SELECT 'activity', activity_date, updated_at, dirty FROM daily_activities
            UNION ALL SELECT 'profile', CAST(id AS TEXT), updated_at, dirty FROM local_profiles''',
         readsFrom: {
           database.userStats,
           database.wordProgress,
           database.lessonProgress,
           database.localProfiles,
+          database.dailyActivities,
         },
       )
       .watch()

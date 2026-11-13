@@ -1,6 +1,6 @@
 import '../../../core/utils/json_reader.dart';
 
-enum SyncKind { stats, word, lesson, profile }
+enum SyncKind { stats, word, lesson, profile, activity }
 
 final class SyncCursor {
   const SyncCursor({this.timestamp = 0, this.revision = 0});
@@ -52,19 +52,34 @@ final class SyncRecord {
         return SyncRecord._(kind, 'stats', stamp, {
           'xp': count('xp'),
           'streak': count('streak'),
+          'longest_streak': json['longest_streak'] == null
+              ? count('streak')
+              : count('longest_streak'),
           'last_active_date': date('last_active_date', optional: true),
         });
       case SyncKind.word:
+        if (json['deleted'] != null && json['deleted'] is! bool) {
+          throw const FormatException('Invalid deleted');
+        }
         final ease = json['ease_factor'];
         if (ease is! num || !ease.isFinite || ease < 1.3) {
           throw const FormatException('Invalid ease_factor');
         }
         return SyncRecord._(kind, JsonReader.text(json, 'word_id'), stamp, {
+          'deleted': json['deleted'] == true,
           'ease_factor': ease.toDouble(),
           'interval_days': count('interval_days'),
           'repetitions': count('repetitions'),
           'due_date': date('due_date'),
         });
+      case SyncKind.activity:
+        final day = JsonReader.text(json, 'activity_date');
+        final parsed = DateTime.tryParse(day);
+        if (parsed == null ||
+            parsed.toIso8601String().substring(0, 10) != day) {
+          throw const FormatException('Invalid activity_date');
+        }
+        return SyncRecord._(kind, day, stamp, {'xp': count('xp')});
       case SyncKind.lesson:
         final completed = json['completed'];
         final score = count('best_score');
@@ -82,6 +97,7 @@ final class SyncRecord {
   JsonMap toJson() => {
     if (kind == SyncKind.word) 'word_id': id,
     if (kind == SyncKind.lesson) 'lesson_id': id,
+    if (kind == SyncKind.activity) 'activity_date': id,
     ...data,
     'updated_at': updatedAt,
   };
@@ -125,6 +141,11 @@ final class SyncSnapshot {
 
     return SyncSnapshot(
       [
+        for (final value
+            in (json['activities'] == null
+                ? const []
+                : JsonReader.list(json, 'activities')))
+          record(SyncKind.activity, value),
         if (json['profile'] != null) record(SyncKind.profile, json['profile']),
         if (json['stats'] != null) record(SyncKind.stats, json['stats']),
         for (final value in JsonReader.list(json, 'words'))
