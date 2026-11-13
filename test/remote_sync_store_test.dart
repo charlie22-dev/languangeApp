@@ -115,20 +115,31 @@ void main() {
           'xp': 50,
           'updated_at': stamp,
         }),
+        SyncRecord.fromJson(SyncKind.vocabulary, {
+          'word_id': 'ai_example',
+          'course_id': 'japanese_basics',
+          'text': 'sample',
+          'translation': 'example',
+          'example': 'a sample sentence',
+          'example_translation': 'an example sentence',
+          'deleted': false,
+          'updated_at': stamp,
+        }),
       ]);
       final result = await store.exchange('A', snapshot, cursor: cursor);
-      expect(requests, hasLength(6));
+      expect(requests, hasLength(7));
       expect(
-        requests.take(5).map((r) => r.uri.queryParameters['on_conflict']),
+        requests.take(6).map((r) => r.uri.queryParameters['on_conflict']),
         [
           'user_id',
           'user_id,word_id',
           'user_id,lesson_id',
           'user_id',
           'user_id,activity_date',
+          'user_id,word_id',
         ],
       );
-      for (final request in requests.take(5)) {
+      for (final request in requests.take(6)) {
         expect(request.body[0]['user_id'], 'A');
         expect(
           DateTime.parse(request.body[0]['updated_at'] as String),
@@ -138,7 +149,7 @@ void main() {
       expect(requests.last.uri.path, '/rest/v1/rpc/pull_progress');
       expect(requests.last.body['p_since'], cursor.isoTimestamp);
       expect(requests.last.body['p_after_version'], 7);
-      expect(result.records, hasLength(5));
+      expect(result.records, hasLength(6));
       expect(result.cursor.revision, 8);
     },
   );
