@@ -6,6 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:myapp/shared/widgets/lingo_components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:myapp/features/activity/data/activity_providers.dart';
+import 'package:myapp/features/notifications/data/reminder_service.dart';
+
+import 'support/reminder_fixtures.dart';
+
 import 'package:myapp/app/app.dart';
 import 'package:myapp/features/auth/data/auth_repository.dart';
 import 'package:myapp/features/auth/domain/auth_models.dart';
@@ -40,11 +46,16 @@ class AppHarness {
     AuthRepository? authRepository,
     bool useRealAuth = false,
   }) {
+    SharedPreferences.setMockInitialValues({});
     this.course = course ?? sampleCourse();
     this.repository = repository ?? MemoryOnboardingRepository(saved: settings);
     database = AppDatabase.forTesting(NativeDatabase.memory());
     container = ProviderContainer(
       overrides: [
+        localTodayProvider.overrideWith(
+          (ref) => ref.watch(clockProvider)().toLocal(),
+        ),
+        reminderServiceProvider.overrideWithValue(TestReminderService()),
         onboardingRepositoryProvider.overrideWithValue(this.repository),
         appDatabaseProvider.overrideWithValue(database),
         syncServiceProvider.overrideWithValue(null),
@@ -165,7 +176,7 @@ void main() {
     await tapText(tester, 'Start learning');
     expect(harness.repository.saved!.courseId, 'ja_basics_en');
     expect(harness.repository.saved!.goalMinutes, 15);
-    expect(find.text('Your daily goal: 15 minutes'), findsOneWidget);
+    expect(find.text('Your 15-minute daily goal'), findsOneWidget);
     expect(find.byType(NavigationBar), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.runAsync(harness.close);
@@ -323,7 +334,13 @@ void main() {
         );
     await harness.database
         .update(harness.database.userStats)
-        .write(const UserStatsCompanion(xp: Value(120), streak: Value(3)));
+        .write(
+          UserStatsCompanion(
+            xp: const Value(120),
+            streak: const Value(3),
+            lastActiveDate: Value(DateTime.now()),
+          ),
+        );
     await tester.pumpAndSettle();
     final first = tester.widget<LessonPathNode>(
       find.byKey(const ValueKey('lesson-node-ja_greetings')),
@@ -359,7 +376,7 @@ void main() {
     expect(find.text('Your review deck is ready to grow.'), findsOneWidget);
     await tester.tap(find.widgetWithText(NavigationDestination, 'Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('Your account'), findsOneWidget);
+    expect(find.text('test@example.com'), findsOneWidget);
     final router = harness.container.read(appRouterProvider);
     router.go('/lesson/ja_people');
     await tester.pumpAndSettle();
