@@ -58,5 +58,6 @@ app.*.map.json
 
 # Local Supabase client configuration and CLI state
 config.local.json
+/assets/local/client.env
 /supabase/.temp/
 /supabase/.branches/
