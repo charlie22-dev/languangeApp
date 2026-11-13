@@ -98,10 +98,11 @@ void main() {
       await harness.container.read(appearanceProvider.notifier).select(mode);
       await mount(tester, harness);
       for (final path in ['/welcome', '/languages', '/daily-goal']) {
-        if (path == '/daily-goal')
+        if (path == '/daily-goal') {
           harness.container
               .read(onboardingFlowProvider.notifier)
               .selectCourse(harness.course.id);
+        }
         harness.container.read(appRouterProvider).go(path);
         await tester.pumpAndSettle();
         expect(harness.container.read(appRouterProvider).state.uri.path, path);
