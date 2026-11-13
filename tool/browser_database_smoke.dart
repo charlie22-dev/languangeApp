@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 
 import 'package:myapp/core/database/app_database.dart';
 import 'package:myapp/features/sync/data/local_sync_store.dart';
+import 'package:myapp/features/chat/data/chat_repository.dart';
+import 'package:myapp/features/chat/domain/chat_models.dart';
 
 void require(bool condition, String message) {
   if (!condition) throw StateError(message);
@@ -86,6 +88,38 @@ Future<void> checkBrowserDatabase() async {
       (await accountB.select(accountB.wordProgress).get()).isEmpty,
       'Words leaked to another account',
     );
+    await accountA.delete(accountA.chatEntries).go();
+    final chat = ChatRepository(accountA);
+    final user = await chat.addUser('hello', ChatScenario.introductions);
+    await chat.complete(
+      user,
+      TutorTurn(
+        reply: 'A tutor reply',
+        translation: 'A translation',
+        corrections: const [],
+        newWords: const [],
+      ),
+    );
+    await accountA
+        .into(accountA.savedVocabulary)
+        .insertOnConflictUpdate(
+          SavedVocabularyCompanion.insert(
+            wordId: 'browser-vocabulary',
+            courseId: 'browser-course',
+            wordText: 'word',
+            translation: 'translation',
+            example: 'example',
+            exampleTranslation: 'example translation',
+          ),
+        );
+    require(
+      (await accountB.select(accountB.chatEntries).get()).isEmpty,
+      'Chat leaked to another account',
+    );
+    require(
+      (await accountB.select(accountB.savedVocabulary).get()).isEmpty,
+      'Vocabulary leaked to another account',
+    );
   } finally {
     await accountA.close();
     await accountB.close();
@@ -108,6 +142,17 @@ Future<void> checkBrowserDatabase() async {
     require(
       (await reopened.select(reopened.dailyActivities).getSingle()).xp == 17,
       'Daily activity did not persist',
+    );
+    final messages = await ChatRepository(reopened)
+        .load(ChatScenario.introductions);
+    require(
+      messages.length == 2 && messages.last.translation == 'A translation',
+      'Chat did not persist',
+    );
+    require(
+      (await reopened.select(reopened.savedVocabulary).getSingle()).wordText ==
+          'word',
+      'Vocabulary did not persist',
     );
   } finally {
     await reopened.close();
