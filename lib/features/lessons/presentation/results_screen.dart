@@ -77,6 +77,11 @@ class ResultsScreen extends StatelessWidget {
                 'arg1': (result.attempts),
               }),
             ),
+            if (result.skippedCount > 0)
+              _ResultMetric(
+                label: context.l10n.text('skippedExercises'),
+                value: '${result.skippedCount}',
+              ),
             if (result.success)
               Text(
                 context.l10n.text('ui4f01e308ca', {
@@ -84,7 +89,8 @@ class ResultsScreen extends StatelessWidget {
                 }),
               ),
             const SizedBox(height: LingoSpace.s24),
-            if (result.success && session.saved) const _SavedStreak(),
+            if (result.success && session.saved && result.xp > 0)
+              const _SavedStreak(),
             if (session.saving)
               Semantics(
                 liveRegion: true,
