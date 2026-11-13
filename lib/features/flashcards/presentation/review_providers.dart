@@ -1,6 +1,7 @@
+import '../../chat/data/chat_vocabulary_providers.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../home/data/home_providers.dart';
 import '../../onboarding/data/course_catalog.dart';
 import '../data/review_repository.dart';
 import '../domain/review_session.dart';
@@ -15,7 +16,7 @@ final reviewOverviewProvider = StreamProvider.autoDispose<ReviewOverview>((
   ref,
 ) async* {
   final repository = ref.watch(reviewRepositoryProvider);
-  final course = await ref.watch(selectedCourseProvider.future);
+  final course = await ref.watch(reviewCourseProvider.future);
   if (!ref.mounted) return;
   // Backfill cards from lessons completed before Phase 5 was installed.
   await repository.enrollCompletedLessons(course);
@@ -33,7 +34,7 @@ class ReviewSessionController extends AsyncNotifier<ReviewSession> {
   @override
   Future<ReviewSession> build() async {
     final repository = ref.watch(reviewRepositoryProvider);
-    final course = await ref.watch(selectedCourseProvider.future);
+    final course = await ref.watch(reviewCourseProvider.future);
     await repository.enrollCompletedLessons(course);
     return ReviewSession(cards: await repository.loadDueCards(course));
   }
