@@ -7,6 +7,7 @@ import '../../../core/database/app_database.dart';
 import '../../../core/utils/clock.dart';
 import '../../../core/utils/sync_timestamp.dart';
 import '../../flashcards/data/word_enrollment.dart';
+import '../../activity/data/activity_repository.dart';
 import '../domain/lesson_session.dart';
 
 final lessonCompletionRepositoryProvider = Provider<LessonCompletionRepository>(
@@ -27,6 +28,7 @@ class LessonCompletionRepository {
     required List<String> wordIds,
   }) async {
     if (!result.success) return;
+    final now = clock();
     await database.transaction(() async {
       final previous =
           await (database.select(database.lessonProgress)
@@ -39,30 +41,15 @@ class LessonCompletionRepository {
               lessonId: result.lessonId,
               completed: const Value(true),
               bestScore: Value(max(previous?.bestScore ?? 0, result.score)),
-              completedAt: Value(previous?.completedAt ?? clock().toUtc()),
+              completedAt: Value(previous?.completedAt ?? now.toUtc()),
               updatedAt: Value(
-                nextSyncTimestamp(previous?.updatedAt ?? 0, clock()),
+                nextSyncTimestamp(previous?.updatedAt ?? 0, now),
               ),
               dirty: const Value(true),
             ),
           );
-      final stats = await (database.select(
-        database.userStats,
-      )..where((row) => row.id.equals(1))).getSingleOrNull();
-      if (stats == null) throw StateError('User stats row is missing');
-      final changed =
-          await (database.update(
-            database.userStats,
-          )..where((table) => table.id.equals(1))).write(
-            UserStatsCompanion.custom(
-              xp: database.userStats.xp + Constant(result.xp),
-              lastActiveDate: Constant(clock().toUtc()),
-              updatedAt: Constant(nextSyncTimestamp(stats.updatedAt, clock())),
-              dirty: const Constant(true),
-            ),
-          );
-      if (changed != 1) throw StateError('User stats row is missing');
-      await enrollWords(database, wordIds, clock());
+      await ActivityRepository(database).award(result.xp, now);
+      await enrollWords(database, wordIds, now);
     });
   }
 }
