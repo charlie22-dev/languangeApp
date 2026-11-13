@@ -11,6 +11,8 @@ import '../core/router/app_router.dart';
 import '../core/theme/app_theme.dart';
 import '../core/theme/lingo_font_license.dart';
 import '../features/sync/presentation/sync_providers.dart';
+import '../features/notifications/presentation/reminder_coordinator.dart';
+import '../features/activity/data/activity_providers.dart';
 
 class LanguageApp extends ConsumerWidget {
   const LanguageApp({super.key});
@@ -20,6 +22,7 @@ class LanguageApp extends ConsumerWidget {
     LingoFontLicense.register();
     final config = ref.watch(appConfigProvider);
     ref.watch(syncServiceProvider);
+    ref.watch(reminderCoordinatorProvider);
     return MaterialApp.router(
       title: config.appName,
       debugShowCheckedModeBanner: false,
@@ -64,6 +67,8 @@ class _SyncLifecycleState extends ConsumerState<_SyncLifecycle>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       ref.read(syncServiceProvider)?.request();
+      ref.invalidate(localTodayProvider);
+      ref.invalidate(reminderCoordinatorProvider);
     }
   }
 
