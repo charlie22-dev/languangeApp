@@ -1,3 +1,5 @@
+import 'support/audio_fixtures.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/core/router/app_router.dart';
@@ -44,8 +46,33 @@ Future<void> tapKey(WidgetTester tester, String key) async {
   await tester.pumpAndSettle();
 }
 
-Future<void> answerCorrectly(WidgetTester tester, Exercise exercise) async {
+Future<void> answerCorrectly(
+  WidgetTester tester,
+  Exercise exercise, {
+  FakeSpeechService? speech,
+}) async {
   switch (exercise) {
+    case Listening():
+      if (exercise.options.isEmpty) {
+        await tester.enterText(
+          find.byKey(const ValueKey('listening-input')),
+          exercise.acceptedAnswers.first,
+        );
+      } else {
+        await tapText(tester, exercise.acceptedAnswers.first);
+      }
+    case Speaking():
+      if (speech == null) throw StateError('A fake speech backend is required');
+      await tapText(tester, 'Start recording');
+      await tester.tap(
+        find.descendant(
+          of: find.byType(AlertDialog),
+          matching: find.widgetWithText(TextButton, 'Start recording'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      speech.result(exercise.phrase);
+      await tester.pumpAndSettle();
     case MultipleChoice():
       expect(find.byType(MultipleChoiceView), findsOneWidget);
       await tapKey(tester, 'choice-${exercise.correctIndex}');
@@ -108,9 +135,14 @@ void main() {
   );
 
   testWidgets(
-    'all four views finish the real course lesson and unlock the next',
+    'all six views finish the real course lesson and unlock the next',
     (tester) async {
-      final harness = AppHarness(settings: completedSettings());
+      final speech = FakeSpeechService();
+      final harness = AppHarness(
+        settings: completedSettings(),
+        audioService: fakeAudio(),
+        speechService: speech,
+      );
       await openLesson(tester, harness);
       final lesson = harness.course.units.first.lessons.first;
       expect(
@@ -120,11 +152,11 @@ void main() {
         isNull,
       );
       for (final exercise in lesson.exercises) {
-        await answerCorrectly(tester, exercise);
+        await answerCorrectly(tester, exercise, speech: speech);
       }
       expect(find.text('Lesson complete!'), findsOneWidget);
       expect(find.text('100%'), findsOneWidget);
-      expect(find.text('40 XP'), findsOneWidget);
+      expect(find.text('50 XP'), findsOneWidget);
       final session = harness.container.read(lessonControllerProvider(lesson));
       expect(session.saved, isTrue);
       final progress = await harness.database
@@ -135,10 +167,10 @@ void main() {
       expect(
         (await harness.database.select(harness.database.userStats).getSingle())
             .xp,
-        40,
+        50,
       );
       await tapText(tester, 'Continue');
-      expect(find.text('40 XP'), findsOneWidget);
+      expect(find.text('50 XP'), findsOneWidget);
       expect(
         tester
             .widget<LessonPathNode>(
