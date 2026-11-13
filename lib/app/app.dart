@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import '../features/audio/data/audio_service.dart';
+import '../features/audio/data/speech_service.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -65,6 +70,15 @@ class _SyncLifecycleState extends ConsumerState<_SyncLifecycle>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      if (ref.read(audioServiceProvider.exists)) {
+        unawaited(ref.read(audioServiceProvider).stop());
+      }
+      if (ref.read(speechServiceProvider.exists)) {
+        unawaited(ref.read(speechServiceProvider).cancel());
+      }
+    }
     if (state == AppLifecycleState.resumed) {
       ref.read(syncServiceProvider)?.request();
       ref.invalidate(localTodayProvider);
