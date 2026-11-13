@@ -48,7 +48,9 @@ class LessonCompletionRepository {
               dirty: const Value(true),
             ),
           );
-      await ActivityRepository(database).award(result.xp, now);
+      if (result.xp > 0) {
+        await ActivityRepository(database).award(result.xp, now);
+      }
       await enrollWords(database, wordIds, now);
     });
   }
