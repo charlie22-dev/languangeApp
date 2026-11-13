@@ -110,14 +110,25 @@ void main() {
           'display_name': 'Learner',
           'updated_at': stamp,
         }),
+        SyncRecord.fromJson(SyncKind.activity, {
+          'activity_date': '2026-11-13',
+          'xp': 50,
+          'updated_at': stamp,
+        }),
       ]);
       final result = await store.exchange('A', snapshot, cursor: cursor);
-      expect(requests, hasLength(5));
+      expect(requests, hasLength(6));
       expect(
-        requests.take(4).map((r) => r.uri.queryParameters['on_conflict']),
-        ['user_id', 'user_id,word_id', 'user_id,lesson_id', 'user_id'],
+        requests.take(5).map((r) => r.uri.queryParameters['on_conflict']),
+        [
+          'user_id',
+          'user_id,word_id',
+          'user_id,lesson_id',
+          'user_id',
+          'user_id,activity_date',
+        ],
       );
-      for (final request in requests.take(4)) {
+      for (final request in requests.take(5)) {
         expect(request.body[0]['user_id'], 'A');
         expect(
           DateTime.parse(request.body[0]['updated_at'] as String),
@@ -127,7 +138,7 @@ void main() {
       expect(requests.last.uri.path, '/rest/v1/rpc/pull_progress');
       expect(requests.last.body['p_since'], cursor.isoTimestamp);
       expect(requests.last.body['p_after_version'], 7);
-      expect(result.records, hasLength(4));
+      expect(result.records, hasLength(5));
       expect(result.cursor.revision, 8);
     },
   );
