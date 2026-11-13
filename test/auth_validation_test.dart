@@ -29,6 +29,15 @@ void main() {
       contains('Confirm your email'),
     );
     expect(authMessageForCode('over_email_send_rate_limit'), contains('wait'));
+    expect(
+      authMessageForCode('email_address_not_authorized'),
+      contains('email delivery'),
+    );
+    expect(authMessageForCode('email_send_failed'), contains('server'));
+    expect(
+      authMessageForCode('email_provider_disabled'),
+      contains('unavailable'),
+    );
     expect(authMessageForCode('network'), contains('connection'));
     expect(authMessageForCode('unknown'), contains('try again'));
   });
