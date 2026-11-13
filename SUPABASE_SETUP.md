@@ -313,6 +313,10 @@ progress is restored. No private server key is needed for these client tests.
 
 ## 9. Flutter and session behavior explained
 
+Phase 9 adds one migration, a server-only Groq secret and the `chat` Edge
+Function. Follow [PHASE9_IMPLEMENTATION.md](PHASE9_IMPLEMENTATION.md) after the
+Phase 6C and Phase 7 migrations. No LLM API key belongs in Flutter's config.
+
 main() calls WidgetsFlutterBinding.ensureInitialized() before Supabase.initialize:
 Flutter must prepare platform plugins before the SDK reads cached credentials.
 ProviderScope then supplies the initialized client to Riverpod. A provider is a
