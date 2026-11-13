@@ -514,6 +514,21 @@ class $WordProgressTable extends WordProgress
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     wordId,
@@ -523,6 +538,7 @@ class $WordProgressTable extends WordProgress
     dueDate,
     updatedAt,
     dirty,
+    deleted,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -588,6 +604,12 @@ class $WordProgressTable extends WordProgress
         dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
       );
     }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
     return context;
   }
 
@@ -625,6 +647,10 @@ class $WordProgressTable extends WordProgress
         DriftSqlType.bool,
         data['${effectivePrefix}dirty'],
       )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
     );
   }
 
@@ -642,6 +668,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
   final DateTime dueDate;
   final int updatedAt;
   final bool dirty;
+  final bool deleted;
   const WordProgressRow({
     required this.wordId,
     required this.easeFactor,
@@ -650,6 +677,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
     required this.dueDate,
     required this.updatedAt,
     required this.dirty,
+    required this.deleted,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -661,6 +689,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
     map['due_date'] = Variable<DateTime>(dueDate);
     map['updated_at'] = Variable<int>(updatedAt);
     map['dirty'] = Variable<bool>(dirty);
+    map['deleted'] = Variable<bool>(deleted);
     return map;
   }
 
@@ -673,6 +702,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
       dueDate: Value(dueDate),
       updatedAt: Value(updatedAt),
       dirty: Value(dirty),
+      deleted: Value(deleted),
     );
   }
 
@@ -689,6 +719,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
       dueDate: serializer.fromJson<DateTime>(json['dueDate']),
       updatedAt: serializer.fromJson<int>(json['updatedAt']),
       dirty: serializer.fromJson<bool>(json['dirty']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
     );
   }
   @override
@@ -702,6 +733,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
       'dueDate': serializer.toJson<DateTime>(dueDate),
       'updatedAt': serializer.toJson<int>(updatedAt),
       'dirty': serializer.toJson<bool>(dirty),
+      'deleted': serializer.toJson<bool>(deleted),
     };
   }
 
@@ -713,6 +745,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
     DateTime? dueDate,
     int? updatedAt,
     bool? dirty,
+    bool? deleted,
   }) => WordProgressRow(
     wordId: wordId ?? this.wordId,
     easeFactor: easeFactor ?? this.easeFactor,
@@ -721,6 +754,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
     dueDate: dueDate ?? this.dueDate,
     updatedAt: updatedAt ?? this.updatedAt,
     dirty: dirty ?? this.dirty,
+    deleted: deleted ?? this.deleted,
   );
   WordProgressRow copyWithCompanion(WordProgressCompanion data) {
     return WordProgressRow(
@@ -737,6 +771,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
       dueDate: data.dueDate.present ? data.dueDate.value : this.dueDate,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       dirty: data.dirty.present ? data.dirty.value : this.dirty,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
     );
   }
 
@@ -749,7 +784,8 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
           ..write('repetitions: $repetitions, ')
           ..write('dueDate: $dueDate, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('dirty: $dirty')
+          ..write('dirty: $dirty, ')
+          ..write('deleted: $deleted')
           ..write(')'))
         .toString();
   }
@@ -763,6 +799,7 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
     dueDate,
     updatedAt,
     dirty,
+    deleted,
   );
   @override
   bool operator ==(Object other) =>
@@ -774,7 +811,8 @@ class WordProgressRow extends DataClass implements Insertable<WordProgressRow> {
           other.repetitions == this.repetitions &&
           other.dueDate == this.dueDate &&
           other.updatedAt == this.updatedAt &&
-          other.dirty == this.dirty);
+          other.dirty == this.dirty &&
+          other.deleted == this.deleted);
 }
 
 class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
@@ -785,6 +823,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
   final Value<DateTime> dueDate;
   final Value<int> updatedAt;
   final Value<bool> dirty;
+  final Value<bool> deleted;
   final Value<int> rowid;
   const WordProgressCompanion({
     this.wordId = const Value.absent(),
@@ -794,6 +833,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     this.dueDate = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.dirty = const Value.absent(),
+    this.deleted = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   WordProgressCompanion.insert({
@@ -804,6 +844,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     required DateTime dueDate,
     this.updatedAt = const Value.absent(),
     this.dirty = const Value.absent(),
+    this.deleted = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : wordId = Value(wordId),
        dueDate = Value(dueDate);
@@ -815,6 +856,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     Expression<DateTime>? dueDate,
     Expression<int>? updatedAt,
     Expression<bool>? dirty,
+    Expression<bool>? deleted,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -825,6 +867,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
       if (dueDate != null) 'due_date': dueDate,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (dirty != null) 'dirty': dirty,
+      if (deleted != null) 'deleted': deleted,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -837,6 +880,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     Value<DateTime>? dueDate,
     Value<int>? updatedAt,
     Value<bool>? dirty,
+    Value<bool>? deleted,
     Value<int>? rowid,
   }) {
     return WordProgressCompanion(
@@ -847,6 +891,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
       dueDate: dueDate ?? this.dueDate,
       updatedAt: updatedAt ?? this.updatedAt,
       dirty: dirty ?? this.dirty,
+      deleted: deleted ?? this.deleted,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -875,6 +920,9 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
     if (dirty.present) {
       map['dirty'] = Variable<bool>(dirty.value);
     }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -891,6 +939,7 @@ class WordProgressCompanion extends UpdateCompanion<WordProgressRow> {
           ..write('dueDate: $dueDate, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('dirty: $dirty, ')
+          ..write('deleted: $deleted, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -927,6 +976,18 @@ class $UserStatsTable extends UserStats
   @override
   late final GeneratedColumn<int> streak = GeneratedColumn<int>(
     'streak',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _longestStreakMeta = const VerificationMeta(
+    'longestStreak',
+  );
+  @override
+  late final GeneratedColumn<int> longestStreak = GeneratedColumn<int>(
+    'longest_streak',
     aliasedName,
     false,
     type: DriftSqlType.int,
@@ -975,6 +1036,7 @@ class $UserStatsTable extends UserStats
     id,
     xp,
     streak,
+    longestStreak,
     lastActiveDate,
     updatedAt,
     dirty,
@@ -1001,6 +1063,15 @@ class $UserStatsTable extends UserStats
       context.handle(
         _streakMeta,
         streak.isAcceptableOrUnknown(data['streak']!, _streakMeta),
+      );
+    }
+    if (data.containsKey('longest_streak')) {
+      context.handle(
+        _longestStreakMeta,
+        longestStreak.isAcceptableOrUnknown(
+          data['longest_streak']!,
+          _longestStreakMeta,
+        ),
       );
     }
     if (data.containsKey('last_active_date')) {
@@ -1045,6 +1116,10 @@ class $UserStatsTable extends UserStats
         DriftSqlType.int,
         data['${effectivePrefix}streak'],
       )!,
+      longestStreak: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}longest_streak'],
+      )!,
       lastActiveDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}last_active_date'],
@@ -1070,6 +1145,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
   final int id;
   final int xp;
   final int streak;
+  final int longestStreak;
   final DateTime? lastActiveDate;
   final int updatedAt;
   final bool dirty;
@@ -1077,6 +1153,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
     required this.id,
     required this.xp,
     required this.streak,
+    required this.longestStreak,
     this.lastActiveDate,
     required this.updatedAt,
     required this.dirty,
@@ -1087,6 +1164,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
     map['id'] = Variable<int>(id);
     map['xp'] = Variable<int>(xp);
     map['streak'] = Variable<int>(streak);
+    map['longest_streak'] = Variable<int>(longestStreak);
     if (!nullToAbsent || lastActiveDate != null) {
       map['last_active_date'] = Variable<DateTime>(lastActiveDate);
     }
@@ -1100,6 +1178,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       id: Value(id),
       xp: Value(xp),
       streak: Value(streak),
+      longestStreak: Value(longestStreak),
       lastActiveDate: lastActiveDate == null && nullToAbsent
           ? const Value.absent()
           : Value(lastActiveDate),
@@ -1117,6 +1196,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       id: serializer.fromJson<int>(json['id']),
       xp: serializer.fromJson<int>(json['xp']),
       streak: serializer.fromJson<int>(json['streak']),
+      longestStreak: serializer.fromJson<int>(json['longestStreak']),
       lastActiveDate: serializer.fromJson<DateTime?>(json['lastActiveDate']),
       updatedAt: serializer.fromJson<int>(json['updatedAt']),
       dirty: serializer.fromJson<bool>(json['dirty']),
@@ -1129,6 +1209,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       'id': serializer.toJson<int>(id),
       'xp': serializer.toJson<int>(xp),
       'streak': serializer.toJson<int>(streak),
+      'longestStreak': serializer.toJson<int>(longestStreak),
       'lastActiveDate': serializer.toJson<DateTime?>(lastActiveDate),
       'updatedAt': serializer.toJson<int>(updatedAt),
       'dirty': serializer.toJson<bool>(dirty),
@@ -1139,6 +1220,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
     int? id,
     int? xp,
     int? streak,
+    int? longestStreak,
     Value<DateTime?> lastActiveDate = const Value.absent(),
     int? updatedAt,
     bool? dirty,
@@ -1146,6 +1228,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
     id: id ?? this.id,
     xp: xp ?? this.xp,
     streak: streak ?? this.streak,
+    longestStreak: longestStreak ?? this.longestStreak,
     lastActiveDate: lastActiveDate.present
         ? lastActiveDate.value
         : this.lastActiveDate,
@@ -1157,6 +1240,9 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
       id: data.id.present ? data.id.value : this.id,
       xp: data.xp.present ? data.xp.value : this.xp,
       streak: data.streak.present ? data.streak.value : this.streak,
+      longestStreak: data.longestStreak.present
+          ? data.longestStreak.value
+          : this.longestStreak,
       lastActiveDate: data.lastActiveDate.present
           ? data.lastActiveDate.value
           : this.lastActiveDate,
@@ -1171,6 +1257,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
           ..write('id: $id, ')
           ..write('xp: $xp, ')
           ..write('streak: $streak, ')
+          ..write('longestStreak: $longestStreak, ')
           ..write('lastActiveDate: $lastActiveDate, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('dirty: $dirty')
@@ -1179,8 +1266,15 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, xp, streak, lastActiveDate, updatedAt, dirty);
+  int get hashCode => Object.hash(
+    id,
+    xp,
+    streak,
+    longestStreak,
+    lastActiveDate,
+    updatedAt,
+    dirty,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1188,6 +1282,7 @@ class UserStatsRow extends DataClass implements Insertable<UserStatsRow> {
           other.id == this.id &&
           other.xp == this.xp &&
           other.streak == this.streak &&
+          other.longestStreak == this.longestStreak &&
           other.lastActiveDate == this.lastActiveDate &&
           other.updatedAt == this.updatedAt &&
           other.dirty == this.dirty);
@@ -1197,6 +1292,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
   final Value<int> id;
   final Value<int> xp;
   final Value<int> streak;
+  final Value<int> longestStreak;
   final Value<DateTime?> lastActiveDate;
   final Value<int> updatedAt;
   final Value<bool> dirty;
@@ -1204,6 +1300,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
     this.id = const Value.absent(),
     this.xp = const Value.absent(),
     this.streak = const Value.absent(),
+    this.longestStreak = const Value.absent(),
     this.lastActiveDate = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.dirty = const Value.absent(),
@@ -1212,6 +1309,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
     this.id = const Value.absent(),
     this.xp = const Value.absent(),
     this.streak = const Value.absent(),
+    this.longestStreak = const Value.absent(),
     this.lastActiveDate = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.dirty = const Value.absent(),
@@ -1220,6 +1318,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
     Expression<int>? id,
     Expression<int>? xp,
     Expression<int>? streak,
+    Expression<int>? longestStreak,
     Expression<DateTime>? lastActiveDate,
     Expression<int>? updatedAt,
     Expression<bool>? dirty,
@@ -1228,6 +1327,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
       if (id != null) 'id': id,
       if (xp != null) 'xp': xp,
       if (streak != null) 'streak': streak,
+      if (longestStreak != null) 'longest_streak': longestStreak,
       if (lastActiveDate != null) 'last_active_date': lastActiveDate,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (dirty != null) 'dirty': dirty,
@@ -1238,6 +1338,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
     Value<int>? id,
     Value<int>? xp,
     Value<int>? streak,
+    Value<int>? longestStreak,
     Value<DateTime?>? lastActiveDate,
     Value<int>? updatedAt,
     Value<bool>? dirty,
@@ -1246,6 +1347,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
       id: id ?? this.id,
       xp: xp ?? this.xp,
       streak: streak ?? this.streak,
+      longestStreak: longestStreak ?? this.longestStreak,
       lastActiveDate: lastActiveDate ?? this.lastActiveDate,
       updatedAt: updatedAt ?? this.updatedAt,
       dirty: dirty ?? this.dirty,
@@ -1263,6 +1365,9 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
     }
     if (streak.present) {
       map['streak'] = Variable<int>(streak.value);
+    }
+    if (longestStreak.present) {
+      map['longest_streak'] = Variable<int>(longestStreak.value);
     }
     if (lastActiveDate.present) {
       map['last_active_date'] = Variable<DateTime>(lastActiveDate.value);
@@ -1282,6 +1387,7 @@ class UserStatsCompanion extends UpdateCompanion<UserStatsRow> {
           ..write('id: $id, ')
           ..write('xp: $xp, ')
           ..write('streak: $streak, ')
+          ..write('longestStreak: $longestStreak, ')
           ..write('lastActiveDate: $lastActiveDate, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('dirty: $dirty')
@@ -1800,6 +1906,317 @@ class LocalProfilesCompanion extends UpdateCompanion<LocalProfileRow> {
   }
 }
 
+class $DailyActivitiesTable extends DailyActivities
+    with TableInfo<$DailyActivitiesTable, DailyActivityRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DailyActivitiesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _activityDateMeta = const VerificationMeta(
+    'activityDate',
+  );
+  @override
+  late final GeneratedColumn<String> activityDate = GeneratedColumn<String>(
+    'activity_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _xpMeta = const VerificationMeta('xp');
+  @override
+  late final GeneratedColumn<int> xp = GeneratedColumn<int>(
+    'xp',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [activityDate, xp, updatedAt, dirty];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'daily_activities';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DailyActivityRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('activity_date')) {
+      context.handle(
+        _activityDateMeta,
+        activityDate.isAcceptableOrUnknown(
+          data['activity_date']!,
+          _activityDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_activityDateMeta);
+    }
+    if (data.containsKey('xp')) {
+      context.handle(_xpMeta, xp.isAcceptableOrUnknown(data['xp']!, _xpMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {activityDate};
+  @override
+  DailyActivityRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DailyActivityRow(
+      activityDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}activity_date'],
+      )!,
+      xp: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}xp'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
+    );
+  }
+
+  @override
+  $DailyActivitiesTable createAlias(String alias) {
+    return $DailyActivitiesTable(attachedDatabase, alias);
+  }
+}
+
+class DailyActivityRow extends DataClass
+    implements Insertable<DailyActivityRow> {
+  final String activityDate;
+  final int xp;
+  final int updatedAt;
+  final bool dirty;
+  const DailyActivityRow({
+    required this.activityDate,
+    required this.xp,
+    required this.updatedAt,
+    required this.dirty,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['activity_date'] = Variable<String>(activityDate);
+    map['xp'] = Variable<int>(xp);
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['dirty'] = Variable<bool>(dirty);
+    return map;
+  }
+
+  DailyActivitiesCompanion toCompanion(bool nullToAbsent) {
+    return DailyActivitiesCompanion(
+      activityDate: Value(activityDate),
+      xp: Value(xp),
+      updatedAt: Value(updatedAt),
+      dirty: Value(dirty),
+    );
+  }
+
+  factory DailyActivityRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DailyActivityRow(
+      activityDate: serializer.fromJson<String>(json['activityDate']),
+      xp: serializer.fromJson<int>(json['xp']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'activityDate': serializer.toJson<String>(activityDate),
+      'xp': serializer.toJson<int>(xp),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'dirty': serializer.toJson<bool>(dirty),
+    };
+  }
+
+  DailyActivityRow copyWith({
+    String? activityDate,
+    int? xp,
+    int? updatedAt,
+    bool? dirty,
+  }) => DailyActivityRow(
+    activityDate: activityDate ?? this.activityDate,
+    xp: xp ?? this.xp,
+    updatedAt: updatedAt ?? this.updatedAt,
+    dirty: dirty ?? this.dirty,
+  );
+  DailyActivityRow copyWithCompanion(DailyActivitiesCompanion data) {
+    return DailyActivityRow(
+      activityDate: data.activityDate.present
+          ? data.activityDate.value
+          : this.activityDate,
+      xp: data.xp.present ? data.xp.value : this.xp,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyActivityRow(')
+          ..write('activityDate: $activityDate, ')
+          ..write('xp: $xp, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(activityDate, xp, updatedAt, dirty);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DailyActivityRow &&
+          other.activityDate == this.activityDate &&
+          other.xp == this.xp &&
+          other.updatedAt == this.updatedAt &&
+          other.dirty == this.dirty);
+}
+
+class DailyActivitiesCompanion extends UpdateCompanion<DailyActivityRow> {
+  final Value<String> activityDate;
+  final Value<int> xp;
+  final Value<int> updatedAt;
+  final Value<bool> dirty;
+  final Value<int> rowid;
+  const DailyActivitiesCompanion({
+    this.activityDate = const Value.absent(),
+    this.xp = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DailyActivitiesCompanion.insert({
+    required String activityDate,
+    this.xp = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : activityDate = Value(activityDate);
+  static Insertable<DailyActivityRow> custom({
+    Expression<String>? activityDate,
+    Expression<int>? xp,
+    Expression<int>? updatedAt,
+    Expression<bool>? dirty,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (activityDate != null) 'activity_date': activityDate,
+      if (xp != null) 'xp': xp,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (dirty != null) 'dirty': dirty,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DailyActivitiesCompanion copyWith({
+    Value<String>? activityDate,
+    Value<int>? xp,
+    Value<int>? updatedAt,
+    Value<bool>? dirty,
+    Value<int>? rowid,
+  }) {
+    return DailyActivitiesCompanion(
+      activityDate: activityDate ?? this.activityDate,
+      xp: xp ?? this.xp,
+      updatedAt: updatedAt ?? this.updatedAt,
+      dirty: dirty ?? this.dirty,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (activityDate.present) {
+      map['activity_date'] = Variable<String>(activityDate.value);
+    }
+    if (xp.present) {
+      map['xp'] = Variable<int>(xp.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyActivitiesCompanion(')
+          ..write('activityDate: $activityDate, ')
+          ..write('xp: $xp, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1808,6 +2225,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $UserStatsTable userStats = $UserStatsTable(this);
   late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
   late final $LocalProfilesTable localProfiles = $LocalProfilesTable(this);
+  late final $DailyActivitiesTable dailyActivities = $DailyActivitiesTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1818,6 +2238,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     userStats,
     syncMetadata,
     localProfiles,
+    dailyActivities,
   ];
 }
 
@@ -2066,6 +2487,7 @@ typedef $$WordProgressTableCreateCompanionBuilder =
       required DateTime dueDate,
       Value<int> updatedAt,
       Value<bool> dirty,
+      Value<bool> deleted,
       Value<int> rowid,
     });
 typedef $$WordProgressTableUpdateCompanionBuilder =
@@ -2077,6 +2499,7 @@ typedef $$WordProgressTableUpdateCompanionBuilder =
       Value<DateTime> dueDate,
       Value<int> updatedAt,
       Value<bool> dirty,
+      Value<bool> deleted,
       Value<int> rowid,
     });
 
@@ -2121,6 +2544,11 @@ class $$WordProgressTableFilterComposer
 
   ColumnFilters<bool> get dirty => $composableBuilder(
     column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2168,6 +2596,11 @@ class $$WordProgressTableOrderingComposer
     column: $table.dirty,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$WordProgressTableAnnotationComposer
@@ -2205,6 +2638,9 @@ class $$WordProgressTableAnnotationComposer
 
   GeneratedColumn<bool> get dirty =>
       $composableBuilder(column: $table.dirty, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 }
 
 class $$WordProgressTableTableManager
@@ -2245,6 +2681,7 @@ class $$WordProgressTableTableManager
                 Value<DateTime> dueDate = const Value.absent(),
                 Value<int> updatedAt = const Value.absent(),
                 Value<bool> dirty = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WordProgressCompanion(
                 wordId: wordId,
@@ -2254,6 +2691,7 @@ class $$WordProgressTableTableManager
                 dueDate: dueDate,
                 updatedAt: updatedAt,
                 dirty: dirty,
+                deleted: deleted,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -2265,6 +2703,7 @@ class $$WordProgressTableTableManager
                 required DateTime dueDate,
                 Value<int> updatedAt = const Value.absent(),
                 Value<bool> dirty = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WordProgressCompanion.insert(
                 wordId: wordId,
@@ -2274,6 +2713,7 @@ class $$WordProgressTableTableManager
                 dueDate: dueDate,
                 updatedAt: updatedAt,
                 dirty: dirty,
+                deleted: deleted,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -2314,6 +2754,7 @@ typedef $$UserStatsTableCreateCompanionBuilder = UserStatsCompanion Function({
   Value<int> id,
   Value<int> xp,
   Value<int> streak,
+  Value<int> longestStreak,
   Value<DateTime?> lastActiveDate,
   Value<int> updatedAt,
   Value<bool> dirty,
@@ -2322,6 +2763,7 @@ typedef $$UserStatsTableUpdateCompanionBuilder = UserStatsCompanion Function({
   Value<int> id,
   Value<int> xp,
   Value<int> streak,
+  Value<int> longestStreak,
   Value<DateTime?> lastActiveDate,
   Value<int> updatedAt,
   Value<bool> dirty,
@@ -2348,6 +2790,11 @@ class $$UserStatsTableFilterComposer
 
   ColumnFilters<int> get streak => $composableBuilder(
     column: $table.streak,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get longestStreak => $composableBuilder(
+    column: $table.longestStreak,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2391,6 +2838,11 @@ class $$UserStatsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get longestStreak => $composableBuilder(
+    column: $table.longestStreak,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get lastActiveDate => $composableBuilder(
     column: $table.lastActiveDate,
     builder: (column) => ColumnOrderings(column),
@@ -2424,6 +2876,11 @@ class $$UserStatsTableAnnotationComposer
 
   GeneratedColumn<int> get streak =>
       $composableBuilder(column: $table.streak, builder: (column) => column);
+
+  GeneratedColumn<int> get longestStreak => $composableBuilder(
+    column: $table.longestStreak,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get lastActiveDate => $composableBuilder(
     column: $table.lastActiveDate,
@@ -2471,6 +2928,7 @@ class $$UserStatsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> xp = const Value.absent(),
                 Value<int> streak = const Value.absent(),
+                Value<int> longestStreak = const Value.absent(),
                 Value<DateTime?> lastActiveDate = const Value.absent(),
                 Value<int> updatedAt = const Value.absent(),
                 Value<bool> dirty = const Value.absent(),
@@ -2478,6 +2936,7 @@ class $$UserStatsTableTableManager
                 id: id,
                 xp: xp,
                 streak: streak,
+                longestStreak: longestStreak,
                 lastActiveDate: lastActiveDate,
                 updatedAt: updatedAt,
                 dirty: dirty,
@@ -2487,6 +2946,7 @@ class $$UserStatsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> xp = const Value.absent(),
                 Value<int> streak = const Value.absent(),
+                Value<int> longestStreak = const Value.absent(),
                 Value<DateTime?> lastActiveDate = const Value.absent(),
                 Value<int> updatedAt = const Value.absent(),
                 Value<bool> dirty = const Value.absent(),
@@ -2494,6 +2954,7 @@ class $$UserStatsTableTableManager
                 id: id,
                 xp: xp,
                 streak: streak,
+                longestStreak: longestStreak,
                 lastActiveDate: lastActiveDate,
                 updatedAt: updatedAt,
                 dirty: dirty,
@@ -2865,6 +3326,204 @@ typedef $$LocalProfilesTableProcessedTableManager =
       LocalProfileRow,
       PrefetchHooks Function()
     >;
+typedef $$DailyActivitiesTableCreateCompanionBuilder =
+    DailyActivitiesCompanion Function({
+      required String activityDate,
+      Value<int> xp,
+      Value<int> updatedAt,
+      Value<bool> dirty,
+      Value<int> rowid,
+    });
+typedef $$DailyActivitiesTableUpdateCompanionBuilder =
+    DailyActivitiesCompanion Function({
+      Value<String> activityDate,
+      Value<int> xp,
+      Value<int> updatedAt,
+      Value<bool> dirty,
+      Value<int> rowid,
+    });
+
+class $$DailyActivitiesTableFilterComposer
+    extends Composer<_$AppDatabase, $DailyActivitiesTable> {
+  $$DailyActivitiesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get activityDate => $composableBuilder(
+    column: $table.activityDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get xp => $composableBuilder(
+    column: $table.xp,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DailyActivitiesTableOrderingComposer
+    extends Composer<_$AppDatabase, $DailyActivitiesTable> {
+  $$DailyActivitiesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get activityDate => $composableBuilder(
+    column: $table.activityDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get xp => $composableBuilder(
+    column: $table.xp,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DailyActivitiesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DailyActivitiesTable> {
+  $$DailyActivitiesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get activityDate => $composableBuilder(
+    column: $table.activityDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get xp =>
+      $composableBuilder(column: $table.xp, builder: (column) => column);
+
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
+}
+
+class $$DailyActivitiesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DailyActivitiesTable,
+          DailyActivityRow,
+          $$DailyActivitiesTableFilterComposer,
+          $$DailyActivitiesTableOrderingComposer,
+          $$DailyActivitiesTableAnnotationComposer,
+          $$DailyActivitiesTableCreateCompanionBuilder,
+          $$DailyActivitiesTableUpdateCompanionBuilder,
+          (
+            DailyActivityRow,
+            BaseReferences<
+              _$AppDatabase,
+              $DailyActivitiesTable,
+              DailyActivityRow
+            >,
+          ),
+          DailyActivityRow,
+          PrefetchHooks Function()
+        > {
+  $$DailyActivitiesTableTableManager(
+    _$AppDatabase db,
+    $DailyActivitiesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DailyActivitiesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DailyActivitiesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DailyActivitiesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> activityDate = const Value.absent(),
+                Value<int> xp = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyActivitiesCompanion(
+                activityDate: activityDate,
+                xp: xp,
+                updatedAt: updatedAt,
+                dirty: dirty,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String activityDate,
+                Value<int> xp = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyActivitiesCompanion.insert(
+                activityDate: activityDate,
+                xp: xp,
+                updatedAt: updatedAt,
+                dirty: dirty,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DailyActivitiesTable, DailyActivityRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $DailyActivitiesTable,
+                    DailyActivityRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DailyActivitiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DailyActivitiesTable,
+      DailyActivityRow,
+      $$DailyActivitiesTableFilterComposer,
+      $$DailyActivitiesTableOrderingComposer,
+      $$DailyActivitiesTableAnnotationComposer,
+      $$DailyActivitiesTableCreateCompanionBuilder,
+      $$DailyActivitiesTableUpdateCompanionBuilder,
+      (
+        DailyActivityRow,
+        BaseReferences<_$AppDatabase, $DailyActivitiesTable, DailyActivityRow>,
+      ),
+      DailyActivityRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2879,4 +3538,6 @@ class $AppDatabaseManager {
       $$SyncMetadataTableTableManager(_db, _db.syncMetadata);
   $$LocalProfilesTableTableManager get localProfiles =>
       $$LocalProfilesTableTableManager(_db, _db.localProfiles);
+  $$DailyActivitiesTableTableManager get dailyActivities =>
+      $$DailyActivitiesTableTableManager(_db, _db.dailyActivities);
 }

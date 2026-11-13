@@ -35,6 +35,7 @@ class WordProgress extends Table {
   DateTimeColumn get dueDate => dateTime()();
   IntColumn get updatedAt => integer().withDefault(const Constant(0))();
   BoolColumn get dirty => boolean().withDefault(const Constant(true))();
+  BoolColumn get deleted => boolean().withDefault(const Constant(false))();
 
   @override
   Set<Column> get primaryKey => {wordId};
@@ -52,6 +53,7 @@ class UserStats extends Table {
   IntColumn get id => integer().withDefault(const Constant(1))();
   IntColumn get xp => integer().withDefault(const Constant(0))();
   IntColumn get streak => integer().withDefault(const Constant(0))();
+  IntColumn get longestStreak => integer().withDefault(const Constant(0))();
   DateTimeColumn get lastActiveDate => dateTime().nullable()();
   IntColumn get updatedAt => integer().withDefault(const Constant(0))();
   BoolColumn get dirty => boolean().withDefault(const Constant(true))();
@@ -74,6 +76,18 @@ class SyncMetadata extends Table {
   Set<Column> get primaryKey => {key};
 }
 
+@DataClassName('DailyActivityRow')
+class DailyActivities extends Table {
+  TextColumn get activityDate => text()();
+  IntColumn get xp => integer().withDefault(const Constant(0))();
+  IntColumn get updatedAt => integer().withDefault(const Constant(0))();
+  BoolColumn get dirty => boolean().withDefault(const Constant(true))();
+  @override
+  Set<Column> get primaryKey => {activityDate};
+  @override
+  List<String> get customConstraints => ['CHECK (xp >= 0)'];
+}
+
 @DataClassName('LocalProfileRow')
 class LocalProfiles extends Table {
   IntColumn get id => integer().withDefault(const Constant(1))();
@@ -93,11 +107,20 @@ class LocalProfiles extends Table {
     UserStats,
     SyncMetadata,
     LocalProfiles,
+    DailyActivities,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase({String? userId})
-    : super(driftDatabase(name: databaseName(userId)));
+    : super(
+        driftDatabase(
+          name: databaseName(userId),
+          web: DriftWebOptions(
+            sqlite3Wasm: Uri.parse('sqlite3.wasm'),
+            driftWorker: Uri.parse('drift_worker.js'),
+          ),
+        ),
+      );
 
   static String databaseName(String? userId) => userId == null
       ? 'language_learning'
@@ -106,7 +129,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -126,6 +149,12 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 3) {
         await migrator.createTable(localProfiles);
+      }
+      if (from < 4) {
+        await migrator.addColumn(userStats, userStats.longestStreak);
+        await migrator.addColumn(wordProgress, wordProgress.deleted);
+        await migrator.createTable(dailyActivities);
+        await customStatement('UPDATE user_stats SET longest_streak = streak');
       }
     },
   );
