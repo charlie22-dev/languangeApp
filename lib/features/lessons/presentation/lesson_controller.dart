@@ -39,6 +39,7 @@ class LessonController extends Notifier<LessonSession> {
     final count = switch (exercise) {
       MultipleChoice() => exercise.options.length,
       FillInBlank() => exercise.choices.length,
+      Listening() => exercise.options.length,
       _ => 0,
     };
     if (index >= 0 && index < count) {
@@ -48,7 +49,9 @@ class LessonController extends Notifier<LessonSession> {
 
   void typeAnswer(String text) {
     if (state.phase == LessonPhase.answering &&
-        state.currentExercise is TypeTranslation) {
+        (state.currentExercise is TypeTranslation ||
+            state.currentExercise is Listening ||
+            state.currentExercise is Speaking)) {
       state = state.copyWith(answer: TranslationAnswer(text));
     }
   }
@@ -127,6 +130,19 @@ class LessonController extends Notifier<LessonSession> {
 
   void continueLesson() {
     if (state.phase != LessonPhase.feedback) return;
+    _advance();
+  }
+
+  void skipSpeaking() {
+    if (state.phase != LessonPhase.answering ||
+        state.currentExercise is! Speaking) {
+      return;
+    }
+    state = state.copyWith(skippedCount: state.skippedCount + 1);
+    _advance();
+  }
+
+  void _advance() {
     final nextIndex = state.currentIndex + 1;
     if (state.hearts == 0 || nextIndex >= state.exercises.length) {
       final result = LessonResult(
@@ -135,6 +151,7 @@ class LessonController extends Notifier<LessonSession> {
         correctCount: state.correctCount,
         attempts: state.attempts,
         perfectCount: state.perfectCount,
+        skippedCount: state.skippedCount,
         hearts: state.hearts,
       );
       state = state.copyWith(
