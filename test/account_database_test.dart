@@ -5,6 +5,39 @@ import 'package:myapp/core/database/app_database.dart';
 import 'package:myapp/features/sync/data/local_sync_store.dart';
 
 void main() {
+  test('version 3 upgrades progress, longest streak and reset flags without data loss', () async {
+    final database = AppDatabase.forTesting(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw.execute('''
+        CREATE TABLE lesson_progress (lesson_id TEXT PRIMARY KEY NOT NULL, completed INTEGER NOT NULL DEFAULT 0, best_score INTEGER NOT NULL DEFAULT 0, completed_at INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE word_progress (word_id TEXT PRIMARY KEY NOT NULL, ease_factor REAL NOT NULL DEFAULT 2.5, interval_days INTEGER NOT NULL DEFAULT 0, repetitions INTEGER NOT NULL DEFAULT 0, due_date INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE user_stats (id INTEGER PRIMARY KEY NOT NULL DEFAULT 1, xp INTEGER NOT NULL DEFAULT 0, streak INTEGER NOT NULL DEFAULT 0, last_active_date INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE sync_metadata (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL);
+        CREATE TABLE local_profiles (id INTEGER PRIMARY KEY NOT NULL DEFAULT 1, display_name TEXT NOT NULL, updated_at INTEGER NOT NULL, dirty INTEGER NOT NULL DEFAULT 0);
+        INSERT INTO user_stats(id,xp,streak,updated_at,dirty) VALUES (1,80,5,100,0);
+        INSERT INTO word_progress(word_id,due_date) VALUES ('hello',1000);
+        INSERT INTO sync_metadata(key,value) VALUES ('legacyImported','1');
+        PRAGMA user_version = 3;
+      ''');
+        },
+      ),
+    );
+    addTearDown(database.close);
+    final stats = await database.select(database.userStats).getSingle();
+    expect(stats.xp, 80);
+    expect(stats.longestStreak, 5);
+    expect(stats.dirty, isFalse);
+    expect(
+      (await database.select(database.wordProgress).getSingle()).deleted,
+      isFalse,
+    );
+    expect(await database.select(database.dailyActivities).get(), isEmpty);
+    expect(
+      (await database.select(database.syncMetadata).getSingle()).value,
+      '1',
+    );
+  });
   setUp(() {
     // These tests intentionally open distinct in-memory executors for each account.
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
