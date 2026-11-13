@@ -1,3 +1,5 @@
+import 'package:myapp/features/chat/data/chat_vocabulary_providers.dart';
+
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/features/flashcards/data/review_repository.dart';
 import 'package:myapp/features/flashcards/domain/review_session.dart';
 import 'package:myapp/features/flashcards/presentation/review_providers.dart';
-import 'package:myapp/features/home/data/home_providers.dart';
 
 import 'support/phase3_fixtures.dart';
 import 'support/review_fixtures.dart';
@@ -18,7 +19,7 @@ void main() {
     repository = MemoryReviewRepository(course.words.take(2).toList());
     container = ProviderContainer(
       overrides: [
-        selectedCourseProvider.overrideWith((ref) async => course),
+        reviewCourseProvider.overrideWith((ref) => Stream.value(course)),
         reviewRepositoryProvider.overrideWithValue(repository),
       ],
     );
