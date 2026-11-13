@@ -1,3 +1,5 @@
+import 'practice_settings_panel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -57,43 +59,7 @@ class SettingsScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            LingoPanel(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    context.l10n.text('dailyReminder'),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: LingoSpace.s8),
-                  Text(context.l10n.text('reminderUnavailable')),
-                  const SizedBox(height: LingoSpace.s16),
-                  LingoButton.outlinedIcon(
-                    icon: const Icon(Icons.notifications_outlined),
-                    label: Text(context.l10n.text('aboutReminders')),
-                    onPressed: () => _explain(context, false),
-                  ),
-                ],
-              ),
-            ),
-            LingoPanel(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    context.l10n.text('soundEffects'),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: LingoSpace.s8),
-                  Text(context.l10n.text('soundUnavailable')),
-                  LingoButton.ghostIcon(
-                    onPressed: () => _explain(context, true),
-                    icon: const Icon(Icons.mic_none),
-                    label: Text(context.l10n.text('aboutMicrophone')),
-                  ),
-                ],
-              ),
-            ),
+            const PracticeSettingsPanel(),
             if (action.error != null) Text(context.l10n.message(action.error!)),
             LingoButton.tonal(
               onPressed: action.busy
@@ -104,7 +70,6 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LingoSpace.s16),
-            Text(context.l10n.text('progressResetUnavailable')),
             if (kDebugMode)
               LingoButton.outlined(
                 onPressed: () => context.push('/dev/components'),
@@ -122,44 +87,4 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
-
-  void _explain(BuildContext context, bool microphone) =>
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(LingoSpace.s24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  microphone ? Icons.mic_none : Icons.notifications_outlined,
-                  size: LingoSpace.touch,
-                ),
-                const SizedBox(height: LingoSpace.s16),
-                Text(
-                  context.l10n.text(
-                    microphone ? 'microphoneTitle' : 'reminderTitle',
-                  ),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const SizedBox(height: LingoSpace.s16),
-                Text(
-                  context.l10n.text(
-                    microphone
-                        ? 'microphoneUnavailable'
-                        : 'reminderUnavailable',
-                  ),
-                ),
-                const SizedBox(height: LingoSpace.s24),
-                LingoButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(context.l10n.text('gotIt')),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
 }
