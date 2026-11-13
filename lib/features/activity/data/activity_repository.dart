@@ -66,7 +66,8 @@ class ActivityRepository {
     final stampRow = await database.customSelect(
       '''SELECT MAX(updated_at) AS stamp FROM (
       SELECT updated_at FROM user_stats UNION ALL SELECT updated_at FROM word_progress
-      UNION ALL SELECT updated_at FROM lesson_progress UNION ALL SELECT updated_at FROM daily_activities)''',
+      UNION ALL SELECT updated_at FROM lesson_progress UNION ALL SELECT updated_at FROM daily_activities
+      UNION ALL SELECT updated_at FROM saved_vocabulary)''',
     ).getSingle();
     final stamp = nextSyncTimestamp(
       stampRow.readNullable<int>('stamp') ?? 0,
@@ -99,6 +100,15 @@ class ActivityRepository {
         .update(database.wordProgress)
         .write(
           WordProgressCompanion(
+            deleted: const Value(true),
+            updatedAt: Value(stamp),
+            dirty: const Value(true),
+          ),
+        );
+    await database
+        .update(database.savedVocabulary)
+        .write(
+          SavedVocabularyCompanion(
             deleted: const Value(true),
             updatedAt: Value(stamp),
             dirty: const Value(true),
