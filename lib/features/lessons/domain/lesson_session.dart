@@ -11,6 +11,7 @@ final class LessonResult {
     required this.attempts,
     required this.perfectCount,
     required this.hearts,
+    this.skippedCount = 0,
   });
 
   final String lessonId;
@@ -19,12 +20,15 @@ final class LessonResult {
   final int attempts;
   final int perfectCount;
   final int hearts;
+  final int skippedCount;
 
   bool get success =>
-      totalExercises > 0 && correctCount == totalExercises && hearts > 0;
+      totalExercises > 0 &&
+      correctCount + skippedCount == totalExercises &&
+      hearts > 0;
   double get accuracy => attempts == 0 ? 0 : correctCount / attempts;
   int get score => (accuracy * 100).round();
-  int get xp => success ? 10 + 5 * perfectCount : 0;
+  int get xp => success && correctCount > 0 ? 10 + 5 * perfectCount : 0;
 }
 
 final class LessonSession {
@@ -34,6 +38,7 @@ final class LessonSession {
     this.currentIndex = 0,
     this.hearts = 3,
     this.correctCount = 0,
+    this.skippedCount = 0,
     this.attempts = 0,
     this.perfectCount = 0,
     Set<String> mistakenIds = const {},
@@ -56,6 +61,7 @@ final class LessonSession {
   final int currentIndex;
   final int hearts;
   final int correctCount;
+  final int skippedCount;
   final int attempts;
   final int perfectCount;
   final Set<String> mistakenIds;
@@ -76,7 +82,8 @@ final class LessonSession {
       phase == LessonPhase.answering &&
       currentExercise != null &&
       canCheckAnswer(currentExercise!, answer);
-  double get progress => originalCount == 0 ? 0 : correctCount / originalCount;
+  double get progress =>
+      originalCount == 0 ? 0 : (correctCount + skippedCount) / originalCount;
 
   // Draft fields are reset explicitly between exercises; persistence updates retain them.
   LessonSession copyWith({
@@ -84,6 +91,7 @@ final class LessonSession {
     int? currentIndex,
     int? hearts,
     int? correctCount,
+    int? skippedCount,
     int? attempts,
     int? perfectCount,
     Set<String>? mistakenIds,
@@ -105,6 +113,7 @@ final class LessonSession {
     currentIndex: currentIndex ?? this.currentIndex,
     hearts: hearts ?? this.hearts,
     correctCount: correctCount ?? this.correctCount,
+    skippedCount: skippedCount ?? this.skippedCount,
     attempts: attempts ?? this.attempts,
     perfectCount: perfectCount ?? this.perfectCount,
     mistakenIds: mistakenIds ?? this.mistakenIds,
