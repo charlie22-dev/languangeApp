@@ -5,6 +5,39 @@ import 'package:myapp/core/database/app_database.dart';
 import 'package:myapp/features/sync/data/local_sync_store.dart';
 
 void main() {
+  test(
+    'version 4 upgrades chat tables without changing existing progress',
+    () async {
+      final database = AppDatabase.forTesting(
+        NativeDatabase.memory(
+          setup: (raw) {
+            raw.execute('''
+        CREATE TABLE lesson_progress (lesson_id TEXT PRIMARY KEY NOT NULL, completed INTEGER NOT NULL DEFAULT 0, best_score INTEGER NOT NULL DEFAULT 0, completed_at INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE word_progress (word_id TEXT PRIMARY KEY NOT NULL, ease_factor REAL NOT NULL DEFAULT 2.5, interval_days INTEGER NOT NULL DEFAULT 0, repetitions INTEGER NOT NULL DEFAULT 0, due_date INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1, deleted INTEGER NOT NULL DEFAULT 0);
+        CREATE TABLE user_stats (id INTEGER PRIMARY KEY NOT NULL DEFAULT 1, xp INTEGER NOT NULL DEFAULT 0, streak INTEGER NOT NULL DEFAULT 0, longest_streak INTEGER NOT NULL DEFAULT 0, last_active_date INTEGER, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        CREATE TABLE sync_metadata (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL);
+        CREATE TABLE local_profiles (id INTEGER PRIMARY KEY NOT NULL DEFAULT 1, display_name TEXT NOT NULL, updated_at INTEGER NOT NULL, dirty INTEGER NOT NULL DEFAULT 0);
+        CREATE TABLE daily_activities (activity_date TEXT PRIMARY KEY NOT NULL, xp INTEGER NOT NULL DEFAULT 0, updated_at INTEGER NOT NULL DEFAULT 0, dirty INTEGER NOT NULL DEFAULT 1);
+        INSERT INTO user_stats(id,xp,streak,longest_streak,dirty) VALUES (1,80,3,5,0);
+        INSERT INTO word_progress(word_id,repetitions,due_date) VALUES ('hello',2,1000);
+        PRAGMA user_version = 4;
+      ''');
+          },
+        ),
+      );
+      addTearDown(database.close);
+      final stats = await database.select(database.userStats).getSingle();
+      expect(stats.xp, 80);
+      expect(stats.longestStreak, 5);
+      expect(stats.dirty, isFalse);
+      expect(
+        (await database.select(database.wordProgress).getSingle()).repetitions,
+        2,
+      );
+      expect(await database.select(database.chatEntries).get(), isEmpty);
+      expect(await database.select(database.savedVocabulary).get(), isEmpty);
+    },
+  );
   test('version 3 upgrades progress, longest streak and reset flags without data loss', () async {
     final database = AppDatabase.forTesting(
       NativeDatabase.memory(
