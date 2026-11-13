@@ -49,7 +49,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test(
-    'sample has 2 units, 6 lessons, 36 exercises and 60 referenced words',
+    'sample has 2 units, 6 lessons, 48 exercises and 60 referenced words',
     () {
       final course = Course.fromJson(readSample());
       expect(course.units, hasLength(2));
@@ -72,8 +72,15 @@ void main() {
         }
       }
       expect(usedWordIds, course.words.map((word) => word.id).toSet());
-      expect(exerciseCount, 36);
-      expect(types, {MultipleChoice, MatchPairs, FillInBlank, TypeTranslation});
+      expect(exerciseCount, 48);
+      expect(types, {
+        MultipleChoice,
+        MatchPairs,
+        FillInBlank,
+        TypeTranslation,
+        Listening,
+        Speaking,
+      });
     },
   );
 
@@ -117,6 +124,8 @@ void main() {
             'matchPairs' => ['pairs'],
             'fillInBlank' => ['sentenceWithBlank', 'answer', 'choices'],
             'typeTranslation' => ['prompt', 'acceptedAnswers'],
+            'listening' => ['audioText', 'acceptedAnswers'],
+            'speaking' => ['phrase'],
             _ => throw StateError('Unexpected exercise'),
           };
           checkRequiredFields(exercise as JsonMap, Exercise.fromJson, [
@@ -166,6 +175,10 @@ void main() {
           case FillInBlank():
             exercise.choices.clear();
           case TypeTranslation():
+            exercise.acceptedAnswers.clear();
+          case Listening():
+            exercise.acceptedAnswers.clear();
+          case Speaking():
             exercise.acceptedAnswers.clear();
         }
       }, throwsUnsupportedError);
@@ -220,7 +233,8 @@ void main() {
       );
       expect(
         () => Exercise.fromJson({
-          ...exercises.last as JsonMap,
+          ...exercises.firstWhere((e) => e['type'] == 'typeTranslation')
+              as JsonMap,
           'acceptedAnswers': [],
         }),
         throwsFormatException,
