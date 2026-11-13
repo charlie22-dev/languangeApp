@@ -1,3 +1,6 @@
+import '../../activity/data/activity_providers.dart';
+import '../../activity/domain/streak.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/database/app_database.dart';
@@ -34,10 +37,15 @@ final lessonProgressProvider = StreamProvider<List<LessonRecord>>((ref) {
 }, retry: (count, error) => null);
 
 final userStatsProvider = StreamProvider<UserStatsRow>((ref) {
+  final today = ref.watch(localTodayProvider);
   final database = ref.watch(appDatabaseProvider);
   return (database.select(
     database.userStats,
-  )..where((table) => table.id.equals(1))).watchSingle();
+  )..where((table) => table.id.equals(1))).watchSingle().map(
+    (row) => row.copyWith(
+      streak: Streak.visible(row.streak, row.lastActiveDate?.toLocal(), today),
+    ),
+  );
 }, retry: (count, error) => null);
 
 final learningPathProvider = Provider<AsyncValue<LearningPath>>((ref) {
