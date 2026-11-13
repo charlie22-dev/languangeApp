@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import '../../audio/data/audio_service.dart';
+import '../../audio/data/speech_service.dart';
 import '../../../core/theme/lingo_tokens.dart';
 
 import 'package:flutter/material.dart';
@@ -50,8 +54,15 @@ class HomeScreen extends ConsumerWidget {
                       Theme.of(context).textTheme.labelLarge!.fontSize!) *
                   2,
           selectedIndex: [0, 1, 3, 2].indexOf(navigationShell.currentIndex),
-          onDestinationSelected: (index) =>
-              navigationShell.goBranch([0, 1, 3, 2][index]),
+          onDestinationSelected: (index) {
+            if (ref.read(audioServiceProvider.exists)) {
+              unawaited(ref.read(audioServiceProvider).stop());
+            }
+            if (ref.read(speechServiceProvider.exists)) {
+              unawaited(ref.read(speechServiceProvider).cancel());
+            }
+            navigationShell.goBranch([0, 1, 3, 2][index]);
+          },
           destinations: [
             NavigationDestination(
               icon: const Icon(Icons.school_outlined),
