@@ -11,7 +11,7 @@ final profileDisplayProvider = StreamProvider<({String? name, int words})>((
       .customSelect(
         '''SELECT
     (SELECT display_name FROM local_profiles LIMIT 1) AS display_name,
-    (SELECT COUNT(*) FROM word_progress) AS word_count''',
+    (SELECT COUNT(*) FROM word_progress WHERE deleted = 0) AS word_count''',
         readsFrom: {db.localProfiles, db.wordProgress},
       )
       .watchSingle()
