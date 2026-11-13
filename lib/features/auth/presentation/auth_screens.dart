@@ -75,7 +75,8 @@ class _AuthFormScreenState extends ConsumerState<AuthFormScreen> {
   Widget build(BuildContext context) {
     final mode = widget.mode;
     final action = ref.watch(authControllerProvider(mode));
-    final unavailable = ref.watch(authStateProvider).hasError;
+    final auth = ref.watch(authStateProvider);
+    final unavailable = auth.hasError;
     final creating =
         mode == AuthFormMode.register || mode == AuthFormMode.resetPassword;
     if (mode == AuthFormMode.forgotPassword &&
@@ -146,7 +147,13 @@ class _AuthFormScreenState extends ConsumerState<AuthFormScreen> {
                 ),
                 const SizedBox(height: LingoSpace.s24),
                 if (unavailable) ...[
-                  Text(context.l10n.text('ui46d17e5a9c')),
+                  Text(
+                    context.l10n.message(
+                      auth.error is AuthFailure
+                          ? (auth.error as AuthFailure).message
+                          : authStartupMessage,
+                    ),
+                  ),
                   LingoButton.ghost(
                     onPressed: () => ref.invalidate(supabaseClientProvider),
                     child: Text(context.l10n.text('uia351235680')),
