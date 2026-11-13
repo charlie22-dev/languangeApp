@@ -23,24 +23,38 @@ class LocalSyncStore {
 
   Future<SyncSnapshot> snapshot({bool dirtyOnly = true}) =>
       database.transaction(() async {
+        final vocabularyQuery = database.select(database.savedVocabulary);
         final statsQuery = database.select(database.userStats);
         final wordsQuery = database.select(database.wordProgress);
         final lessonsQuery = database.select(database.lessonProgress);
         final activitiesQuery = database.select(database.dailyActivities);
         final profilesQuery = database.select(database.localProfiles);
         if (dirtyOnly) {
+          vocabularyQuery.where((row) => row.dirty.equals(true));
           activitiesQuery.where((row) => row.dirty.equals(true));
           statsQuery.where((row) => row.dirty.equals(true));
           wordsQuery.where((row) => row.dirty.equals(true));
           lessonsQuery.where((row) => row.dirty.equals(true));
           profilesQuery.where((row) => row.dirty.equals(true));
         }
+        final vocabulary = await vocabularyQuery.get();
         final activities = await activitiesQuery.get();
         final stats = await statsQuery.get();
         final words = await wordsQuery.get();
         final lessons = await lessonsQuery.get();
         final profiles = await profilesQuery.get();
         return SyncSnapshot([
+          for (final row in vocabulary)
+            SyncRecord.fromJson(SyncKind.vocabulary, {
+              'word_id': row.wordId,
+              'course_id': row.courseId,
+              'text': row.wordText,
+              'translation': row.translation,
+              'example': row.example,
+              'example_translation': row.exampleTranslation,
+              'deleted': row.deleted,
+              'updated_at': row.updatedAt,
+            }),
           for (final row in activities)
             SyncRecord.fromJson(SyncKind.activity, {
               'activity_date': row.activityDate,
@@ -92,6 +106,37 @@ class LocalSyncStore {
           ? null
           : DateTime.parse(data[key] as String).toUtc();
       switch (row.kind) {
+        case SyncKind.vocabulary:
+          final current = await (database.select(
+            database.savedVocabulary,
+          )..where((r) => r.wordId.equals(row.id))).getSingleOrNull();
+          if (!remoteWins(current?.updatedAt, row.updatedAt)) continue;
+          if (current != null &&
+              current.updatedAt == row.updatedAt &&
+              current.dirty == imported &&
+              current.deleted == data['deleted'] &&
+              current.wordText == data['text'] &&
+              current.translation == data['translation'] &&
+              current.example == data['example'] &&
+              current.exampleTranslation == data['example_translation'] &&
+              current.courseId == data['course_id']) {
+            continue;
+          }
+          await database
+              .into(database.savedVocabulary)
+              .insertOnConflictUpdate(
+                SavedVocabularyCompanion.insert(
+                  wordId: row.id,
+                  courseId: data['course_id'] as String,
+                  wordText: data['text'] as String,
+                  translation: data['translation'] as String,
+                  example: data['example'] as String,
+                  exampleTranslation: data['example_translation'] as String,
+                  deleted: Value(data['deleted'] as bool),
+                  updatedAt: Value(row.updatedAt),
+                  dirty: Value(imported),
+                ),
+              );
         case SyncKind.activity:
           final current = await (database.select(
             database.dailyActivities,
@@ -285,6 +330,7 @@ class LocalSyncStore {
            UNION ALL SELECT 'word', word_id, updated_at, dirty FROM word_progress
            UNION ALL SELECT 'lesson', lesson_id, updated_at, dirty FROM lesson_progress
            UNION ALL SELECT 'activity', activity_date, updated_at, dirty FROM daily_activities
+           UNION ALL SELECT 'vocabulary', word_id, updated_at, dirty FROM saved_vocabulary
            UNION ALL SELECT 'profile', CAST(id AS TEXT), updated_at, dirty FROM local_profiles''',
         readsFrom: {
           database.userStats,
@@ -292,6 +338,7 @@ class LocalSyncStore {
           database.lessonProgress,
           database.localProfiles,
           database.dailyActivities,
+          database.savedVocabulary,
         },
       )
       .watch()
