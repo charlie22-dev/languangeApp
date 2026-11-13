@@ -56,10 +56,7 @@ class AuthController extends Notifier<AuthActionState> {
       if (ref.mounted) state = AuthActionState(error: error.message);
     } catch (_) {
       if (ref.mounted) {
-        state = const AuthActionState(
-          error:
-              'Sign-in is unavailable on this build. Please try again later.',
-        );
+        state = const AuthActionState(error: authStartupMessage);
       }
     }
   }
