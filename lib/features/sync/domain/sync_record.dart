@@ -1,6 +1,6 @@
 import '../../../core/utils/json_reader.dart';
 
-enum SyncKind { stats, word, lesson, profile, activity }
+enum SyncKind { stats, word, lesson, profile, activity, vocabulary }
 
 final class SyncCursor {
   const SyncCursor({this.timestamp = 0, this.revision = 0});
@@ -42,6 +42,22 @@ final class SyncRecord {
     }
 
     switch (kind) {
+      case SyncKind.vocabulary:
+        final deleted = json['deleted'];
+        if (deleted is! bool) throw const FormatException('Invalid saved word');
+        String bounded(String key, int max) {
+          final value = JsonReader.text(json, key);
+          if (value.runes.length > max) throw FormatException('Invalid $key');
+          return value;
+        }
+        return SyncRecord._(kind, bounded('word_id', 128), stamp, {
+          'course_id': bounded('course_id', 128),
+          'text': bounded('text', 100),
+          'translation': bounded('translation', 150),
+          'example': bounded('example', 300),
+          'example_translation': bounded('example_translation', 300),
+          'deleted': deleted,
+        });
       case SyncKind.profile:
         final name = json['display_name'];
         if (name is! String || name.length > 120) {
@@ -95,7 +111,7 @@ final class SyncRecord {
   }
 
   JsonMap toJson() => {
-    if (kind == SyncKind.word) 'word_id': id,
+    if (kind == SyncKind.word || kind == SyncKind.vocabulary) 'word_id': id,
     if (kind == SyncKind.lesson) 'lesson_id': id,
     if (kind == SyncKind.activity) 'activity_date': id,
     ...data,
@@ -146,6 +162,11 @@ final class SyncSnapshot {
                 ? const []
                 : JsonReader.list(json, 'activities')))
           record(SyncKind.activity, value),
+        for (final value
+            in (json['saved_words'] == null
+                ? const []
+                : JsonReader.list(json, 'saved_words')))
+          record(SyncKind.vocabulary, value),
         if (json['profile'] != null) record(SyncKind.profile, json['profile']),
         if (json['stats'] != null) record(SyncKind.stats, json['stats']),
         for (final value in JsonReader.list(json, 'words'))
