@@ -764,6 +764,25 @@
               "acceptedAnswers": [
                 "またね"
               ]
+            },
+            {
+              "id": "ja_greetings_listening",
+              "type": "listening",
+              "audioText": "こんにちは",
+              "acceptedAnswers": [
+                "こんにちは"
+              ],
+              "options": [
+                "こんにちは",
+                "おはよう",
+                "こんばんは"
+              ]
+            },
+            {
+              "id": "ja_greetings_speaking",
+              "type": "speaking",
+              "phrase": "こんにちは",
+              "minimumScore": 0.8
             }
           ]
         },
@@ -860,6 +879,23 @@
               "acceptedAnswers": [
                 "こども"
               ]
+            },
+            {
+              "id": "ja_people_listening",
+              "type": "listening",
+              "audioText": "わたし",
+              "acceptedAnswers": [
+                "わたし"
+              ]
+            },
+            {
+              "id": "ja_people_speaking",
+              "type": "speaking",
+              "phrase": "わたし",
+              "minimumScore": 0.8,
+              "acceptedAnswers": [
+                "私"
+              ]
             }
           ]
         },
@@ -955,6 +991,29 @@
               "prompt": "Translate into Japanese: nine",
               "acceptedAnswers": [
                 "きゅう"
+              ]
+            },
+            {
+              "id": "ja_numbers_listening",
+              "type": "listening",
+              "audioText": "いち",
+              "acceptedAnswers": [
+                "いち"
+              ],
+              "options": [
+                "いち",
+                "に",
+                "さん"
+              ]
+            },
+            {
+              "id": "ja_numbers_speaking",
+              "type": "speaking",
+              "phrase": "いち",
+              "minimumScore": 0.8,
+              "acceptedAnswers": [
+                "一",
+                "1"
               ]
             }
           ]
@@ -1058,6 +1117,23 @@
               "acceptedAnswers": [
                 "たまご"
               ]
+            },
+            {
+              "id": "ja_food_listening",
+              "type": "listening",
+              "audioText": "みず",
+              "acceptedAnswers": [
+                "みず"
+              ]
+            },
+            {
+              "id": "ja_food_speaking",
+              "type": "speaking",
+              "phrase": "みず",
+              "minimumScore": 0.8,
+              "acceptedAnswers": [
+                "水"
+              ]
             }
           ]
         },
@@ -1153,6 +1229,28 @@
               "prompt": "Translate into Japanese: restroom",
               "acceptedAnswers": [
                 "トイレ"
+              ]
+            },
+            {
+              "id": "ja_places_listening",
+              "type": "listening",
+              "audioText": "いえ",
+              "acceptedAnswers": [
+                "いえ"
+              ],
+              "options": [
+                "いえ",
+                "がっこう",
+                "えき"
+              ]
+            },
+            {
+              "id": "ja_places_speaking",
+              "type": "speaking",
+              "phrase": "いえ",
+              "minimumScore": 0.8,
+              "acceptedAnswers": [
+                "家"
               ]
             }
           ]
@@ -1250,10 +1348,28 @@
               "acceptedAnswers": [
                 "かく"
               ]
+            },
+            {
+              "id": "ja_actions_listening",
+              "type": "listening",
+              "audioText": "たべる",
+              "acceptedAnswers": [
+                "たべる"
+              ]
+            },
+            {
+              "id": "ja_actions_speaking",
+              "type": "speaking",
+              "phrase": "たべる",
+              "minimumScore": 0.8,
+              "acceptedAnswers": [
+                "食べる"
+              ]
             }
           ]
         }
       ]
     }
-  ]
+  ],
+  "targetLocale": "ja-JP"
 }
