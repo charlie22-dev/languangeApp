@@ -1,3 +1,6 @@
+import '../../exercises/presentation/listening_view.dart';
+import '../../exercises/presentation/speaking_view.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../exercises/domain/exercise.dart';
@@ -28,6 +31,24 @@ class ExerciseContent extends StatelessWidget {
         ? (session.answer as ChoiceAnswer).index
         : null;
     return switch (exercise) {
+      Listening() => ListeningView(
+        exercise: exercise,
+        enabled: enabled,
+        selectedIndex: selectedIndex,
+        value: session.answer is TranslationAnswer
+            ? (session.answer as TranslationAnswer).text
+            : '',
+        onSelected: controller.selectChoice,
+        onChanged: controller.typeAnswer,
+        onSubmitted: onCheck,
+        feedbackCorrect: session.feedback?.correct,
+      ),
+      Speaking() => SpeakingView(
+        exercise: exercise,
+        enabled: enabled,
+        onChanged: controller.typeAnswer,
+        onSkip: controller.skipSpeaking,
+      ),
       MultipleChoice() => MultipleChoiceView(
         exercise: exercise,
         selectedIndex: selectedIndex,
