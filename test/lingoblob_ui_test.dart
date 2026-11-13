@@ -178,7 +178,7 @@ void main() {
         semantics.dispose();
         if (path == '/chat') {
           expect(find.text('Practice with Pip'), findsOneWidget);
-          expect(find.byType(TextField), findsNothing);
+          expect(find.byKey(const ValueKey('chat-input')), findsOneWidget);
         }
         if (path == '/dev/components') {
           expect(find.byType(PipMascot), findsNWidgets(6));
