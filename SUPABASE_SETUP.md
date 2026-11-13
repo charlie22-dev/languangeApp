@@ -1,10 +1,21 @@
 # Phase 6C: Supabase Auth and offline sync
 
+**Phase 7 update:** after the Phase 6C migration below, run
+[202611130001_phase7.sql](supabase/migrations/202611130001_phase7.sql) for daily
+activity, longest streaks and synced progress resets. See
+[Phase 7 run instructions](PHASE7_IMPLEMENTATION.md). Existing progress is preserved.
+
 The app uses supabase_flutter ^2.18.3. Supabase replaces the Firebase backend
 requested initially. Email/password, Google OAuth, password recovery, local
 account isolation, and incremental background sync are implemented. Your project
 URL and publishable key are already in ignored config.local.json. Dashboard
 changes below must be made in your project; the public app key cannot run DDL.
+
+For browser testing, run `flutter run -d edge --web-port=7357
+--dart-define-from-file=config.local.json` as one command. The bundled database
+worker and SQLite WebAssembly module enable local progress in Chrome/Edge.
+Keep the same port between runs to preserve that origin's local storage.
+See [browser troubleshooting](BROWSER_DATABASE_FIX.md) if opening progress fails.
 
 ## 1. Create your Supabase project
 
@@ -39,8 +50,14 @@ Google client secrets, and database passwords do not belong in this file.
 Configuration rejects service-role keys. The local file is ignored by Git.
 SUPABASE_ANON_KEY is supported as an alternative to SUPABASE_PUBLISHABLE_KEY;
 use one key setting. Never use a service_role or sb_secret_ key in Flutter.
-Values are read through String.fromEnvironment and --dart-define-from-file;
-stop and rerun the app after changing them.
+Dart defines take priority. For plain `flutter run`, run
+`python tool/prepare_local_config.py` first to copy public client settings into
+the ignored `assets/local/client.env` asset. Regenerate it after changing the JSON.
+Only public client settings are copied; server secrets are rejected. Neither local
+file is committed. Fully stop and rebuild after configuration changes; hot reload
+does not update Dart defines or add new bundled assets. Alternatively, always use
+`flutter run --dart-define-from-file=config.local.json`. The VS Code launch profile
+uses this flag automatically when you open the `myapp` folder.
 
 See [Supabase's Flutter setup](https://supabase.com/docs/guides/getting-started/quickstarts/flutter).
 FlutterFire and Firebase configuration are not used.
