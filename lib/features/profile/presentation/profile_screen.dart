@@ -1,10 +1,12 @@
+import '../../activity/data/activity_providers.dart';
+import '../../activity/presentation/activity_chart.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/localization/lingo_localizations.dart';
 import '../../../core/theme/lingo_tokens.dart';
-import '../../../shared/widgets/pip_mascot.dart';
 import '../../../shared/widgets/lingo_components.dart';
 import '../../../shared/widgets/stat_badge.dart';
 import '../../home/data/home_providers.dart';
@@ -26,6 +28,10 @@ class ProfileScreen extends ConsumerWidget {
     final display = ref.watch(profileDisplayProvider).asData?.value;
     final stats = ref.watch(userStatsProvider);
     final course = ref.watch(selectedCourseProvider).asData?.value;
+    final activity = ref.watch(activitySummaryProvider);
+    final name = display?.name?.trim().isNotEmpty == true
+        ? display!.name!
+        : account?.email.split('@').first ?? '';
     final status = ref.watch(syncStatusProvider);
     return Scaffold(
       appBar: AppBar(
@@ -42,16 +48,18 @@ class ProfileScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Center(child: PipMascot()),
-            if (display?.name?.trim().isNotEmpty ?? false)
-              Text(
-                display!.name!,
-                style: Theme.of(context).textTheme.headlineMedium,
+            Center(
+              child: Semantics(
+                label: context.l10n.text('profileAvatar'),
+                child: CircleAvatar(
+                  radius: LingoSpace.node / 2,
+                  child: Text(
+                    name.isEmpty ? '' : name.characters.first.toUpperCase(),
+                  ),
+                ),
               ),
-            Text(
-              context.l10n.text('ui4ab2910209'),
-              style: Theme.of(context).textTheme.headlineMedium,
             ),
+            Text(name, style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: LingoSpace.s16),
             Text(
               account?.email ?? '',
@@ -78,13 +86,28 @@ class ProfileScreen extends ConsumerWidget {
                   StatBadge(
                     icon: Icons.local_fire_department_outlined,
                     label: context.l10n.text('streakDays', {
-                      'count': value.streak,
+                      'count': activity.asData?.value.streak ?? value.streak,
                     }),
+                  ),
+                  StatBadge(
+                    icon: Icons.emoji_events_outlined,
+                    label: context.l10n.text(
+                      (activity.asData?.value.longestStreak ??
+                                  value.longestStreak) ==
+                              1
+                          ? 'longestStreakDay'
+                          : 'longestStreakDays',
+                      {
+                        'count':
+                            activity.asData?.value.longestStreak ??
+                            value.longestStreak,
+                      },
+                    ),
                   ),
                   if (display != null)
                     StatBadge(
                       icon: Icons.style_outlined,
-                      label: context.l10n.text('wordsInReview', {
+                      label: context.l10n.text('wordsLearned', {
                         'count': display.words,
                       }),
                     ),
@@ -104,7 +127,12 @@ class ProfileScreen extends ConsumerWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: LingoSpace.s16),
-                  Text(context.l10n.text('activityUnavailable')),
+                  activity.when(
+                    loading: () => const LingoSkeleton(),
+                    error: (e, s) =>
+                        Text(context.l10n.text('activityLoadError')),
+                    data: (summary) => ActivityChart(summary: summary),
+                  ),
                 ],
               ),
             ),
