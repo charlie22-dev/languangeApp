@@ -28,7 +28,13 @@ void main() {
     await database.select(database.userStats).getSingle();
     await database
         .update(database.userStats)
-        .write(const UserStatsCompanion(xp: Value(50), streak: Value(4)));
+        .write(
+          UserStatsCompanion(
+            xp: const Value(50),
+            streak: const Value(4),
+            lastActiveDate: Value(now),
+          ),
+        );
     await repository.save(result(), wordIds: ['ja_hello', 'ja_goodbye']);
     final progress = await database.select(database.lessonProgress).getSingle();
     final stats = await database.select(database.userStats).getSingle();
