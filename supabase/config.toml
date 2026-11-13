@@ -1,0 +1,6 @@
+project_id = "lingoblob"
+
+[functions.chat]
+# The handler verifies the bearer JWT with Supabase Auth on every POST.
+# This also supports projects using the new asymmetric JWT signing keys.
+verify_jwt = false
