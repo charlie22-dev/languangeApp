@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../features/settings/presentation/settings_controller.dart';
 import '../../core/localization/lingo_localizations.dart';
 
 import 'dart:math' as math;
@@ -8,17 +13,27 @@ import 'package:flutter/services.dart';
 import '../../features/exercises/domain/exercise_grader.dart';
 import '../../core/theme/lingo_tokens.dart';
 
-class AnswerFeedbackSheet extends StatefulWidget {
+class AnswerFeedbackSheet extends ConsumerStatefulWidget {
   const AnswerFeedbackSheet({super.key, required this.feedback});
   final AnswerFeedback feedback;
   @override
-  State<AnswerFeedbackSheet> createState() => _AnswerFeedbackSheetState();
+  ConsumerState<AnswerFeedbackSheet> createState() =>
+      _AnswerFeedbackSheetState();
 }
 
-class _AnswerFeedbackSheetState extends State<AnswerFeedbackSheet> {
+class _AnswerFeedbackSheetState extends ConsumerState<AnswerFeedbackSheet> {
   @override
   void initState() {
     super.initState();
+    if (ref.read(practiceSettingsProvider).asData?.value.sound == true) {
+      unawaited(
+        SystemSound.play(
+          widget.feedback.correct
+              ? SystemSoundType.click
+              : SystemSoundType.alert,
+        ).catchError((Object _) {}),
+      );
+    }
     if (widget.feedback.correct) {
       HapticFeedback.lightImpact();
     } else {
