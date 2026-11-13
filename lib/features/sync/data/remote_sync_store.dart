@@ -33,6 +33,7 @@ class SupabaseSyncStore implements RemoteSyncStore {
         SyncKind.lesson => ('lesson_progress', 'user_id,lesson_id'),
         SyncKind.profile => ('profiles', 'user_id'),
         SyncKind.activity => ('daily_activity', 'user_id,activity_date'),
+        SyncKind.vocabulary => ('saved_words', 'user_id,word_id'),
       };
       for (var start = 0; start < rows.length; start += 200) {
         if (client.auth.currentUser?.id != userId) {
