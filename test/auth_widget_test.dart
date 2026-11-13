@@ -56,13 +56,28 @@ void main() {
         harness.container.read(appRouterProvider).state.uri.path,
         '/login',
       );
-      expect(
-        find.text('Sign-in is unavailable on this build.'),
-        findsOneWidget,
-      );
+      expect(find.text(authConfigurationMessage), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
+
+  testWidgets('registration reports missing configuration clearly', (
+    tester,
+  ) async {
+    final harness = AppHarness(useRealAuth: true);
+    await mount(tester, harness);
+    await tapText(tester, 'Create an account');
+    await enter(tester, 'auth-email', 'learner@example.com');
+    await enter(tester, 'auth-password', 'password123');
+    await enter(tester, 'auth-confirmation', 'password123');
+    await submit(tester, 'Register');
+    expect(find.text(authConfigurationMessage), findsWidgets);
+    expect(
+      find.textContaining('Sign-in is unavailable on this build'),
+      findsNothing,
+    );
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets(
     'logged-out routes redirect to login; valid login returns to Learn',
