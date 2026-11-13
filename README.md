@@ -1,4 +1,4 @@
-# Language learning app - Phases 1 through 7
+# Language learning app - Phases 1 through 9
 
 This project contains Material 3 light/dark themes, Riverpod, go_router,
 three-step onboarding, a learning path, an exercise engine, spaced-repetition flashcards,
@@ -9,7 +9,14 @@ Phase 4 adds playable lessons, feedback, results, XP awards, and progress saving
 Phase 5 adds SM-2 scheduling, card enrollment, review sessions, and review summaries.
 Phase 6C completes Supabase Auth, signup profiles, timestamp-based conflict
 protection, ownership policies, and incremental Postgres synchronization.
-Audio playback and AI conversation belong to later phases.
+Phase 8 adds pronunciation playback, audio caching, listening exercises and
+optional microphone-based speaking practice.
+See [Phase 8 setup, permission locations and tests](PHASE8_IMPLEMENTATION.md).
+
+Phase 9 connects Chat to an authenticated Supabase Edge Function with a server-side
+tutor, scenarios, corrections, translations, microphone dictation, saved vocabulary
+and local conversation history. Run the SQL migration, set the server secret and
+deploy the function using [the Phase 9 guide](PHASE9_IMPLEMENTATION.md).
 
 Phase 7 adds local-calendar streaks, daily XP goals, activity history, profile
 charts, opt-in mobile reminders, sound settings and synced progress reset.
