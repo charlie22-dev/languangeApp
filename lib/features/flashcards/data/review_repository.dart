@@ -43,6 +43,7 @@ class ReviewRepository {
 
   SimpleSelectStatement<WordProgress, WordProgressRow> _query(Course course) =>
       database.select(database.wordProgress)
+        ..where((row) => row.deleted.equals(false))
         ..where((row) => row.wordId.isIn(course.words.map((word) => word.id)))
         ..orderBy([
           (row) => OrderingTerm.asc(row.dueDate),
