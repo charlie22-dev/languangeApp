@@ -1,3 +1,4 @@
+import '../../activity/presentation/daily_goal_progress.dart';
 import '../../../core/localization/lingo_localizations.dart';
 import '../../../core/theme/lingo_tokens.dart';
 
@@ -7,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_routes.dart';
 import '../../../shared/widgets/lesson_path_node.dart';
 import '../domain/learning_path.dart';
-import '../../../shared/widgets/lingo_components.dart';
 
 class LearningPathView extends StatelessWidget {
   const LearningPathView({
@@ -43,12 +43,7 @@ class LearningPathView extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: LingoSpace.s8),
-                  DailyGoalCard(
-                    minutes: goalMinutes,
-                    label: context.l10n.text('uied25d2bddd', {
-                      'arg0': (goalMinutes),
-                    }),
-                  ),
+                  DailyGoalProgress(minutes: goalMinutes),
                 ],
               ),
             );
