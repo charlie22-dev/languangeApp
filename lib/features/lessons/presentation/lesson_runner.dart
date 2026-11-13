@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import '../../exercises/domain/exercise.dart';
+import '../../audio/data/audio_service.dart';
+import '../../audio/data/speech_service.dart';
 import '../../../shared/widgets/lingo_components.dart';
 import '../../../core/localization/lingo_localizations.dart';
 
@@ -36,6 +41,13 @@ class _LessonRunnerState extends ConsumerState<LessonRunner> {
       return;
     }
     _exitDialogOpen = true;
+    if (ref.read(audioServiceProvider.exists)) {
+      await ref.read(audioServiceProvider).stop();
+    }
+    if (ref.read(speechServiceProvider.exists)) {
+      await ref.read(speechServiceProvider).cancel();
+    }
+    if (!mounted) return;
     final leave = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -64,7 +76,13 @@ class _LessonRunnerState extends ConsumerState<LessonRunner> {
 
   void _check() {
     FocusScope.of(context).unfocus();
+    final session = ref.read(lessonControllerProvider(widget.lesson));
     ref.read(lessonControllerProvider(widget.lesson).notifier).check();
+    if (session.canCheck &&
+        session.currentExercise is Speaking &&
+        ref.read(speechServiceProvider.exists)) {
+      unawaited(ref.read(speechServiceProvider).cancel());
+    }
   }
 
   @override
@@ -105,7 +123,8 @@ class _LessonRunnerState extends ConsumerState<LessonRunner> {
                         ),
                         child: SingleChildScrollView(
                           child: LessonStatusHeader(
-                            cleared: session.correctCount,
+                            cleared:
+                                session.correctCount + session.skippedCount,
                             total: session.originalCount,
                             hearts: session.hearts,
                           ),
