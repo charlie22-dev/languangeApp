@@ -1,4 +1,4 @@
-# Language learning app - Phases 1 through 6C
+# Language learning app - Phases 1 through 7
 
 This project contains Material 3 light/dark themes, Riverpod, go_router,
 three-step onboarding, a learning path, an exercise engine, spaced-repetition flashcards,
@@ -11,9 +11,22 @@ Phase 6C completes Supabase Auth, signup profiles, timestamp-based conflict
 protection, ownership policies, and incremental Postgres synchronization.
 Audio playback and AI conversation belong to later phases.
 
+Phase 7 adds local-calendar streaks, daily XP goals, activity history, profile
+charts, opt-in mobile reminders, sound settings and synced progress reset.
+Start with [Phase 7 setup and testing](PHASE7_IMPLEMENTATION.md), including the
+additional SQL migration needed before cloud synchronization.
+
 For current backend setup and Android run instructions, start with
 [SUPABASE_SETUP.md](SUPABASE_SETUP.md). The app needs your project URL and public
 client key in the ignored config.local.json before sign-in is available.
+
+For Chrome/Edge testing, see [the browser database fix](BROWSER_DATABASE_FIX.md).
+The browser SQLite runtime is now included. Use a fixed port to retain browser
+progress across runs:
+
+```powershell
+flutter run -d edge --web-port=7357 --dart-define-from-file=config.local.json
+```
 
 ## Create a separate project
 
@@ -54,8 +67,16 @@ flutter run -d emulator-5554 --dart-define-from-file=config.local.json --dart-de
 ```
 
 Press r for hot reload, R for hot restart, and q to quit. Change dart-defines by
-stopping and rerunning. AppConfig uses dart-defines; flutter_dotenv is installed
-but no .env file or asset registration is needed in this phase.
+stopping and rerunning. Dart defines override local settings. To also support plain
+`flutter run`, generate the ignored local dotenv asset once (and after config changes):
+
+```powershell
+python tool/prepare_local_config.py
+flutter run -d emulator-5554
+```
+
+Fully stop the old run before rebuilding; hot reload cannot add a missing asset.
+Open this `myapp` folder in VS Code to use the included local Supabase launch profile.
 Client configuration is not a place for private server credentials.
 
 ## Verify
