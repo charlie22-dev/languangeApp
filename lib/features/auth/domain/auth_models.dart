@@ -16,6 +16,11 @@ final class AuthFailure implements Exception {
 
 enum AuthFormMode { login, register, forgotPassword, resetPassword }
 
+const authConfigurationMessage =
+    'Account connection is missing from this build. Start the app with its local configuration.';
+const authStartupMessage =
+    'Account services could not start. Restart the app and try again.';
+
 abstract final class AuthValidation {
   static String? email(String? value) {
     final text = value?.trim() ?? '';
@@ -38,6 +43,11 @@ abstract final class AuthValidation {
 String authMessageForCode(String? code) => switch (code) {
   'invalid_credentials' => 'The email or password is incorrect.',
   'email_not_confirmed' => 'Confirm your email before signing in.',
+  'email_address_not_authorized' => 'Confirmation email delivery is not configured for this address. Contact the app administrator.',
+  'email_address_invalid' =>
+    'Use a valid email address that can receive confirmation messages.',
+  'email_provider_disabled' => 'Email sign-in is currently unavailable.',
+  'email_send_failed' || 'unexpected_failure' => 'The server could not complete account setup. Please try again or contact the app administrator.',
   'user_already_exists' ||
   'email_exists' => 'An account already uses this email. Try signing in.',
   'weak_password' => 'Choose a stronger password with at least 8 characters.',
