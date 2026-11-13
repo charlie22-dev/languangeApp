@@ -18,8 +18,14 @@ abstract interface class AuthRepository {
 
 final authRepositoryProvider = FutureProvider<AuthRepository>((ref) async {
   final config = ref.watch(supabaseConfigProvider);
-  final client = await ref.watch(supabaseClientProvider.future);
-  return SupabaseAuthRepository(client, redirectTo: config.authRedirect);
+  try {
+    final client = await ref.watch(supabaseClientProvider.future);
+    return SupabaseAuthRepository(client, redirectTo: config.authRedirect);
+  } on SupabaseConfigurationException {
+    throw const AuthFailure(authConfigurationMessage);
+  } catch (_) {
+    throw const AuthFailure(authStartupMessage);
+  }
 }, retry: (count, error) => null);
 
 final authStateProvider = StreamProvider<AuthIdentity?>((ref) async* {
