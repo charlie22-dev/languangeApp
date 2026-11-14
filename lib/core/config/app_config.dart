@@ -21,7 +21,7 @@ class AppConfig {
   const AppConfig({
     this.appName = const String.fromEnvironment(
       'APP_NAME',
-      defaultValue: 'Language Learning',
+      defaultValue: 'LingoBlob',
     ),
     this.targetLanguage = const String.fromEnvironment('TARGET_LANGUAGE'),
     this.nativeLanguage = const String.fromEnvironment('NATIVE_LANGUAGE'),
