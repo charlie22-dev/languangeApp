@@ -1,401 +1,188 @@
-# Language learning app - Phases 1 through 9
+# LingoBlob
 
-This project contains Material 3 light/dark themes, Riverpod, go_router,
-three-step onboarding, a learning path, an exercise engine, spaced-repetition flashcards,
-Supabase authentication, background progress sync, and an account Profile screen.
-Phase 2 adds course content, immutable models, asset loading, and Drift tables.
-Phase 3 connects onboarding preferences and database progress to the interface.
-Phase 4 adds playable lessons, feedback, results, XP awards, and progress saving.
-Phase 5 adds SM-2 scheduling, card enrollment, review sessions, and review summaries.
-Phase 6C completes Supabase Auth, signup profiles, timestamp-based conflict
-protection, ownership policies, and incremental Postgres synchronization.
-Phase 8 adds pronunciation playback, audio caching, listening exercises and
-optional microphone-based speaking practice.
-See [Phase 8 setup, permission locations and tests](PHASE8_IMPLEMENTATION.md).
+Beginner Japanese for English speakers, built with Flutter and Pip the mascot.
+Lessons, spaced repetition and optional speaking practice share a local SQLite
+database. Supabase handles accounts/sync; Groq runs behind an authenticated Edge
+Function for conversation practice.
 
-Phase 9 connects Chat to an authenticated Supabase Edge Function with a server-side
-tutor, scenarios, corrections, translations, microphone dictation, saved vocabulary
-and local conversation history. Run the SQL migration, set the server secret and
-deploy the function using [the Phase 9 guide](PHASE9_IMPLEMENTATION.md).
+## Screenshots
 
-Phase 7 adds local-calendar streaks, daily XP goals, activity history, profile
-charts, opt-in mobile reminders, sound settings and synced progress reset.
-Start with [Phase 7 setup and testing](PHASE7_IMPLEMENTATION.md), including the
-additional SQL migration needed before cloud synchronization.
+| Learn | Lesson | Dark mode |
+| --- | --- | --- |
+| ![Learn](docs/screenshots/light-home.png) | ![Lesson](docs/screenshots/light-lesson-ja_greetings.png) | ![Dark Learn](docs/screenshots/dark-home.png) |
 
-For current backend setup and Android run instructions, start with
-[SUPABASE_SETUP.md](SUPABASE_SETUP.md). The app needs your project URL and public
-client key in the ignored config.local.json before sign-in is available.
+| Review | Profile | Settings |
+| --- | --- | --- |
+| ![Review](docs/screenshots/light-review.png) | ![Profile](docs/screenshots/light-profile.png) | ![Settings](docs/screenshots/light-settings.png) |
 
-For Chrome/Edge testing, see [the browser database fix](BROWSER_DATABASE_FIX.md).
-The browser SQLite runtime is now included. Use a fixed port to retain browser
-progress across runs:
+These are real app widget renders with isolated test data. Additional login and
+Chat captures are in [docs/screenshots](docs/screenshots). Regenerate the
+1080x1920 images with `flutter test test/support/capture_lingoblob.dart`.
+
+## Features
+
+- Data-driven onboarding, course selection and a daily study goal.
+- Six exercise types: choice, matching, fill-in-the-blank, translation, listening
+  and speaking; hearts, feedback, results and sequential lesson unlocks.
+- SM-2 flashcards, pronunciation playback, audio caching and TTS fallback.
+- Local-calendar streaks, daily XP, seven-day activity charts and opt-in reminders.
+- Email/password and Google sign-in, confirmation and password recovery links.
+- Local-first progress with owned cloud rows and timestamp/revision-based sync.
+- Four AI scenarios, corrections, tap-to-translate, dictation, saved suggested
+  words, retries and the last 20 messages stored locally per account.
+- Material 3 light/dark/system themes, bundled Plus Jakarta Sans, screen-reader
+  labels, large-font layouts and reduced-motion-aware page transitions.
+
+AI replies require the deployed backend and server Groq secret. Initial account
+setup needs internet; cached accounts can study offline. Speech availability and
+offline recognition depend on the device/provider. English is currently the only
+interface locale; UI copy lives in ARB.
+
+## Architecture
+
+```text
+Flutter widgets (presentation) <---- go_router navigation and auth redirects
+             |
+Riverpod controllers/providers
+             |
+Pure Dart domain: grading, SM-2, streaks, speech similarity
+             |
+Repositories ---- Drift SQLite (source of truth, isolated per account)
+      |                         |
+Course JSON                Background SyncService
+                                |
+                       Supabase Auth + Postgres/RLS
+
+ChatApi -> authenticated Supabase Edge Function -> Groq (server-only key)
+AudioService -> bundled/cached recording -> TTS fallback
+SpeechService -> device recognition -> editable transcript
+```
+
+```text
+lib/core/                         config, database, router, theme, localization
+lib/features/<feature>/data/       repositories, persistence, platform adapters
+lib/features/<feature>/domain/     models and pure algorithms
+lib/features/<feature>/presentation/ controllers and small widgets
+lib/shared/widgets/               shared UI and Pip
+assets/courses/                   bundled curriculum
+supabase/                         migrations, RLS, sync RPCs, chat function
+test/                            unit, widget, HTTP and migration tests
+integration_test/                 device lesson/persistence flow
+```
+
+A Riverpod provider supplies subscribed state/dependencies, similar to React
+context with a state store. Drift is the typed SQLite layer. Widgets render
+state; grading, sync and database changes stay outside widgets.
+
+## Setup
+
+Use Flutter stable and the Dart SDK required by `pubspec.yaml`. Verified locally
+with Flutter 3.47.6 / Dart 3.13.5. Android builds need Android Studio, API 37 and
+a compatible JDK.
+
+In Android Studio's SDK Manager, install **Android SDK Command-line Tools
+(latest)** under SDK Tools. Flutter's release-bundle validation needs the included
+`apkanalyzer` tool.
+
+```powershell
+cd C:\Langunge_flutter\myapp
+flutter doctor -v
+flutter pub get
+Copy-Item config.example.json config.local.json
+```
+
+Fill your public Supabase URL/key in the ignored `config.local.json`. Never put a
+service-role key, Groq key or signing password in Flutter. Generate the ignored
+fallback asset for plain IDE launches:
+
+```powershell
+python tool/prepare_local_config.py
+```
+
+Run SQL migrations in filename order. Follow [Supabase setup](SUPABASE_SETUP.md),
+[Phase 7 additions](PHASE7_IMPLEMENTATION.md) and
+[Groq deployment](PHASE9_IMPLEMENTATION.md). Keep
+`io.languagelearning.app://auth-callback` in Supabase's redirect allowlist.
+
+Android:
+
+```powershell
+flutter emulators
+flutter emulators --launch Medium_Phone_API_37.0
+flutter devices
+flutter run -d emulator-5554 --dart-define-from-file=config.local.json
+```
+
+Browser (keep a fixed port to preserve browser SQLite storage):
 
 ```powershell
 flutter run -d edge --web-port=7357 --dart-define-from-file=config.local.json
 ```
 
-## Create a separate project
+The Android ID is `com.charlie22dev.lingoblob`; it installs separately from old
+`com.example.myapp` test builds. iOS IDs match but require Xcode signing/testing
+on a Mac. If using an Android-specific Google OAuth client, update its package
+ID and certificate fingerprints. The existing OAuth callback scheme is unchanged.
 
-Replace MYHANDLE and app_name before running. Keep app_name lowercase_with_underscores.
-Do not recreate the existing project to run it.
-
-```powershell
-flutter doctor -v
-flutter create --org com.MYHANDLE --project-name app_name app_name
-cd app_name
-```
-
-The existing project keeps package name myapp and its existing native identifiers.
-Changing the org flag only affects newly created projects. In another package,
-replace package:myapp/ imports in tests with package:app_name/.
-
-## Android setup and run
-
-If flutter doctor reports missing Android SDK tools or unaccepted licenses,
-open Android Studio / Tools / SDK Manager / SDK Tools, install Android SDK
-Command-line Tools (latest), and then run:
+## Tests and performance
 
 ```powershell
-flutter doctor --android-licenses
-flutter doctor -v
-cd C:\Langunge_flutter\myapp
-flutter pub get
-flutter emulators
-flutter emulators --launch Medium_Phone_API_37.0
-flutter devices
-```
-
-Wait until the emulator boots. Use the Android device ID printed by flutter devices
-(e.g. emulator-5554, which can vary):
-
-```powershell
-flutter run -d emulator-5554 --dart-define-from-file=config.local.json --dart-define="APP_NAME=My Language App" --dart-define="TARGET_LANGUAGE=Japanese" --dart-define="NATIVE_LANGUAGE=English"
-```
-
-Press r for hot reload, R for hot restart, and q to quit. Change dart-defines by
-stopping and rerunning. Dart defines override local settings. To also support plain
-`flutter run`, generate the ignored local dotenv asset once (and after config changes):
-
-```powershell
-python tool/prepare_local_config.py
-flutter run -d emulator-5554
-```
-
-Fully stop the old run before rebuilding; hot reload cannot add a missing asset.
-Open this `myapp` folder in VS Code to use the included local Supabase launch profile.
-Client configuration is not a place for private server credentials.
-
-## Verify
-
-```powershell
-dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test
+node --experimental-strip-types --test supabase/tests/chat_handler.test.ts
+node supabase/tests/phase9_security.mjs
+deno task --config supabase/functions/chat/deno.json check
 ```
 
-Widget tests cover welcome configuration, all bottom tabs, lesson IDs, back
-navigation, direct routes, an unknown route, and 320x568 layouts at 200% text
-scale in both light and dark themes. An Android debug build has been verified;
-the earlier app reached Login and passed empty-field validation on the emulator.
-
-## Structure
-
-- lib/app: root app widget.
-- lib/core/config: compile-time configuration.
-- lib/core/theme: shared ColorScheme and typography.
-- lib/core/constants: route constants.
-- lib/core/router: go_router configuration.
-- lib/core/utils: reserved for shared utilities.
-- lib/features/{auth,sync,onboarding,home,lessons,exercises,flashcards,profile}/:
-  each feature has data, domain, and presentation folders.
-- lib/shared/widgets: reusable widgets.
-
-Empty folders have empty .gitkeep files so Git can retain them.
-ProviderScope supplies Riverpod providers, much like React context.
-ConsumerWidget can watch those providers and rebuild when their values change.
-StatefulShellRoute.indexedStack keeps each bottom tab's navigation state.
-context.go changes location; context.push stacks a page so Back returns to Learn.
-ThemeMode.system follows the device light/dark setting. The text theme inherits
-platform fonts, then customizes weights and line heights.
-
-## Dependencies and Git
-
-Direct dependency versions were checked against pub.dev's latest stable metadata.
-drift_dev and build_runner are dev dependencies for the Drift database generator;
-see the Phase 2 commands below to regenerate it after schema edits.
-Commit pubspec.lock in this application to reproduce resolved dependencies.
-.gitignore excludes build output, local env files, SDK paths, and signing files.
-The project is a Git repository on main; keep local credentials and tool caches excluded.
-See PHASE1_FILES.md for complete setup file contents and the dependency lockfile.
-
-## Phase 2: content and persistence
-
-Sample language assumption: Japanese for English speakers. The registered asset
-is assets/courses/japanese_basics.json: 1 course, 2 units, 3 lessons per unit,
-6 exercises per lesson, and 60 common words/phrases (10 per lesson). Topics are
-greetings, people, numbers, food, places, and actions. Example sentences may
-include supporting vocabulary beyond the 60 study entries. Audio URLs are optional
-and omitted because no recordings have been supplied.
-
-All content models are handwritten immutable classes. Their lists are copied
-into unmodifiable lists, and fromJson rejects missing/invalid required fields.
-Exercises use a sealed hierarchy with a type discriminator in JSON.
-
-CourseRepository loads the Flutter asset through an injectable AssetBundle.
-courseProvider is a FutureProvider<Course>, so consumers receive an AsyncValue
-that represents loading, data, or an error. Phase 3 uses the course catalog to
-connect the selected course to Learn. Phase 4 renders its exercises in lesson screens.
-The sample path can be overridden via COURSE_ASSET using --dart-define; any
-replacement asset must also be registered in pubspec.yaml. App display language
-configuration does not translate or select content automatically.
-
-The Drift database lives in lib/core/database/app_database.dart and is exposed
-through appDatabaseProvider. It opens lazily when a consumer first queries it.
-Only Drift infrastructure uses code generation; the content models do not.
-Tables use IDs matching content IDs, but no SQL foreign keys reference the JSON
-asset. Word dueDate is required; completedAt and lastActiveDate are nullable.
-bestScore is a percentage from 0 to 100. UserStats adds an internal primary key
-restricted to 1, ensuring one local user's stats row, initialized on creation.
-No XP, streak, scoring, or spaced-repetition algorithms are implemented yet.
-
-After editing the database schema, regenerate its code:
+SQL checks require `npm install --prefix .dart_tool/sqlcheck --no-save @electric-sql/pglite`.
+Run the device integration flow and collect its scroll trace:
 
 ```powershell
-flutter pub get
-dart run build_runner build
-flutter analyze
-flutter test
+flutter drive --profile --no-dds --driver=test_driver/integration_test.dart --target=integration_test/lesson_flow_test.dart -d emulator-5554
 ```
 
-Keep app_database.g.dart with the source, and do not edit it manually. Phase 6A
-upgrades schema version 1 to 2 with a migration that preserves existing progress.
-The native database setup targets Android/iOS/desktop; running the database on
-web requires Drift's separate web worker/WASM setup in a later phase.
+It uses real course assets, grading, navigation and a durable isolated database;
+audio/STT and auth are controlled boundaries. It verifies completion, XP, the
+next unlock and persistence after reopening SQLite. Performance output goes to
+`build/performance/lesson_flow.json`. See [Phase 10](PHASE10_IMPLEMENTATION.md)
+for results, accessibility coverage and DevTools inspection instructions.
 
-Tests check every required sample field for missing and null values, JSON round
-trips, optional audio, immutable collections, exercise validation, duplicate IDs,
-broken word references, injected/registered asset loading, database defaults,
-progress round trips, and database constraints. SQLite tests use an in-memory DB.
-See PHASE2_FILES.md for the short JSON schema table and every Phase 2 file in full.
-
-## Phase 3: onboarding and Learn
-
-First launch follows /welcome -> /languages -> /daily-goal. A language must be
-selected before continuing. Daily goals are 5, 10, or 15 minutes (default 10).
-OnboardingRepository stores the selected course ID and goal in one versioned JSON
-document using SharedPreferencesAsync. Completion is published to Riverpod only
-after saving succeeds, so a failed save stays on the goal screen with a retry.
-A startup screen handles asynchronous preference loading and read errors.
-Returning launches redirect to /home; completed users cannot revisit onboarding
-routes. System Back preserves choices when moving between onboarding steps.
-
-The language list is driven by courseCatalogPathsProvider. It starts with the
-Japanese asset selected by courseAssetPathProvider. Add another registered asset
-to the catalog to extend the choices; labels come from the course metadata.
-Course IDs are stable preference keys, so changing a label does not lose selection.
-
-Learn displays unit sections and round lesson nodes. A pure LearningPath model
-flattens lessons in JSON order: the first incomplete lesson is available; later
-incomplete lessons are locked; completed lessons remain open. The database's
-completed flag controls unlocking, even when an unfinished lesson has a score.
-Completed scores earn 1 star below 70%, 2 at 70-89%, and 3 at 90-100%.
-LessonProgress and UserStats are observed with Riverpod StreamProviders: new
-records update the path, XP, and streak without restarting or manually refreshing.
-No completion, XP award, streak calculation, or exercise gameplay is added here.
-The tests insert progress records to exercise the unlocking behavior.
-
-Tapping an available/completed node pushes /lesson/:id. Direct links to locked
-or unknown lesson IDs show explanatory pages. Loading/error states have friendly
-messages and retry actions; stats failures do not hide the learning path.
-
-Shared widgets provide responsive page bodies, loading/error feedback, choice
-cards, wrapping stat badges, and accessible lesson nodes. Tests exercise 320x568
-screens at 200% text scale in light and dark themes, including scrolling to unit 2.
+## Branding and Android release
 
 ```powershell
-cd C:\Langunge_flutter\myapp
-flutter pub get
-flutter analyze
-flutter test
-flutter devices
-flutter run -d emulator-5554
+flutter test tool/generate_brand_assets.dart
+dart run flutter_launcher_icons
+dart run flutter_native_splash:create
 ```
 
-Use your Android device ID in the final command. No dependency or database schema
-changes were needed for Phase 3, so there is no new database generation step.
-To manually test onboarding, complete the steps, quit, and reopen the app: Learn
-should open directly. To see onboarding again in development, clear this app's
-storage through Android Settings (this also clears its local database).
-See PHASE3_FILES.md for the file manifest and full Phase 3 code.
+The artwork comes from the existing vector Pip, with palette values shared by
+the generator configs and `LingoPalette`. Version `1.0.0+1` means display version
+`1.0.0` and Android version code `1`; increase the code for every Play upload.
 
-## Phase 4: exercise engine
-
-LessonController is an auto-disposed Riverpod Notifier family, keyed by the
-loaded Lesson. A Notifier exposes immutable state and methods that change it;
-widgets watch the state and invoke those methods rather than grade answers.
-Auto-dispose releases a session after its lesson screen closes. Returning to the
-same lesson starts a new attempt. Results are rendered on the existing lesson
-route so there is no separate results URL that could lose the session.
-
-The controller owns the exercise queue, current index, three hearts, answer draft,
-pair selection, correct count, attempt count, first-try count, feedback, phase,
-and save status. Phases are answering, feedback, and finished. Check stays
-disabled until the answer is complete. Feedback locks the current answer.
-Wrong answers cost one heart and append the whole exercise to the queue.
-Continue advances after feedback, including the final correction when hearts
-reach zero. Progress measures unique exercises cleared out of the original count.
-
-The exercise grader and answer/result models contain no Flutter imports.
-MultipleChoice and FillInBlank grade selected choices. MatchPairs shuffles the
-right column, supports either tap direction, and allows unpairing by tapping a
-paired card. Check grades a complete set of pairs as one exercise. TypeTranslation
-trims leading/trailing whitespace, ignores case, and accepts any listed answer;
-it does not ignore punctuation, accents, or internal spacing.
-
-Scoring assumptions:
-
-- Success means clearing the entire retry queue with at least one heart left.
-- Accuracy is correct attempts divided by all checked attempts, rounded to a
-  percentage for display and LessonProgress.bestScore.
-- A perfect exercise is answered correctly on its first attempt.
-- A successful run awards 10 base XP + 5 XP per perfect exercise. A perfect
-  six-exercise sample lesson earns 40 XP. Failed or abandoned runs earn 0 XP.
-- Each new successful replay awards its own XP. Repeated checks, Continue taps,
-  and save taps in the same session cannot award XP twice.
-
-LessonCompletionRepository writes progress and XP in one Drift transaction.
-It marks the lesson complete, preserves its highest score and first completion
-date, and increments UserStats.xp without changing the streak. The existing
-progress streams unlock the next lesson immediately after commit. Failed saves
-roll back both writes and leave the result available for retry. Successful
-results allow Continue after saving; failed runs allow Continue immediately.
-A close button or system Back asks before abandoning a lesson. Closing an unsaved
-result also asks before discarding it; closing is disabled during the save.
-
-The lesson layout keeps the progress/hearts header, scrolling exercise, and
-Check/Continue area separate. Feedback is green/red with a correct-answer label,
-including an independently scrollable list for match pairs. Header and action
-areas can scroll when enlarged text or the keyboard reduces available height.
+Create signing files once and back them up securely outside this repository:
 
 ```powershell
-cd C:\Langunge_flutter\myapp
-flutter pub get
-flutter analyze
-flutter test
-flutter devices
-flutter run -d emulator-5554
+python tool/create_upload_key.py
+flutter build appbundle --release --dart-define-from-file=config.local.json
+python tool/verify_android_bundle.py
 ```
 
-Use the Android device ID shown by flutter devices. Complete onboarding if needed,
-tap the first available lesson, answer all exercises, and Continue from results.
-Check that XP increases and the next node unlocks. Also try three mistakes and
-cancel/confirm the close dialog. No new dependencies or database schema changes
-were needed, so the existing generated Drift file is unchanged.
-See PHASE4_FILES.md for the complete file manifest and source snapshot.
+The generator refuses to overwrite existing files. `android/key.properties` and
+`android/app/lingoblob-upload.jks` are ignored. Release builds never fall back to
+debug signing. Output: `build/app/outputs/bundle/release/app-release.aab`.
 
-## Phase 5: flashcards and spaced repetition
+Complete the [Play Store checklist](docs/PLAY_STORE_CHECKLIST.md), review/publish
+the [privacy policy draft](docs/PRIVACY_POLICY_DRAFT.md), provide account deletion
+paths and verify live services before publication. A signed build alone does not
+complete those external requirements.
 
-Sm2 in lib/features/flashcards/domain/sm2.dart is a pure Dart scheduler. Its
-schedule method takes quality, repetitions, easeFactor, intervalDays, and an
-explicit reviewedAt timestamp, and returns a Sm2Schedule with updated values
-and dueDate. Using an explicit time makes the algorithm deterministic in tests.
+## Roadmap
 
-- Quality below 3 resets repetitions to 0 and intervalDays to 1.
-- A successful rating schedules 1 day, then 6 days, then round(interval * easeFactor).
-  The interval uses the incoming ease factor; the updated factor is for the next rating.
-- Every rating updates easeFactor using the requested formula, with a 1.3 floor.
-- One scheduling day is 24 hours. Due dates are UTC instants; the interface
-  formats the next due time in the device's local time.
-- Again, Hard, Good, and Easy map to quality 1, 3, 4, and 5.
-  Again schedules a card one day out rather than repeating it within this session.
-
-Successful lesson saving now requires its wordIds and inserts missing WordProgress
-rows in the same transaction as LessonProgress and XP. New cards start with ease
-2.5, zero repetitions, zero interval, and a due time of now. Insert-or-ignore
-preserves existing schedules during lesson replays and when words occur again.
-The Review repository also backfills words from already completed lessons when
-the review deck/session loads. Only vocabulary declared in lesson.wordIds is
-enrolled; words merely used as supporting text in an example are not inferred.
-
-Review shows cards due at or before now, including overdue cards. Future cards
-become available at their exact scheduled time; the count does not include a card
-that will only become due later today. A Drift stream and a timer for the next
-due card keep the count current, and app resume rechecks it. The deck is filtered
-to the selected course. An empty deck either explains how to add words or shows
-the next scheduled due time.
-
-Start opens /review/session with a snapshot of the due cards, ordered by due time
-and word ID. Cards added after a session starts are left for a subsequent session.
-The front shows the word; tapping flips to its translation and example. Rating
-buttons are disabled until the answer is revealed. AnimatedSwitcher plus Transform
-provides the flip using Flutter alone, with a 240ms transition and reduced-motion
-support. Card contents and buttons scroll on small screens and with large text.
-
-ReviewSessionController saves a rating before advancing. Repeated taps during a
-save are ignored, and a failed save leaves the revealed card available to retry.
-The repository re-reads the stored progress inside a transaction before applying
-SM-2. Closing a session keeps all ratings already saved, while its unreviewed
-cards remain due. The session summary shows the number reviewed and rating counts.
-Review does not award XP or change streaks in this phase.
-
-```powershell
-cd C:\Langunge_flutter\myapp
-flutter pub get
-flutter analyze
-flutter test
-flutter devices
-flutter run -d emulator-5554
-```
-
-Replace the device ID with yours. Complete a lesson, open Review, tap Start,
-reveal each card, and choose a rating. After the summary, Continue should show
-an empty state with the next due time if all currently due cards were reviewed.
-Existing completed lessons also produce cards automatically on opening Review.
-No dependencies, table definitions, generated database files, or schema version
-changes were needed. clockProvider supplies an injectable UTC clock for tests.
-
-Validation: all 94 tests pass, including 10 SM-2 tests, transactional enrollment,
-backfill, schedule preservation, due-time updates without database writes, all
-rating mappings, session save retry, partial sessions, app resume, reduced motion,
-and 320px layouts at 200% text scale in light/dark themes. flutter analyze reports
-no issues and formatting is clean. An Android emulator run was not performed.
-See PHASE5_FILES.md for the file manifest and full Phase 5 source.
-
-## Phase 6C: Supabase authentication and incremental sync
-
-See SUPABASE_SETUP.md for project creation, SQL migration/RLS, email and Google
-provider configuration, Android callbacks, offline behavior, and manual testing.
-The app uses supabase_flutter and reads config.local.json through dart-defines.
-That local file is ignored; config.example.json is safe to commit.
-
-Drift remains the source used by screens. Authenticated accounts have separate
-local databases, and the first account can claim the pre-authentication database
-once. Schema version 3 preserves existing progress and adds a profile cache.
-main() initializes Supabase before ProviderScope starts the app. Auth events
-refresh route redirects, including recovery and signed-out session handling.
-Sync uploads pending rows with explicit conflict keys and merges rows by updatedAt.
-The database keeps newer rows during stale upserts. A persisted timestamp/revision
-cursor downloads changes incrementally and catches late offline edits. Newer local
-edits made during an upload remain pending. Profile includes sync status and logout.
-
-Run the single script supabase/migrations/202611120001_phase6c.sql in SQL Editor.
-It supports a fresh schema or the earlier Phase 6A tables, preserving timestamps
-and progress. It creates profiles, user_stats, lesson_progress and word_progress,
-all with user-owned RLS and timestamptz updated_at, plus a signup trigger.
-
-Validation: 131 Flutter tests and 14 Phase 6C SQL/RLS checks passed. The earlier
-11 Phase 6A SQL checks remain available as migration-history tests. Your project
-URL and public key are in ignored config.local.json. Live email, Google OAuth,
-and two-account cloud sync still need your dashboard setup and test accounts.
-See SUPABASE_SETUP.md for the exact setup and RLS test transaction, and
-PHASE6C_FILES.md for the changed-file manifest and source.
-
-## LingoBlob presentation
-
-The Flutter UI uses the LingoBlob prototype palette, bundled Plus Jakarta Sans,
-Pip mascot, flat bordered components, saved light/dark/system appearance and
-localized English copy. Existing learning, auth and sync behavior is preserved.
-See [LINGOBLOB_UI_IMPLEMENTATION.md](LINGOBLOB_UI_IMPLEMENTATION.md) for the
-screen-by-screen checklist, limitations, files, validation and run commands.
-Debug builds expose the component gallery through Profile / Settings.
+- [x] Phases 1-7: foundations, lessons, review, auth/sync, streaks and reminders.
+- [x] Phase 8: pronunciation, cached audio, listening and speech scoring.
+- [x] Phase 9: Groq conversation backend and Chat UI.
+- [x] Phase 10 implementation: tests, polish, branding, signing and release tooling.
+- [ ] Production backend configuration and live auth/chat verification.
+- [ ] Public privacy/deletion resources and Play Console declarations.
+- [ ] Physical-device speech, TalkBack and performance review; closed testing.
+- [ ] Future requested work: more courses, interface locales and iOS release.
