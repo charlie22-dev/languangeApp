@@ -45,7 +45,7 @@ class ReviewSummary extends StatelessWidget {
               spacing: LingoSpace.s16,
               runSpacing: LingoSpace.s8,
               children: [
-                Text(context.l10n.message(rating.label)),
+                Text(context.l10n.text(rating.labelKey)),
                 Text('${session.ratings[rating] ?? 0}'),
               ],
             ),

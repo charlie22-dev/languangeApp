@@ -47,7 +47,7 @@ class ReviewRatingButtons extends StatelessWidget {
                     .onSurfaceVariant,
               ),
               child: Text(
-                context.l10n.message(rating.label),
+                context.l10n.text(rating.labelKey),
                 textAlign: TextAlign.center,
               ),
             ),

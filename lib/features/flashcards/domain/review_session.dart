@@ -1,14 +1,14 @@
 import 'word.dart';
 
 enum ReviewRating {
-  again(1, 'Again'),
-  hard(3, 'Hard'),
-  good(4, 'Good'),
-  easy(5, 'Easy');
+  again(1, 'ratingAgain'),
+  hard(3, 'ratingHard'),
+  good(4, 'ratingGood'),
+  easy(5, 'ratingEasy');
 
-  const ReviewRating(this.quality, this.label);
+  const ReviewRating(this.quality, this.labelKey);
   final int quality;
-  final String label;
+  final String labelKey;
 }
 
 final class ReviewOverview {

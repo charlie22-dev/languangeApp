@@ -123,7 +123,7 @@ void main() {
   });
 
   for (final rating in ReviewRating.values) {
-    test('${rating.label} persists the SM-2 result', () async {
+    test('${rating.name} persists the SM-2 result', () async {
       final wordId = course.words.first.id;
       await database
           .into(database.wordProgress)
