@@ -43,8 +43,8 @@ abstract final class AppTheme {
       tertiaryFixedDim: LingoPalette.green,
       onTertiaryFixed: LingoPalette.ink,
       onTertiaryFixedVariant: LingoPalette.ink,
-      error: LingoPalette.coral,
-      onError: LingoPalette.ink,
+      error: dark ? LingoPalette.coral : LingoPalette.errorText,
+      onError: dark ? LingoPalette.ink : LingoPalette.white,
       errorContainer: LingoPalette.coral,
       onErrorContainer: LingoPalette.ink,
       surface: surface,
@@ -71,20 +71,13 @@ abstract final class AppTheme {
       double line,
       FontWeight weight, [
       double spacing = 0,
-    ]) =>
-        GoogleFonts.plusJakartaSans(
-          fontSize: size,
-          height: line / size,
-          fontWeight: weight,
-          letterSpacing: spacing,
-          color: text,
-        ).copyWith(
-          fontFamilyFallback: const [
-            'Noto Sans CJK JP',
-            'Noto Sans JP',
-            'sans-serif',
-          ],
-        );
+    ]) => GoogleFonts.plusJakartaSans(
+      fontSize: size,
+      height: line / size,
+      fontWeight: weight,
+      letterSpacing: spacing,
+      color: text,
+    ).copyWith(fontFamilyFallback: const ['NotoSansJP', 'sans-serif']);
     final textTheme = TextTheme(
       displayLarge: type(32, 38, FontWeight.w800, -.5),
       displayMedium: type(32, 38, FontWeight.w800, -.5),
