@@ -9,6 +9,8 @@ abstract final class LingoPalette {
   static const sand = Color(0xFFF3EBD3);
   static const accent = Color(0xFF8A9BFF);
   static const coral = Color(0xFFF4695F);
+  // Coral stays on feedback cards; this shade is readable as text on light surfaces.
+  static const errorText = Color(0xFF9F2630);
   static const green = Color(0xFF3DBE6B);
   static const night = Color(0xFF0D1126);
   static const darkSurface = Color(0xFF171D3B);
