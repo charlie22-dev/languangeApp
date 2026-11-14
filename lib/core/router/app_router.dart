@@ -29,6 +29,7 @@ import '../../features/onboarding/presentation/startup_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../shared/widgets/placeholder_page.dart';
 import '../constants/app_routes.dart';
+import 'lingo_page.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   // Refresh redirects when preferences change without rebuilding the router.
@@ -96,19 +97,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: AppRoutes.login,
-        builder: (context, state) => const LoginScreen(),
+        pageBuilder: (context, state) => lingoPage(state, const LoginScreen()),
       ),
       GoRoute(
         path: AppRoutes.register,
-        builder: (context, state) => const RegisterScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const RegisterScreen()),
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
-        builder: (context, state) => const ForgotPasswordScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const ForgotPasswordScreen()),
       ),
       GoRoute(
         path: AppRoutes.resetPassword,
-        builder: (context, state) => const ResetPasswordScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const ResetPasswordScreen()),
       ),
       GoRoute(
         path: AppRoutes.authLoading,
@@ -117,7 +121,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/', redirect: (context, state) => AppRoutes.welcome),
       GoRoute(
         path: AppRoutes.welcome,
-        builder: (context, state) => const WelcomeScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const WelcomeScreen()),
       ),
       GoRoute(
         path: AppRoutes.startup,
@@ -125,11 +130,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.languages,
-        builder: (context, state) => const LanguageScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const LanguageScreen()),
       ),
       GoRoute(
         path: AppRoutes.dailyGoal,
-        builder: (context, state) => const DailyGoalScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const DailyGoalScreen()),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => HomeScreen(navigationShell: shell),
@@ -170,7 +177,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/settings',
-        builder: (context, state) => const SettingsScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const SettingsScreen()),
       ),
       if (kDebugMode)
         GoRoute(
@@ -179,12 +187,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ),
       GoRoute(
         path: AppRoutes.lesson,
-        builder: (context, state) =>
-            LessonScreen(lessonId: state.pathParameters['id']!),
+        pageBuilder: (context, state) => lingoPage(
+          state,
+          LessonScreen(lessonId: state.pathParameters['id']!),
+        ),
       ),
       GoRoute(
         path: AppRoutes.reviewSession,
-        builder: (context, state) => const ReviewSessionScreen(),
+        pageBuilder: (context, state) =>
+            lingoPage(state, const ReviewSessionScreen()),
       ),
     ],
     errorBuilder: (context, state) => PlaceholderPage(
