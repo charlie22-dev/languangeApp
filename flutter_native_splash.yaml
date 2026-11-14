@@ -1,0 +1,13 @@
+flutter_native_splash:
+  color: '#FFF9E5'
+  color_dark: '#0D1126'
+  image: assets/branding/pip_foreground.png
+  image_dark: assets/branding/pip_foreground.png
+  android: true
+  ios: true
+  web: true
+  android_12:
+    color: '#FFF9E5'
+    color_dark: '#0D1126'
+    image: assets/branding/pip_foreground.png
+    image_dark: assets/branding/pip_foreground.png
