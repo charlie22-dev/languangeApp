@@ -42,6 +42,7 @@ Future<void> openLesson(WidgetTester tester, AppHarness harness) async {
 Future<void> tapKey(WidgetTester tester, String key) async {
   final finder = find.byKey(ValueKey(key));
   await tester.ensureVisible(finder);
+  await tester.pumpAndSettle();
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }
@@ -171,6 +172,11 @@ void main() {
       );
       await tapText(tester, 'Continue');
       expect(find.text('50 XP'), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('lesson-node-ja_people')),
+        120,
+      );
+      await tester.pumpAndSettle();
       expect(
         tester
             .widget<LessonPathNode>(
