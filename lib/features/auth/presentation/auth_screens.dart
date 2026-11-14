@@ -266,7 +266,7 @@ class _AuthNotice extends StatelessWidget {
         Semantics(
           liveRegion: true,
           child: Text(
-            action.error!,
+            context.l10n.message(action.error!),
             style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ),
