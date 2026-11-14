@@ -9,6 +9,7 @@ import '../../../core/localization/lingo_localizations.dart';
 import '../../../core/theme/lingo_tokens.dart';
 import '../../../shared/widgets/lingo_components.dart';
 import '../../../shared/widgets/stat_badge.dart';
+import '../../../shared/widgets/inline_retry.dart';
 import '../../home/data/home_providers.dart';
 import 'profile_display_provider.dart';
 
@@ -114,8 +115,10 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
               loading: () => const LingoSkeleton(),
-              error: (e, s) =>
-                  Text(context.l10n.text('profileStatsUnavailable')),
+              error: (e, s) => InlineRetry(
+                message: context.l10n.text('profileStatsUnavailable'),
+                onRetry: () => ref.invalidate(userStatsProvider),
+              ),
             ),
             const SizedBox(height: LingoSpace.s24),
             LingoPanel(
@@ -129,8 +132,10 @@ class ProfileScreen extends ConsumerWidget {
                   const SizedBox(height: LingoSpace.s16),
                   activity.when(
                     loading: () => const LingoSkeleton(),
-                    error: (e, s) =>
-                        Text(context.l10n.text('activityLoadError')),
+                    error: (e, s) => InlineRetry(
+                      message: context.l10n.text('activityLoadError'),
+                      onRetry: () => ref.invalidate(activitySummaryProvider),
+                    ),
                     data: (summary) => ActivityChart(summary: summary),
                   ),
                 ],
