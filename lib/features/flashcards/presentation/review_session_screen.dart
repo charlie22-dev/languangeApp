@@ -133,7 +133,7 @@ class _ReviewCardContent extends ConsumerWidget {
           Semantics(
             liveRegion: true,
             child: Text(
-              session.error!,
+              context.l10n.message(session.error!),
               style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
