@@ -51,6 +51,7 @@ class AppHarness {
     AudioService? audioService,
     SpeechService? speechService,
     ChatApi? chatApi,
+    String appName = 'Test App',
   }) {
     SharedPreferences.setMockInitialValues({});
     this.course = course ?? sampleCourse();
@@ -87,9 +88,7 @@ class AppHarness {
         if (clock != null) clockProvider.overrideWithValue(clock),
         if (reviewRepository != null)
           reviewRepositoryProvider.overrideWithValue(reviewRepository),
-        appConfigProvider.overrideWithValue(
-          const AppConfig(appName: 'Test App'),
-        ),
+        appConfigProvider.overrideWithValue(AppConfig(appName: appName)),
         courseCatalogProvider.overrideWith((ref) async {
           if (catalogFails) throw StateError('Catalog failure');
           return catalogGate?.future ?? [this.course];
@@ -143,6 +142,7 @@ Future<void> mount(
 Future<void> tapText(WidgetTester tester, String text) async {
   final finder = find.text(text);
   await tester.ensureVisible(finder);
+  await tester.pumpAndSettle();
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }
@@ -331,6 +331,8 @@ void main() {
     await mount(tester, harness);
     expect(find.text('0 XP'), findsOneWidget);
     final secondFinder = find.byKey(const ValueKey('lesson-node-ja_people'));
+    await tester.scrollUntilVisible(secondFinder, 120);
+    await tester.pumpAndSettle();
     expect(
       tester.widget<LessonPathNode>(secondFinder).entry.availability,
       LessonAvailability.locked,
@@ -354,17 +356,29 @@ void main() {
           ),
         );
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('lesson-node-ja_greetings')),
+      -120,
+    );
+    await tester.pumpAndSettle();
     final first = tester.widget<LessonPathNode>(
       find.byKey(const ValueKey('lesson-node-ja_greetings')),
     );
     expect(first.entry.availability, LessonAvailability.completed);
     expect(first.entry.stars, 3);
+    await tester.scrollUntilVisible(secondFinder, 120);
+    await tester.pumpAndSettle();
     expect(
       tester.widget<LessonPathNode>(secondFinder).entry.availability,
       LessonAvailability.available,
     );
     expect(find.text('120 XP'), findsOneWidget);
     expect(find.text('3 days streak'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('lesson-node-ja_greetings')),
+      -120,
+    );
+    await tester.pumpAndSettle();
     final firstButton = find.descendant(
       of: find.byKey(const ValueKey('lesson-node-ja_greetings')),
       matching: find.byType(FilledButton),
