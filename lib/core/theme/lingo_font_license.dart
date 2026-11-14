@@ -10,6 +10,9 @@ abstract final class LingoFontLicense {
       yield LicenseEntryWithLineBreaks([
         'Plus Jakarta Sans',
       ], await rootBundle.loadString('assets/fonts/OFL.txt'));
+      yield LicenseEntryWithLineBreaks([
+        'Noto Sans JP',
+      ], await rootBundle.loadString('assets/fonts/NotoSansJP-OFL.txt'));
     });
   }
 }
