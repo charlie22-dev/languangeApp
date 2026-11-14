@@ -37,6 +37,7 @@ void main() {
         (c.onPrimary, c.primary),
         (c.onSecondary, c.secondary),
         (c.onError, c.error),
+        (c.error, c.surface),
         (c.onTertiary, c.tertiary),
       ]) {
         expect(contrast(pair.$1, pair.$2), greaterThanOrEqualTo(4.5));
