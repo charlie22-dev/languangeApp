@@ -18,3 +18,13 @@ familia|family|Mi familia es pequeña.|My family is small.
 madre|mother|Mi madre está aquí.|My mother is here.
 padre|father|Mi padre cocina.|My father cooks.
 persona|person|Es una buena persona.|They are a good person.
+cero|zero|Tengo cero mensajes.|I have zero messages.
+uno|one|Quiero uno, por favor.|I want one, please.
+dos|two|Tengo dos libros.|I have two books.
+tres|three|Hay tres sillas.|There are three chairs.
+cuatro|four|Tengo cuatro manzanas.|I have four apples.
+cinco|five|Hay cinco personas.|There are five people.
+seis|six|Tengo seis fotos.|I have six photos.
+siete|seven|Hay siete días en una semana.|There are seven days in a week.
+ocho|eight|Tengo ocho lápices.|I have eight pencils.
+nueve|nine|Son las nueve.|It is nine o'clock.

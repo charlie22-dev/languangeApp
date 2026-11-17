@@ -225,6 +225,116 @@
         "beginner",
         "people"
       ]
+    },
+    {
+      "id": "es_zero",
+      "text": "cero",
+      "translation": "zero",
+      "example": "Tengo cero mensajes.",
+      "exampleTranslation": "I have zero messages.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_one",
+      "text": "uno",
+      "translation": "one",
+      "example": "Quiero uno, por favor.",
+      "exampleTranslation": "I want one, please.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_two",
+      "text": "dos",
+      "translation": "two",
+      "example": "Tengo dos libros.",
+      "exampleTranslation": "I have two books.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_three",
+      "text": "tres",
+      "translation": "three",
+      "example": "Hay tres sillas.",
+      "exampleTranslation": "There are three chairs.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_four",
+      "text": "cuatro",
+      "translation": "four",
+      "example": "Tengo cuatro manzanas.",
+      "exampleTranslation": "I have four apples.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_five",
+      "text": "cinco",
+      "translation": "five",
+      "example": "Hay cinco personas.",
+      "exampleTranslation": "There are five people.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_six",
+      "text": "seis",
+      "translation": "six",
+      "example": "Tengo seis fotos.",
+      "exampleTranslation": "I have six photos.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_seven",
+      "text": "siete",
+      "translation": "seven",
+      "example": "Hay siete días en una semana.",
+      "exampleTranslation": "There are seven days in a week.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_eight",
+      "text": "ocho",
+      "translation": "eight",
+      "example": "Tengo ocho lápices.",
+      "exampleTranslation": "I have eight pencils.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "es_nine",
+      "text": "nueve",
+      "translation": "nine",
+      "example": "Son las nueve.",
+      "exampleTranslation": "It is nine o'clock.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
     }
   ],
   "units": []
