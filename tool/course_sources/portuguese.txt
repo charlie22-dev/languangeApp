@@ -1,0 +1,10 @@
+olá|hello|Olá, eu sou a Ana.|Hello, I am Ana.
+bom dia|good morning|Bom dia, pai.|Good morning, Dad.
+boa noite|good night|Boa noite, mãe.|Good night, Mom.
+obrigado|thank you|Obrigado pelo café.|Thank you for the coffee.
+por favor|please|Um chá, por favor.|A tea, please.
+sim|yes|Sim, eu quero pão.|Yes, I want bread.
+não|no|Não, obrigado.|No, thank you.
+tchau|goodbye|Tchau, até amanhã.|Goodbye, see you tomorrow.
+desculpa|excuse me|Desculpa, onde fica a estação?|Excuse me, where is the station?
+até logo|see you later|Até logo, meu amigo.|See you later, my friend.

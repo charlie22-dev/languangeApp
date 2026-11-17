@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "pt_basics_en",
+  "title": "Portuguese Basics",
+  "targetLanguage": "Portuguese",
+  "nativeLanguage": "English",
+  "targetLocale": "pt-BR",
+  "words": [
+    {
+      "id": "pt_hello",
+      "text": "olá",
+      "translation": "hello",
+      "example": "Olá, eu sou a Ana.",
+      "exampleTranslation": "Hello, I am Ana.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_good_morning",
+      "text": "bom dia",
+      "translation": "good morning",
+      "example": "Bom dia, pai.",
+      "exampleTranslation": "Good morning, Dad.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_good_night",
+      "text": "boa noite",
+      "translation": "good night",
+      "example": "Boa noite, mãe.",
+      "exampleTranslation": "Good night, Mom.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_thank_you",
+      "text": "obrigado",
+      "translation": "thank you",
+      "example": "Obrigado pelo café.",
+      "exampleTranslation": "Thank you for the coffee.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_please",
+      "text": "por favor",
+      "translation": "please",
+      "example": "Um chá, por favor.",
+      "exampleTranslation": "A tea, please.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_yes",
+      "text": "sim",
+      "translation": "yes",
+      "example": "Sim, eu quero pão.",
+      "exampleTranslation": "Yes, I want bread.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_no",
+      "text": "não",
+      "translation": "no",
+      "example": "Não, obrigado.",
+      "exampleTranslation": "No, thank you.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_goodbye",
+      "text": "tchau",
+      "translation": "goodbye",
+      "example": "Tchau, até amanhã.",
+      "exampleTranslation": "Goodbye, see you tomorrow.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_excuse_me",
+      "text": "desculpa",
+      "translation": "excuse me",
+      "example": "Desculpa, onde fica a estação?",
+      "exampleTranslation": "Excuse me, where is the station?",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "pt_see_you_later",
+      "text": "até logo",
+      "translation": "see you later",
+      "example": "Até logo, meu amigo.",
+      "exampleTranslation": "See you later, my friend.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    }
+  ],
+  "units": []
+}
