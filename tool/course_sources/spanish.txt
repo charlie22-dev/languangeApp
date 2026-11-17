@@ -8,3 +8,13 @@ no|no|No, gracias.|No, thank you.
 adiós|goodbye|Adiós, hasta mañana.|Goodbye, see you tomorrow.
 perdón|excuse me|Perdón, ¿dónde está la estación?|Excuse me, where is the station?
 hasta luego|see you later|Hasta luego, amigo.|See you later, friend.
+yo|I|Yo soy estudiante.|I am a student.
+tú|you|Tú eres mi amigo.|You are my friend.
+él|he|Él está en casa.|He is at home.
+ella|she|Ella habla español.|She speaks Spanish.
+nosotros|we|Nosotros vivimos aquí.|We live here.
+amigo|friend|Mi amigo lee un libro.|My friend reads a book.
+familia|family|Mi familia es pequeña.|My family is small.
+madre|mother|Mi madre está aquí.|My mother is here.
+padre|father|Mi padre cocina.|My father cooks.
+persona|person|Es una buena persona.|They are a good person.
