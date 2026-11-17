@@ -48,3 +48,13 @@ toilettes|bathroom|Où sont les toilettes ?|Where is the bathroom?
 hôpital|hospital|L'hôpital est proche.|The hospital is nearby.
 parc|park|Allons au parc.|Let's go to the park.
 restaurant|restaurant|Le restaurant est ouvert.|The restaurant is open.
+manger|to eat|Je veux manger du pain.|I want to eat bread.
+boire|to drink|Je veux boire de l'eau.|I want to drink water.
+aller|to go|Je veux aller à la maison.|I want to go home.
+venir|to come|Tu peux venir aujourd'hui ?|Can you come today?
+voir|to see|Je veux voir le parc.|I want to see the park.
+parler|to speak|Je veux parler français.|I want to speak French.
+lire|to read|J'aime lire.|I like to read.
+écrire|to write|Je veux écrire une lettre.|I want to write a letter.
+écouter|to listen|J'aime écouter de la musique.|I like to listen to music.
+apprendre|to learn|Je veux apprendre le français.|I want to learn French.
