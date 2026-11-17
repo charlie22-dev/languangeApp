@@ -1009,6 +1009,124 @@
           ]
         }
       ]
+    },
+    {
+      "id": "fr_unit_2",
+      "title": "Everyday Life",
+      "lessons": [
+        {
+          "id": "fr_food",
+          "title": "Food",
+          "wordIds": [
+            "fr_water",
+            "fr_bread",
+            "fr_milk",
+            "fr_rice",
+            "fr_apple",
+            "fr_coffee",
+            "fr_tea",
+            "fr_food",
+            "fr_chicken",
+            "fr_fish"
+          ],
+          "exercises": [
+            {
+              "id": "fr_food_1",
+              "type": "multipleChoice",
+              "prompt": "What does “eau” mean?",
+              "options": [
+                "rice",
+                "water",
+                "bread",
+                "milk"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "fr_food_2",
+              "type": "multipleChoice",
+              "prompt": "What does “pain” mean?",
+              "options": [
+                "bread",
+                "milk",
+                "rice",
+                "apple"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "fr_food_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "lait",
+                  "right": "milk"
+                },
+                {
+                  "left": "riz",
+                  "right": "rice"
+                },
+                {
+                  "left": "pomme",
+                  "right": "apple"
+                }
+              ]
+            },
+            {
+              "id": "fr_food_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Je veux un ___.",
+              "answer": "café",
+              "choices": [
+                "café",
+                "thé",
+                "nourriture",
+                "poulet"
+              ]
+            },
+            {
+              "id": "fr_food_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Le ___ est chaud.",
+              "answer": "thé",
+              "choices": [
+                "nourriture",
+                "poulet",
+                "poisson",
+                "thé"
+              ]
+            },
+            {
+              "id": "fr_food_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into French: food",
+              "acceptedAnswers": [
+                "nourriture"
+              ]
+            },
+            {
+              "id": "fr_food_7",
+              "type": "listening",
+              "audioText": "poulet",
+              "acceptedAnswers": [
+                "poulet"
+              ],
+              "options": [
+                "pain",
+                "poulet",
+                "poisson",
+                "eau"
+              ]
+            },
+            {
+              "id": "fr_food_8",
+              "type": "speaking",
+              "phrase": "poisson",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
     }
   ]
 }
