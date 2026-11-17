@@ -1237,6 +1237,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "it_actions",
+          "title": "Actions",
+          "wordIds": [
+            "it_to_eat",
+            "it_to_drink",
+            "it_to_go",
+            "it_to_come",
+            "it_to_see",
+            "it_to_speak",
+            "it_to_read",
+            "it_to_write",
+            "it_to_listen",
+            "it_to_learn"
+          ],
+          "exercises": [
+            {
+              "id": "it_actions_1",
+              "type": "multipleChoice",
+              "prompt": "What does “mangiare” mean?",
+              "options": [
+                "to drink",
+                "to go",
+                "to come",
+                "to eat"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "it_actions_2",
+              "type": "multipleChoice",
+              "prompt": "What does “bere” mean?",
+              "options": [
+                "to come",
+                "to see",
+                "to drink",
+                "to go"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "it_actions_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "andare",
+                  "right": "to go"
+                },
+                {
+                  "left": "venire",
+                  "right": "to come"
+                },
+                {
+                  "left": "vedere",
+                  "right": "to see"
+                }
+              ]
+            },
+            {
+              "id": "it_actions_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Voglio ___ italiano.",
+              "answer": "parlare",
+              "choices": [
+                "scrivere",
+                "ascoltare",
+                "parlare",
+                "leggere"
+              ]
+            },
+            {
+              "id": "it_actions_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Mi piace ___.",
+              "answer": "leggere",
+              "choices": [
+                "imparare",
+                "leggere",
+                "scrivere",
+                "ascoltare"
+              ]
+            },
+            {
+              "id": "it_actions_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Italian: to write",
+              "acceptedAnswers": [
+                "scrivere"
+              ]
+            },
+            {
+              "id": "it_actions_7",
+              "type": "listening",
+              "audioText": "ascoltare",
+              "acceptedAnswers": [
+                "ascoltare"
+              ],
+              "options": [
+                "imparare",
+                "mangiare",
+                "bere",
+                "ascoltare"
+              ]
+            },
+            {
+              "id": "it_actions_8",
+              "type": "speaking",
+              "phrase": "imparare",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
