@@ -1,0 +1,10 @@
+hola|hello|Hola, soy Ana.|Hello, I am Ana.
+buenos días|good morning|Buenos días, señor.|Good morning, sir.
+buenas noches|good night|Buenas noches, mamá.|Good night, Mom.
+gracias|thank you|Gracias por el agua.|Thank you for the water.
+por favor|please|Un café, por favor.|A coffee, please.
+sí|yes|Sí, quiero té.|Yes, I want tea.
+no|no|No, gracias.|No, thank you.
+adiós|goodbye|Adiós, hasta mañana.|Goodbye, see you tomorrow.
+perdón|excuse me|Perdón, ¿dónde está la estación?|Excuse me, where is the station?
+hasta luego|see you later|Hasta luego, amigo.|See you later, friend.

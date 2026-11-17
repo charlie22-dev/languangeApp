@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "es_basics_en",
+  "title": "Spanish Basics",
+  "targetLanguage": "Spanish",
+  "nativeLanguage": "English",
+  "targetLocale": "es-ES",
+  "words": [
+    {
+      "id": "es_hello",
+      "text": "hola",
+      "translation": "hello",
+      "example": "Hola, soy Ana.",
+      "exampleTranslation": "Hello, I am Ana.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_good_morning",
+      "text": "buenos días",
+      "translation": "good morning",
+      "example": "Buenos días, señor.",
+      "exampleTranslation": "Good morning, sir.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_good_night",
+      "text": "buenas noches",
+      "translation": "good night",
+      "example": "Buenas noches, mamá.",
+      "exampleTranslation": "Good night, Mom.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_thank_you",
+      "text": "gracias",
+      "translation": "thank you",
+      "example": "Gracias por el agua.",
+      "exampleTranslation": "Thank you for the water.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_please",
+      "text": "por favor",
+      "translation": "please",
+      "example": "Un café, por favor.",
+      "exampleTranslation": "A coffee, please.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_yes",
+      "text": "sí",
+      "translation": "yes",
+      "example": "Sí, quiero té.",
+      "exampleTranslation": "Yes, I want tea.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_no",
+      "text": "no",
+      "translation": "no",
+      "example": "No, gracias.",
+      "exampleTranslation": "No, thank you.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_goodbye",
+      "text": "adiós",
+      "translation": "goodbye",
+      "example": "Adiós, hasta mañana.",
+      "exampleTranslation": "Goodbye, see you tomorrow.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_excuse_me",
+      "text": "perdón",
+      "translation": "excuse me",
+      "example": "Perdón, ¿dónde está la estación?",
+      "exampleTranslation": "Excuse me, where is the station?",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "es_see_you_later",
+      "text": "hasta luego",
+      "translation": "see you later",
+      "example": "Hasta luego, amigo.",
+      "exampleTranslation": "See you later, friend.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    }
+  ],
+  "units": []
+}
