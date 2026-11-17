@@ -115,6 +115,116 @@
         "beginner",
         "greetings"
       ]
+    },
+    {
+      "id": "fr_i",
+      "text": "je",
+      "translation": "I",
+      "example": "Je suis ici.",
+      "exampleTranslation": "I am here.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_you",
+      "text": "tu",
+      "translation": "you",
+      "example": "Tu es mon ami.",
+      "exampleTranslation": "You are my friend.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_he",
+      "text": "il",
+      "translation": "he",
+      "example": "Il est à la maison.",
+      "exampleTranslation": "He is at home.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_she",
+      "text": "elle",
+      "translation": "she",
+      "example": "Elle parle français.",
+      "exampleTranslation": "She speaks French.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_we",
+      "text": "nous",
+      "translation": "we",
+      "example": "Nous habitons ici.",
+      "exampleTranslation": "We live here.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_friend",
+      "text": "ami",
+      "translation": "friend",
+      "example": "Mon ami lit un livre.",
+      "exampleTranslation": "My friend reads a book.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_family",
+      "text": "famille",
+      "translation": "family",
+      "example": "Ma famille est petite.",
+      "exampleTranslation": "My family is small.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_mother",
+      "text": "mère",
+      "translation": "mother",
+      "example": "Ma mère est ici.",
+      "exampleTranslation": "My mother is here.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_father",
+      "text": "père",
+      "translation": "father",
+      "example": "Mon père cuisine.",
+      "exampleTranslation": "My father cooks.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "fr_person",
+      "text": "personne",
+      "translation": "person",
+      "example": "C'est une bonne personne.",
+      "exampleTranslation": "They are a good person.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
     }
   ],
   "units": []

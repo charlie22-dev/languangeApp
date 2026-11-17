@@ -8,3 +8,13 @@ non|no|Non, merci.|No, thank you.
 au revoir|goodbye|Au revoir, à demain.|Goodbye, see you tomorrow.
 pardon|excuse me|Pardon, où est la gare ?|Excuse me, where is the station?
 à bientôt|see you soon|À bientôt, mon ami.|See you soon, my friend.
+je|I|Je suis ici.|I am here.
+tu|you|Tu es mon ami.|You are my friend.
+il|he|Il est à la maison.|He is at home.
+elle|she|Elle parle français.|She speaks French.
+nous|we|Nous habitons ici.|We live here.
+ami|friend|Mon ami lit un livre.|My friend reads a book.
+famille|family|Ma famille est petite.|My family is small.
+mère|mother|Ma mère est ici.|My mother is here.
+père|father|Mon père cuisine.|My father cooks.
+personne|person|C'est une bonne personne.|They are a good person.
