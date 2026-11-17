@@ -1,6 +1,7 @@
 # LingoBlob
 
-Beginner Japanese for English speakers, built with Flutter and Pip the mascot.
+Beginner Japanese, Spanish, French, German, Italian and Brazilian Portuguese for
+English speakers, built with Flutter and Pip the mascot.
 Lessons, spaced repetition and optional speaking practice share a local SQLite
 database. Supabase handles accounts/sync; Groq runs behind an authenticated Edge
 Function for conversation practice.
@@ -21,7 +22,8 @@ Chat captures are in [docs/screenshots](docs/screenshots). Regenerate the
 
 ## Features
 
-- Data-driven onboarding, course selection and a daily study goal.
+- Six bundled beginner courses: 360 words/phrases, 36 lessons and 288 exercises.
+- Data-driven onboarding, course switching in Settings and a daily study goal.
 - Six exercise types: choice, matching, fill-in-the-blank, translation, listening
   and speaking; hearts, feedback, results and sequential lesson unlocks.
 - SM-2 flashcards, pronunciation playback, audio caching and TTS fallback.
@@ -29,7 +31,8 @@ Chat captures are in [docs/screenshots](docs/screenshots). Regenerate the
 - Email/password and Google sign-in, confirmation and password recovery links.
 - Local-first progress with owned cloud rows and timestamp/revision-based sync.
 - Four AI scenarios, corrections, tap-to-translate, dictation, saved suggested
-  words, retries and the last 20 messages stored locally per account.
+  words, retries and the last 20 messages stored locally per account, filtered by
+  course and scenario. The selected course also sets the tutor language.
 - Material 3 light/dark/system themes, bundled Plus Jakarta Sans, screen-reader
   labels, large-font layouts and reduced-motion-aware page transitions.
 
@@ -37,6 +40,14 @@ AI replies require the deployed backend and server Groq secret. Initial account
 setup needs internet; cached accounts can study offline. Speech availability and
 offline recognition depend on the device/provider. English is currently the only
 interface locale; UI copy lives in ARB.
+
+Choose **Settings → Learning language** to change courses. Completed lessons and
+flashcards stay in their original course; XP, streaks and your daily goal remain
+account-wide. Portuguese pronunciation uses `pt-BR`. Each course contains two
+units, six lessons, 60 vocabulary entries and all six exercise types.
+
+See [multilingual course setup and changed files](MULTILINGUAL_COURSES.md) for the
+curriculum sources, validation, testing and the required chat-function redeploy.
 
 ## Architecture
 

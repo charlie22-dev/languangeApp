@@ -22,13 +22,14 @@ approval. Public policy/deletion resources and live service tests remain gates.
 
 ## Store listing draft
 
-**Title:** LingoBlob: Learn Japanese
+**Title:** LingoBlob: Learn Languages
 
-**Short description:** Learn Japanese with short lessons, smart flashcards and speaking practice.
+**Short description:** Learn six languages with short lessons, flashcards and speaking practice.
 
 **Full description:**
 
-Learn everyday Japanese one small step at a time with LingoBlob and Pip.
+Learn Japanese, Spanish, French, German, Italian or Brazilian Portuguese one
+small step at a time with LingoBlob and Pip.
 
 Practice common beginner words and phrases through short lessons. Choose an
 answer, match pairs, fill a gap, translate a phrase, listen and try speaking.
@@ -46,8 +47,8 @@ Your progress stays on your device and syncs to your account when online. Cached
 accounts can continue lessons and reviews offline; new AI replies need internet.
 Speaking availability depends on your device and installed services.
 
-Designed for English-speaking beginners learning Japanese, with light/dark themes
-and a daily goal that fits your routine.
+Designed for English-speaking beginners, with light/dark themes and a daily goal
+that fits your routine. Switch courses in Settings and keep your progress.
 
 Only advertise cloud/AI features once their production services are configured
 and tested. Do not claim offline AI or guaranteed fluency.
