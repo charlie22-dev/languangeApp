@@ -24,6 +24,7 @@ import '../../features/lessons/presentation/lesson_screen.dart';
 import '../../features/onboarding/presentation/welcome_screen.dart';
 import '../../features/onboarding/presentation/daily_goal_screen.dart';
 import '../../features/onboarding/presentation/language_screen.dart';
+import '../../features/onboarding/presentation/course_settings_screen.dart';
 import '../../features/onboarding/presentation/onboarding_controller.dart';
 import '../../features/onboarding/presentation/startup_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
@@ -185,6 +186,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           path: '/dev/components',
           builder: (context, state) => const ComponentsScreen(),
         ),
+      GoRoute(
+        path: '/settings/language',
+        pageBuilder: (context, state) =>
+            lingoPage(state, const CourseSettingsScreen()),
+      ),
       GoRoute(
         path: AppRoutes.lesson,
         pageBuilder: (context, state) => lingoPage(

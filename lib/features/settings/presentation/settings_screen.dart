@@ -60,6 +60,11 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             const PracticeSettingsPanel(),
+            LingoButton.outlined(
+              onPressed: () => context.push('/settings/language'),
+              child: Text(context.l10n.text('learningLanguage')),
+            ),
+            const SizedBox(height: LingoSpace.s16),
             if (action.error != null) Text(context.l10n.message(action.error!)),
             LingoButton.tonal(
               onPressed: action.busy

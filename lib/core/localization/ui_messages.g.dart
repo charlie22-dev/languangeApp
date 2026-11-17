@@ -7,6 +7,10 @@ const uiMessages = <String, String>{
   "sad": "encouraging",
   "sleepy": "sleepy",
   "settings": "Settings",
+  "learningLanguage": "Learning language",
+  "languageProgressPreserved": "Choose a course. Your progress in every language and your daily goal will be kept.",
+  "languageSaveError":
+      "Your language could not be saved. Tap a course to try again.",
   "appearance": "Appearance",
   "system": "System",
   "light": "Light",
