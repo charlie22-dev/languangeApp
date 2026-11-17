@@ -1125,6 +1125,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "es_places",
+          "title": "Places",
+          "wordIds": [
+            "es_house",
+            "es_school",
+            "es_shop",
+            "es_station",
+            "es_street",
+            "es_city",
+            "es_bathroom",
+            "es_hospital",
+            "es_park",
+            "es_restaurant"
+          ],
+          "exercises": [
+            {
+              "id": "es_places_1",
+              "type": "multipleChoice",
+              "prompt": "What does “casa” mean?",
+              "options": [
+                "house",
+                "school",
+                "shop",
+                "station"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "es_places_2",
+              "type": "multipleChoice",
+              "prompt": "What does “escuela” mean?",
+              "options": [
+                "shop",
+                "station",
+                "street",
+                "school"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "es_places_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "tienda",
+                  "right": "shop"
+                },
+                {
+                  "left": "estación",
+                  "right": "station"
+                },
+                {
+                  "left": "calle",
+                  "right": "street"
+                }
+              ]
+            },
+            {
+              "id": "es_places_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "La ___ es grande.",
+              "answer": "ciudad",
+              "choices": [
+                "baño",
+                "hospital",
+                "parque",
+                "ciudad"
+              ]
+            },
+            {
+              "id": "es_places_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "¿Dónde está el ___?",
+              "answer": "baño",
+              "choices": [
+                "parque",
+                "restaurante",
+                "baño",
+                "hospital"
+              ]
+            },
+            {
+              "id": "es_places_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Spanish: hospital",
+              "acceptedAnswers": [
+                "hospital"
+              ]
+            },
+            {
+              "id": "es_places_7",
+              "type": "listening",
+              "audioText": "parque",
+              "acceptedAnswers": [
+                "parque"
+              ],
+              "options": [
+                "parque",
+                "restaurante",
+                "casa",
+                "escuela"
+              ]
+            },
+            {
+              "id": "es_places_8",
+              "type": "speaking",
+              "phrase": "restaurante",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
