@@ -38,3 +38,13 @@ Tee|tea|Der Tee ist heiß.|The tea is hot.
 Essen|food|Das Essen ist fertig.|The food is ready.
 Hähnchen|chicken|Ich esse Hähnchen mit Reis.|I eat chicken with rice.
 Fisch|fish|Ich mag Fisch.|I like fish.
+Haus|house|Mein Haus ist klein.|My house is small.
+Schule|school|Ich gehe zur Schule.|I go to school.
+Geschäft|shop|Das Geschäft ist offen.|The shop is open.
+Bahnhof|station|Der Bahnhof ist in der Nähe.|The station is nearby.
+Straße|street|Diese Straße ist ruhig.|This street is quiet.
+Stadt|city|Die Stadt ist groß.|The city is big.
+Toilette|bathroom|Wo ist die Toilette?|Where is the bathroom?
+Krankenhaus|hospital|Das Krankenhaus ist in der Nähe.|The hospital is nearby.
+Park|park|Wir gehen in den Park.|We are going to the park.
+Restaurant|restaurant|Das Restaurant ist offen.|The restaurant is open.

@@ -445,6 +445,116 @@
         "beginner",
         "food"
       ]
+    },
+    {
+      "id": "de_house",
+      "text": "Haus",
+      "translation": "house",
+      "example": "Mein Haus ist klein.",
+      "exampleTranslation": "My house is small.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_school",
+      "text": "Schule",
+      "translation": "school",
+      "example": "Ich gehe zur Schule.",
+      "exampleTranslation": "I go to school.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_shop",
+      "text": "Geschäft",
+      "translation": "shop",
+      "example": "Das Geschäft ist offen.",
+      "exampleTranslation": "The shop is open.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_station",
+      "text": "Bahnhof",
+      "translation": "station",
+      "example": "Der Bahnhof ist in der Nähe.",
+      "exampleTranslation": "The station is nearby.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_street",
+      "text": "Straße",
+      "translation": "street",
+      "example": "Diese Straße ist ruhig.",
+      "exampleTranslation": "This street is quiet.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_city",
+      "text": "Stadt",
+      "translation": "city",
+      "example": "Die Stadt ist groß.",
+      "exampleTranslation": "The city is big.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_bathroom",
+      "text": "Toilette",
+      "translation": "bathroom",
+      "example": "Wo ist die Toilette?",
+      "exampleTranslation": "Where is the bathroom?",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_hospital",
+      "text": "Krankenhaus",
+      "translation": "hospital",
+      "example": "Das Krankenhaus ist in der Nähe.",
+      "exampleTranslation": "The hospital is nearby.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_park",
+      "text": "Park",
+      "translation": "park",
+      "example": "Wir gehen in den Park.",
+      "exampleTranslation": "We are going to the park.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "de_restaurant",
+      "text": "Restaurant",
+      "translation": "restaurant",
+      "example": "Das Restaurant ist offen.",
+      "exampleTranslation": "The restaurant is open.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
     }
   ],
   "units": []
