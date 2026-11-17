@@ -895,6 +895,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "de_numbers",
+          "title": "Numbers",
+          "wordIds": [
+            "de_zero",
+            "de_one",
+            "de_two",
+            "de_three",
+            "de_four",
+            "de_five",
+            "de_six",
+            "de_seven",
+            "de_eight",
+            "de_nine"
+          ],
+          "exercises": [
+            {
+              "id": "de_numbers_1",
+              "type": "multipleChoice",
+              "prompt": "What does “null” mean?",
+              "options": [
+                "two",
+                "three",
+                "zero",
+                "one"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "de_numbers_2",
+              "type": "multipleChoice",
+              "prompt": "What does “eins” mean?",
+              "options": [
+                "four",
+                "one",
+                "two",
+                "three"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "de_numbers_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "zwei",
+                  "right": "two"
+                },
+                {
+                  "left": "drei",
+                  "right": "three"
+                },
+                {
+                  "left": "vier",
+                  "right": "four"
+                }
+              ]
+            },
+            {
+              "id": "de_numbers_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Hier sind ___ Personen.",
+              "answer": "fünf",
+              "choices": [
+                "acht",
+                "fünf",
+                "sechs",
+                "sieben"
+              ]
+            },
+            {
+              "id": "de_numbers_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Ich habe ___ Fotos.",
+              "answer": "sechs",
+              "choices": [
+                "sechs",
+                "sieben",
+                "acht",
+                "neun"
+              ]
+            },
+            {
+              "id": "de_numbers_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into German: seven",
+              "acceptedAnswers": [
+                "sieben"
+              ]
+            },
+            {
+              "id": "de_numbers_7",
+              "type": "listening",
+              "audioText": "acht",
+              "acceptedAnswers": [
+                "acht"
+              ],
+              "options": [
+                "null",
+                "eins",
+                "acht",
+                "neun"
+              ]
+            },
+            {
+              "id": "de_numbers_8",
+              "type": "speaking",
+              "phrase": "neun",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
