@@ -1125,6 +1125,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "it_places",
+          "title": "Places",
+          "wordIds": [
+            "it_house",
+            "it_school",
+            "it_shop",
+            "it_station",
+            "it_street",
+            "it_city",
+            "it_bathroom",
+            "it_hospital",
+            "it_park",
+            "it_restaurant"
+          ],
+          "exercises": [
+            {
+              "id": "it_places_1",
+              "type": "multipleChoice",
+              "prompt": "What does “casa” mean?",
+              "options": [
+                "house",
+                "school",
+                "shop",
+                "station"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "it_places_2",
+              "type": "multipleChoice",
+              "prompt": "What does “scuola” mean?",
+              "options": [
+                "shop",
+                "station",
+                "street",
+                "school"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "it_places_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "negozio",
+                  "right": "shop"
+                },
+                {
+                  "left": "stazione",
+                  "right": "station"
+                },
+                {
+                  "left": "strada",
+                  "right": "street"
+                }
+              ]
+            },
+            {
+              "id": "it_places_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "La ___ è grande.",
+              "answer": "città",
+              "choices": [
+                "bagno",
+                "ospedale",
+                "parco",
+                "città"
+              ]
+            },
+            {
+              "id": "it_places_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Dov'è il ___?",
+              "answer": "bagno",
+              "choices": [
+                "parco",
+                "ristorante",
+                "bagno",
+                "ospedale"
+              ]
+            },
+            {
+              "id": "it_places_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Italian: hospital",
+              "acceptedAnswers": [
+                "ospedale"
+              ]
+            },
+            {
+              "id": "it_places_7",
+              "type": "listening",
+              "audioText": "parco",
+              "acceptedAnswers": [
+                "parco"
+              ],
+              "options": [
+                "parco",
+                "ristorante",
+                "casa",
+                "scuola"
+              ]
+            },
+            {
+              "id": "it_places_8",
+              "type": "speaking",
+              "phrase": "ristorante",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
