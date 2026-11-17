@@ -667,5 +667,124 @@
       ]
     }
   ],
-  "units": []
+  "units": [
+    {
+      "id": "de_unit_1",
+      "title": "First Steps",
+      "lessons": [
+        {
+          "id": "de_greetings",
+          "title": "Greetings",
+          "wordIds": [
+            "de_hello",
+            "de_good_morning",
+            "de_good_night",
+            "de_thank_you",
+            "de_please",
+            "de_yes",
+            "de_no",
+            "de_goodbye",
+            "de_excuse_me",
+            "de_see_you_later"
+          ],
+          "exercises": [
+            {
+              "id": "de_greetings_1",
+              "type": "multipleChoice",
+              "prompt": "What does “hallo” mean?",
+              "options": [
+                "hello",
+                "good morning",
+                "good night",
+                "thank you"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "de_greetings_2",
+              "type": "multipleChoice",
+              "prompt": "What does “guten Morgen” mean?",
+              "options": [
+                "good night",
+                "thank you",
+                "please",
+                "good morning"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "de_greetings_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "gute Nacht",
+                  "right": "good night"
+                },
+                {
+                  "left": "danke",
+                  "right": "thank you"
+                },
+                {
+                  "left": "bitte",
+                  "right": "please"
+                }
+              ]
+            },
+            {
+              "id": "de_greetings_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, ich möchte Tee.",
+              "answer": "ja",
+              "choices": [
+                "nein",
+                "auf Wiedersehen",
+                "Entschuldigung",
+                "ja"
+              ]
+            },
+            {
+              "id": "de_greetings_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, danke.",
+              "answer": "nein",
+              "choices": [
+                "Entschuldigung",
+                "bis später",
+                "nein",
+                "auf Wiedersehen"
+              ]
+            },
+            {
+              "id": "de_greetings_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into German: goodbye",
+              "acceptedAnswers": [
+                "auf Wiedersehen"
+              ]
+            },
+            {
+              "id": "de_greetings_7",
+              "type": "listening",
+              "audioText": "Entschuldigung",
+              "acceptedAnswers": [
+                "Entschuldigung"
+              ],
+              "options": [
+                "Entschuldigung",
+                "bis später",
+                "hallo",
+                "guten Morgen"
+              ]
+            },
+            {
+              "id": "de_greetings_8",
+              "type": "speaking",
+              "phrase": "bis später",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
