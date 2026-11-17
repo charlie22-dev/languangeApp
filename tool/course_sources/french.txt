@@ -1,0 +1,10 @@
+bonjour|hello|Bonjour, je suis Léa.|Hello, I am Léa.
+salut|hi|Salut, mon ami !|Hi, my friend!
+bonne nuit|good night|Bonne nuit, maman.|Good night, Mom.
+merci|thank you|Merci pour le café.|Thank you for the coffee.
+s'il vous plaît|please|Un thé, s'il vous plaît.|A tea, please.
+oui|yes|Oui, je veux du pain.|Yes, I want some bread.
+non|no|Non, merci.|No, thank you.
+au revoir|goodbye|Au revoir, à demain.|Goodbye, see you tomorrow.
+pardon|excuse me|Pardon, où est la gare ?|Excuse me, where is the station?
+à bientôt|see you soon|À bientôt, mon ami.|See you soon, my friend.

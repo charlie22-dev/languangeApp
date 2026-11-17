@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "fr_basics_en",
+  "title": "French Basics",
+  "targetLanguage": "French",
+  "nativeLanguage": "English",
+  "targetLocale": "fr-FR",
+  "words": [
+    {
+      "id": "fr_hello",
+      "text": "bonjour",
+      "translation": "hello",
+      "example": "Bonjour, je suis Léa.",
+      "exampleTranslation": "Hello, I am Léa.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_hi",
+      "text": "salut",
+      "translation": "hi",
+      "example": "Salut, mon ami !",
+      "exampleTranslation": "Hi, my friend!",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_good_night",
+      "text": "bonne nuit",
+      "translation": "good night",
+      "example": "Bonne nuit, maman.",
+      "exampleTranslation": "Good night, Mom.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_thank_you",
+      "text": "merci",
+      "translation": "thank you",
+      "example": "Merci pour le café.",
+      "exampleTranslation": "Thank you for the coffee.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_please",
+      "text": "s'il vous plaît",
+      "translation": "please",
+      "example": "Un thé, s'il vous plaît.",
+      "exampleTranslation": "A tea, please.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_yes",
+      "text": "oui",
+      "translation": "yes",
+      "example": "Oui, je veux du pain.",
+      "exampleTranslation": "Yes, I want some bread.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_no",
+      "text": "non",
+      "translation": "no",
+      "example": "Non, merci.",
+      "exampleTranslation": "No, thank you.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_goodbye",
+      "text": "au revoir",
+      "translation": "goodbye",
+      "example": "Au revoir, à demain.",
+      "exampleTranslation": "Goodbye, see you tomorrow.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_excuse_me",
+      "text": "pardon",
+      "translation": "excuse me",
+      "example": "Pardon, où est la gare ?",
+      "exampleTranslation": "Excuse me, where is the station?",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "fr_see_you_soon",
+      "text": "à bientôt",
+      "translation": "see you soon",
+      "example": "À bientôt, mon ami.",
+      "exampleTranslation": "See you soon, my friend.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    }
+  ],
+  "units": []
+}
