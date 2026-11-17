@@ -335,6 +335,116 @@
         "beginner",
         "numbers"
       ]
+    },
+    {
+      "id": "pt_water",
+      "text": "água",
+      "translation": "water",
+      "example": "Eu bebo água.",
+      "exampleTranslation": "I drink water.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_bread",
+      "text": "pão",
+      "translation": "bread",
+      "example": "Eu como pão.",
+      "exampleTranslation": "I eat bread.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_milk",
+      "text": "leite",
+      "translation": "milk",
+      "example": "Eu bebo leite.",
+      "exampleTranslation": "I drink milk.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_rice",
+      "text": "arroz",
+      "translation": "rice",
+      "example": "O arroz está quente.",
+      "exampleTranslation": "The rice is hot.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_apple",
+      "text": "maçã",
+      "translation": "apple",
+      "example": "A maçã é vermelha.",
+      "exampleTranslation": "The apple is red.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_coffee",
+      "text": "café",
+      "translation": "coffee",
+      "example": "Quero um café.",
+      "exampleTranslation": "I want a coffee.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_tea",
+      "text": "chá",
+      "translation": "tea",
+      "example": "O chá está quente.",
+      "exampleTranslation": "The tea is hot.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_food",
+      "text": "comida",
+      "translation": "food",
+      "example": "A comida está pronta.",
+      "exampleTranslation": "The food is ready.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_chicken",
+      "text": "frango",
+      "translation": "chicken",
+      "example": "Eu como frango com arroz.",
+      "exampleTranslation": "I eat chicken with rice.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "pt_fish",
+      "text": "peixe",
+      "translation": "fish",
+      "example": "Eu gosto de peixe.",
+      "exampleTranslation": "I like fish.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
     }
   ],
   "units": []
