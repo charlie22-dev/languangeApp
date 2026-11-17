@@ -895,6 +895,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "pt_numbers",
+          "title": "Numbers",
+          "wordIds": [
+            "pt_zero",
+            "pt_one",
+            "pt_two",
+            "pt_three",
+            "pt_four",
+            "pt_five",
+            "pt_six",
+            "pt_seven",
+            "pt_eight",
+            "pt_nine"
+          ],
+          "exercises": [
+            {
+              "id": "pt_numbers_1",
+              "type": "multipleChoice",
+              "prompt": "What does “zero” mean?",
+              "options": [
+                "two",
+                "three",
+                "zero",
+                "one"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "pt_numbers_2",
+              "type": "multipleChoice",
+              "prompt": "What does “um” mean?",
+              "options": [
+                "four",
+                "one",
+                "two",
+                "three"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "pt_numbers_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "dois",
+                  "right": "two"
+                },
+                {
+                  "left": "três",
+                  "right": "three"
+                },
+                {
+                  "left": "quatro",
+                  "right": "four"
+                }
+              ]
+            },
+            {
+              "id": "pt_numbers_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Há ___ pessoas.",
+              "answer": "cinco",
+              "choices": [
+                "oito",
+                "cinco",
+                "seis",
+                "sete"
+              ]
+            },
+            {
+              "id": "pt_numbers_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Tenho ___ fotos.",
+              "answer": "seis",
+              "choices": [
+                "seis",
+                "sete",
+                "oito",
+                "nove"
+              ]
+            },
+            {
+              "id": "pt_numbers_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Portuguese: seven",
+              "acceptedAnswers": [
+                "sete"
+              ]
+            },
+            {
+              "id": "pt_numbers_7",
+              "type": "listening",
+              "audioText": "oito",
+              "acceptedAnswers": [
+                "oito"
+              ],
+              "options": [
+                "zero",
+                "um",
+                "oito",
+                "nove"
+              ]
+            },
+            {
+              "id": "pt_numbers_8",
+              "type": "speaking",
+              "phrase": "nove",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
