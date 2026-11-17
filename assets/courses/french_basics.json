@@ -225,6 +225,116 @@
         "beginner",
         "people"
       ]
+    },
+    {
+      "id": "fr_zero",
+      "text": "zéro",
+      "translation": "zero",
+      "example": "J'ai zéro message.",
+      "exampleTranslation": "I have zero messages.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_one",
+      "text": "un",
+      "translation": "one",
+      "example": "Je veux un café.",
+      "exampleTranslation": "I want one coffee.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_two",
+      "text": "deux",
+      "translation": "two",
+      "example": "J'ai deux livres.",
+      "exampleTranslation": "I have two books.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_three",
+      "text": "trois",
+      "translation": "three",
+      "example": "Il y a trois chaises.",
+      "exampleTranslation": "There are three chairs.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_four",
+      "text": "quatre",
+      "translation": "four",
+      "example": "J'ai quatre pommes.",
+      "exampleTranslation": "I have four apples.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_five",
+      "text": "cinq",
+      "translation": "five",
+      "example": "Il y a cinq personnes.",
+      "exampleTranslation": "There are five people.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_six",
+      "text": "six",
+      "translation": "six",
+      "example": "J'ai six photos.",
+      "exampleTranslation": "I have six photos.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_seven",
+      "text": "sept",
+      "translation": "seven",
+      "example": "Il y a sept jours dans une semaine.",
+      "exampleTranslation": "There are seven days in a week.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_eight",
+      "text": "huit",
+      "translation": "eight",
+      "example": "J'ai huit crayons.",
+      "exampleTranslation": "I have eight pencils.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "fr_nine",
+      "text": "neuf",
+      "translation": "nine",
+      "example": "Il est neuf heures.",
+      "exampleTranslation": "It is nine o'clock.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
     }
   ],
   "units": []
