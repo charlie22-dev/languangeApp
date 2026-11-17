@@ -667,5 +667,124 @@
       ]
     }
   ],
-  "units": []
+  "units": [
+    {
+      "id": "it_unit_1",
+      "title": "First Steps",
+      "lessons": [
+        {
+          "id": "it_greetings",
+          "title": "Greetings",
+          "wordIds": [
+            "it_hello",
+            "it_good_morning",
+            "it_good_night",
+            "it_thank_you",
+            "it_please",
+            "it_yes",
+            "it_no",
+            "it_goodbye",
+            "it_excuse_me",
+            "it_see_you_soon"
+          ],
+          "exercises": [
+            {
+              "id": "it_greetings_1",
+              "type": "multipleChoice",
+              "prompt": "What does “ciao” mean?",
+              "options": [
+                "hello",
+                "good morning",
+                "good night",
+                "thank you"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "it_greetings_2",
+              "type": "multipleChoice",
+              "prompt": "What does “buongiorno” mean?",
+              "options": [
+                "good night",
+                "thank you",
+                "please",
+                "good morning"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "it_greetings_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "buona notte",
+                  "right": "good night"
+                },
+                {
+                  "left": "grazie",
+                  "right": "thank you"
+                },
+                {
+                  "left": "per favore",
+                  "right": "please"
+                }
+              ]
+            },
+            {
+              "id": "it_greetings_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, voglio del pane.",
+              "answer": "sì",
+              "choices": [
+                "no",
+                "arrivederci",
+                "scusa",
+                "sì"
+              ]
+            },
+            {
+              "id": "it_greetings_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, grazie.",
+              "answer": "no",
+              "choices": [
+                "scusa",
+                "a presto",
+                "no",
+                "arrivederci"
+              ]
+            },
+            {
+              "id": "it_greetings_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Italian: goodbye",
+              "acceptedAnswers": [
+                "arrivederci"
+              ]
+            },
+            {
+              "id": "it_greetings_7",
+              "type": "listening",
+              "audioText": "scusa",
+              "acceptedAnswers": [
+                "scusa"
+              ],
+              "options": [
+                "scusa",
+                "a presto",
+                "ciao",
+                "buongiorno"
+              ]
+            },
+            {
+              "id": "it_greetings_8",
+              "type": "speaking",
+              "phrase": "a presto",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
