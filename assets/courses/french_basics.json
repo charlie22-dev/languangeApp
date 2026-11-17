@@ -783,6 +783,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "fr_people",
+          "title": "People",
+          "wordIds": [
+            "fr_i",
+            "fr_you",
+            "fr_he",
+            "fr_she",
+            "fr_we",
+            "fr_friend",
+            "fr_family",
+            "fr_mother",
+            "fr_father",
+            "fr_person"
+          ],
+          "exercises": [
+            {
+              "id": "fr_people_1",
+              "type": "multipleChoice",
+              "prompt": "What does “je” mean?",
+              "options": [
+                "you",
+                "he",
+                "she",
+                "I"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "fr_people_2",
+              "type": "multipleChoice",
+              "prompt": "What does “tu” mean?",
+              "options": [
+                "she",
+                "we",
+                "you",
+                "he"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "fr_people_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "il",
+                  "right": "he"
+                },
+                {
+                  "left": "elle",
+                  "right": "she"
+                },
+                {
+                  "left": "nous",
+                  "right": "we"
+                }
+              ]
+            },
+            {
+              "id": "fr_people_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Mon ___ lit un livre.",
+              "answer": "ami",
+              "choices": [
+                "mère",
+                "père",
+                "ami",
+                "famille"
+              ]
+            },
+            {
+              "id": "fr_people_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Ma ___ est petite.",
+              "answer": "famille",
+              "choices": [
+                "personne",
+                "famille",
+                "mère",
+                "père"
+              ]
+            },
+            {
+              "id": "fr_people_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into French: mother",
+              "acceptedAnswers": [
+                "mère"
+              ]
+            },
+            {
+              "id": "fr_people_7",
+              "type": "listening",
+              "audioText": "père",
+              "acceptedAnswers": [
+                "père"
+              ],
+              "options": [
+                "personne",
+                "je",
+                "tu",
+                "père"
+              ]
+            },
+            {
+              "id": "fr_people_8",
+              "type": "speaking",
+              "phrase": "personne",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
