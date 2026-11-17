@@ -1237,6 +1237,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "fr_actions",
+          "title": "Actions",
+          "wordIds": [
+            "fr_to_eat",
+            "fr_to_drink",
+            "fr_to_go",
+            "fr_to_come",
+            "fr_to_see",
+            "fr_to_speak",
+            "fr_to_read",
+            "fr_to_write",
+            "fr_to_listen",
+            "fr_to_learn"
+          ],
+          "exercises": [
+            {
+              "id": "fr_actions_1",
+              "type": "multipleChoice",
+              "prompt": "What does “manger” mean?",
+              "options": [
+                "to drink",
+                "to go",
+                "to come",
+                "to eat"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "fr_actions_2",
+              "type": "multipleChoice",
+              "prompt": "What does “boire” mean?",
+              "options": [
+                "to come",
+                "to see",
+                "to drink",
+                "to go"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "fr_actions_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "aller",
+                  "right": "to go"
+                },
+                {
+                  "left": "venir",
+                  "right": "to come"
+                },
+                {
+                  "left": "voir",
+                  "right": "to see"
+                }
+              ]
+            },
+            {
+              "id": "fr_actions_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Je veux ___ français.",
+              "answer": "parler",
+              "choices": [
+                "écrire",
+                "écouter",
+                "parler",
+                "lire"
+              ]
+            },
+            {
+              "id": "fr_actions_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "J'aime ___.",
+              "answer": "lire",
+              "choices": [
+                "apprendre",
+                "lire",
+                "écrire",
+                "écouter"
+              ]
+            },
+            {
+              "id": "fr_actions_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into French: to write",
+              "acceptedAnswers": [
+                "écrire"
+              ]
+            },
+            {
+              "id": "fr_actions_7",
+              "type": "listening",
+              "audioText": "écouter",
+              "acceptedAnswers": [
+                "écouter"
+              ],
+              "options": [
+                "apprendre",
+                "manger",
+                "boire",
+                "écouter"
+              ]
+            },
+            {
+              "id": "fr_actions_8",
+              "type": "speaking",
+              "phrase": "apprendre",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
