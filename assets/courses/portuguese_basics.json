@@ -1237,6 +1237,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "pt_actions",
+          "title": "Actions",
+          "wordIds": [
+            "pt_to_eat",
+            "pt_to_drink",
+            "pt_to_go",
+            "pt_to_come",
+            "pt_to_see",
+            "pt_to_speak",
+            "pt_to_read",
+            "pt_to_write",
+            "pt_to_listen",
+            "pt_to_learn"
+          ],
+          "exercises": [
+            {
+              "id": "pt_actions_1",
+              "type": "multipleChoice",
+              "prompt": "What does “comer” mean?",
+              "options": [
+                "to drink",
+                "to go",
+                "to come",
+                "to eat"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "pt_actions_2",
+              "type": "multipleChoice",
+              "prompt": "What does “beber” mean?",
+              "options": [
+                "to come",
+                "to see",
+                "to drink",
+                "to go"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "pt_actions_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "ir",
+                  "right": "to go"
+                },
+                {
+                  "left": "vir",
+                  "right": "to come"
+                },
+                {
+                  "left": "ver",
+                  "right": "to see"
+                }
+              ]
+            },
+            {
+              "id": "pt_actions_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Quero ___ português.",
+              "answer": "falar",
+              "choices": [
+                "escrever",
+                "ouvir",
+                "falar",
+                "ler"
+              ]
+            },
+            {
+              "id": "pt_actions_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Eu gosto de ___.",
+              "answer": "ler",
+              "choices": [
+                "aprender",
+                "ler",
+                "escrever",
+                "ouvir"
+              ]
+            },
+            {
+              "id": "pt_actions_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Portuguese: to write",
+              "acceptedAnswers": [
+                "escrever"
+              ]
+            },
+            {
+              "id": "pt_actions_7",
+              "type": "listening",
+              "audioText": "ouvir",
+              "acceptedAnswers": [
+                "ouvir"
+              ],
+              "options": [
+                "aprender",
+                "comer",
+                "beber",
+                "ouvir"
+              ]
+            },
+            {
+              "id": "pt_actions_8",
+              "type": "speaking",
+              "phrase": "aprender",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
