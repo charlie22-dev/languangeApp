@@ -895,6 +895,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "fr_numbers",
+          "title": "Numbers",
+          "wordIds": [
+            "fr_zero",
+            "fr_one",
+            "fr_two",
+            "fr_three",
+            "fr_four",
+            "fr_five",
+            "fr_six",
+            "fr_seven",
+            "fr_eight",
+            "fr_nine"
+          ],
+          "exercises": [
+            {
+              "id": "fr_numbers_1",
+              "type": "multipleChoice",
+              "prompt": "What does “zéro” mean?",
+              "options": [
+                "two",
+                "three",
+                "zero",
+                "one"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "fr_numbers_2",
+              "type": "multipleChoice",
+              "prompt": "What does “un” mean?",
+              "options": [
+                "four",
+                "one",
+                "two",
+                "three"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "fr_numbers_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "deux",
+                  "right": "two"
+                },
+                {
+                  "left": "trois",
+                  "right": "three"
+                },
+                {
+                  "left": "quatre",
+                  "right": "four"
+                }
+              ]
+            },
+            {
+              "id": "fr_numbers_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Il y a ___ personnes.",
+              "answer": "cinq",
+              "choices": [
+                "huit",
+                "cinq",
+                "six",
+                "sept"
+              ]
+            },
+            {
+              "id": "fr_numbers_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "J'ai ___ photos.",
+              "answer": "six",
+              "choices": [
+                "six",
+                "sept",
+                "huit",
+                "neuf"
+              ]
+            },
+            {
+              "id": "fr_numbers_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into French: seven",
+              "acceptedAnswers": [
+                "sept"
+              ]
+            },
+            {
+              "id": "fr_numbers_7",
+              "type": "listening",
+              "audioText": "huit",
+              "acceptedAnswers": [
+                "huit"
+              ],
+              "options": [
+                "zéro",
+                "un",
+                "huit",
+                "neuf"
+              ]
+            },
+            {
+              "id": "fr_numbers_8",
+              "type": "speaking",
+              "phrase": "neuf",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
