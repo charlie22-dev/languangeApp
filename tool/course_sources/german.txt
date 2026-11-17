@@ -8,3 +8,13 @@ nein|no|Nein, danke.|No, thank you.
 auf Wiedersehen|goodbye|Auf Wiedersehen, bis morgen.|Goodbye, see you tomorrow.
 Entschuldigung|excuse me|Entschuldigung, wo ist der Bahnhof?|Excuse me, where is the station?
 bis später|see you later|Bis später, mein Freund.|See you later, my friend.
+ich|I|Ich bin hier.|I am here.
+du|you|Du bist mein Freund.|You are my friend.
+er|he|Er ist zu Hause.|He is at home.
+sie|she|Sie spricht Deutsch.|She speaks German.
+wir|we|Wir wohnen hier.|We live here.
+Freund|friend|Mein Freund liest ein Buch.|My friend reads a book.
+Familie|family|Meine Familie ist klein.|My family is small.
+Mutter|mother|Meine Mutter ist hier.|My mother is here.
+Vater|father|Mein Vater kocht.|My father cooks.
+Person|person|Das ist eine nette Person.|They are a nice person.
