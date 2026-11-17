@@ -28,3 +28,13 @@ six|six|J'ai six photos.|I have six photos.
 sept|seven|Il y a sept jours dans une semaine.|There are seven days in a week.
 huit|eight|J'ai huit crayons.|I have eight pencils.
 neuf|nine|Il est neuf heures.|It is nine o'clock.
+eau|water|Je bois de l'eau.|I drink water.
+pain|bread|Je mange du pain.|I eat bread.
+lait|milk|Je bois du lait.|I drink milk.
+riz|rice|Le riz est chaud.|The rice is hot.
+pomme|apple|La pomme est rouge.|The apple is red.
+café|coffee|Je veux un café.|I want a coffee.
+thé|tea|Le thé est chaud.|The tea is hot.
+nourriture|food|La nourriture est prête.|The food is ready.
+poulet|chicken|Je mange du poulet avec du riz.|I eat chicken with rice.
+poisson|fish|J'aime le poisson.|I like fish.

@@ -335,6 +335,116 @@
         "beginner",
         "numbers"
       ]
+    },
+    {
+      "id": "fr_water",
+      "text": "eau",
+      "translation": "water",
+      "example": "Je bois de l'eau.",
+      "exampleTranslation": "I drink water.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_bread",
+      "text": "pain",
+      "translation": "bread",
+      "example": "Je mange du pain.",
+      "exampleTranslation": "I eat bread.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_milk",
+      "text": "lait",
+      "translation": "milk",
+      "example": "Je bois du lait.",
+      "exampleTranslation": "I drink milk.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_rice",
+      "text": "riz",
+      "translation": "rice",
+      "example": "Le riz est chaud.",
+      "exampleTranslation": "The rice is hot.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_apple",
+      "text": "pomme",
+      "translation": "apple",
+      "example": "La pomme est rouge.",
+      "exampleTranslation": "The apple is red.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_coffee",
+      "text": "café",
+      "translation": "coffee",
+      "example": "Je veux un café.",
+      "exampleTranslation": "I want a coffee.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_tea",
+      "text": "thé",
+      "translation": "tea",
+      "example": "Le thé est chaud.",
+      "exampleTranslation": "The tea is hot.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_food",
+      "text": "nourriture",
+      "translation": "food",
+      "example": "La nourriture est prête.",
+      "exampleTranslation": "The food is ready.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_chicken",
+      "text": "poulet",
+      "translation": "chicken",
+      "example": "Je mange du poulet avec du riz.",
+      "exampleTranslation": "I eat chicken with rice.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "fr_fish",
+      "text": "poisson",
+      "translation": "fish",
+      "example": "J'aime le poisson.",
+      "exampleTranslation": "I like fish.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
     }
   ],
   "units": []
