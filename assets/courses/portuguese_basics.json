@@ -783,6 +783,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "pt_people",
+          "title": "People",
+          "wordIds": [
+            "pt_i",
+            "pt_you",
+            "pt_he",
+            "pt_she",
+            "pt_we",
+            "pt_friend",
+            "pt_family",
+            "pt_mother",
+            "pt_father",
+            "pt_person"
+          ],
+          "exercises": [
+            {
+              "id": "pt_people_1",
+              "type": "multipleChoice",
+              "prompt": "What does “eu” mean?",
+              "options": [
+                "you",
+                "he",
+                "she",
+                "I"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "pt_people_2",
+              "type": "multipleChoice",
+              "prompt": "What does “você” mean?",
+              "options": [
+                "she",
+                "we",
+                "you",
+                "he"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "pt_people_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "ele",
+                  "right": "he"
+                },
+                {
+                  "left": "ela",
+                  "right": "she"
+                },
+                {
+                  "left": "nós",
+                  "right": "we"
+                }
+              ]
+            },
+            {
+              "id": "pt_people_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Meu ___ lê um livro.",
+              "answer": "amigo",
+              "choices": [
+                "mãe",
+                "pai",
+                "amigo",
+                "família"
+              ]
+            },
+            {
+              "id": "pt_people_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Minha ___ é pequena.",
+              "answer": "família",
+              "choices": [
+                "pessoa",
+                "família",
+                "mãe",
+                "pai"
+              ]
+            },
+            {
+              "id": "pt_people_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Portuguese: mother",
+              "acceptedAnswers": [
+                "mãe"
+              ]
+            },
+            {
+              "id": "pt_people_7",
+              "type": "listening",
+              "audioText": "pai",
+              "acceptedAnswers": [
+                "pai"
+              ],
+              "options": [
+                "pessoa",
+                "eu",
+                "você",
+                "pai"
+              ]
+            },
+            {
+              "id": "pt_people_8",
+              "type": "speaking",
+              "phrase": "pessoa",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
