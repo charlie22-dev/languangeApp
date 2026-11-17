@@ -783,6 +783,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "es_people",
+          "title": "People",
+          "wordIds": [
+            "es_i",
+            "es_you",
+            "es_he",
+            "es_she",
+            "es_we",
+            "es_friend",
+            "es_family",
+            "es_mother",
+            "es_father",
+            "es_person"
+          ],
+          "exercises": [
+            {
+              "id": "es_people_1",
+              "type": "multipleChoice",
+              "prompt": "What does “yo” mean?",
+              "options": [
+                "you",
+                "he",
+                "she",
+                "I"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "es_people_2",
+              "type": "multipleChoice",
+              "prompt": "What does “tú” mean?",
+              "options": [
+                "she",
+                "we",
+                "you",
+                "he"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "es_people_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "él",
+                  "right": "he"
+                },
+                {
+                  "left": "ella",
+                  "right": "she"
+                },
+                {
+                  "left": "nosotros",
+                  "right": "we"
+                }
+              ]
+            },
+            {
+              "id": "es_people_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Mi ___ lee un libro.",
+              "answer": "amigo",
+              "choices": [
+                "madre",
+                "padre",
+                "amigo",
+                "familia"
+              ]
+            },
+            {
+              "id": "es_people_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Mi ___ es pequeña.",
+              "answer": "familia",
+              "choices": [
+                "persona",
+                "familia",
+                "madre",
+                "padre"
+              ]
+            },
+            {
+              "id": "es_people_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Spanish: mother",
+              "acceptedAnswers": [
+                "madre"
+              ]
+            },
+            {
+              "id": "es_people_7",
+              "type": "listening",
+              "audioText": "padre",
+              "acceptedAnswers": [
+                "padre"
+              ],
+              "options": [
+                "persona",
+                "yo",
+                "tú",
+                "padre"
+              ]
+            },
+            {
+              "id": "es_people_8",
+              "type": "speaking",
+              "phrase": "persona",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
