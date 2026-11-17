@@ -335,6 +335,116 @@
         "beginner",
         "numbers"
       ]
+    },
+    {
+      "id": "es_water",
+      "text": "agua",
+      "translation": "water",
+      "example": "Quiero agua, por favor.",
+      "exampleTranslation": "I want water, please.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_bread",
+      "text": "pan",
+      "translation": "bread",
+      "example": "Como pan por la mañana.",
+      "exampleTranslation": "I eat bread in the morning.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_milk",
+      "text": "leche",
+      "translation": "milk",
+      "example": "Bebo leche.",
+      "exampleTranslation": "I drink milk.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_rice",
+      "text": "arroz",
+      "translation": "rice",
+      "example": "El arroz está caliente.",
+      "exampleTranslation": "The rice is hot.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_apple",
+      "text": "manzana",
+      "translation": "apple",
+      "example": "La manzana es roja.",
+      "exampleTranslation": "The apple is red.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_coffee",
+      "text": "café",
+      "translation": "coffee",
+      "example": "Quiero un café.",
+      "exampleTranslation": "I want a coffee.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_tea",
+      "text": "té",
+      "translation": "tea",
+      "example": "El té está caliente.",
+      "exampleTranslation": "The tea is hot.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_food",
+      "text": "comida",
+      "translation": "food",
+      "example": "La comida está lista.",
+      "exampleTranslation": "The food is ready.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_chicken",
+      "text": "pollo",
+      "translation": "chicken",
+      "example": "Como pollo con arroz.",
+      "exampleTranslation": "I eat chicken with rice.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
+    },
+    {
+      "id": "es_fish",
+      "text": "pescado",
+      "translation": "fish",
+      "example": "Me gusta el pescado.",
+      "exampleTranslation": "I like fish.",
+      "tags": [
+        "beginner",
+        "food"
+      ]
     }
   ],
   "units": []
