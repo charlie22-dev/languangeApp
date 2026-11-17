@@ -38,3 +38,13 @@ tè|tea|Il tè è caldo.|The tea is hot.
 cibo|food|Il cibo è pronto.|The food is ready.
 pollo|chicken|Mangio pollo con riso.|I eat chicken with rice.
 pesce|fish|Mi piace il pesce.|I like fish.
+casa|house|La mia casa è piccola.|My house is small.
+scuola|school|Vado a scuola.|I go to school.
+negozio|shop|Il negozio è aperto.|The shop is open.
+stazione|station|La stazione è vicina.|The station is nearby.
+strada|street|Questa strada è tranquilla.|This street is quiet.
+città|city|La città è grande.|The city is big.
+bagno|bathroom|Dov'è il bagno?|Where is the bathroom?
+ospedale|hospital|L'ospedale è vicino.|The hospital is nearby.
+parco|park|Andiamo al parco.|Let's go to the park.
+ristorante|restaurant|Il ristorante è aperto.|The restaurant is open.
