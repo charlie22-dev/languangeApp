@@ -8,3 +8,13 @@ no|no|No, grazie.|No, thank you.
 arrivederci|goodbye|Arrivederci, a domani.|Goodbye, see you tomorrow.
 scusa|excuse me|Scusa, dov'è la stazione?|Excuse me, where is the station?
 a presto|see you soon|A presto, amico mio.|See you soon, my friend.
+io|I|Io sono qui.|I am here.
+tu|you|Tu sei mio amico.|You are my friend.
+lui|he|Lui è a casa.|He is at home.
+lei|she|Lei parla italiano.|She speaks Italian.
+noi|we|Noi abitiamo qui.|We live here.
+amico|friend|Il mio amico legge un libro.|My friend reads a book.
+famiglia|family|La mia famiglia è piccola.|My family is small.
+madre|mother|Mia madre è qui.|My mother is here.
+padre|father|Mio padre cucina.|My father cooks.
+persona|person|È una buona persona.|They are a good person.

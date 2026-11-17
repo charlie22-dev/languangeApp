@@ -115,6 +115,116 @@
         "beginner",
         "greetings"
       ]
+    },
+    {
+      "id": "it_i",
+      "text": "io",
+      "translation": "I",
+      "example": "Io sono qui.",
+      "exampleTranslation": "I am here.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_you",
+      "text": "tu",
+      "translation": "you",
+      "example": "Tu sei mio amico.",
+      "exampleTranslation": "You are my friend.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_he",
+      "text": "lui",
+      "translation": "he",
+      "example": "Lui è a casa.",
+      "exampleTranslation": "He is at home.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_she",
+      "text": "lei",
+      "translation": "she",
+      "example": "Lei parla italiano.",
+      "exampleTranslation": "She speaks Italian.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_we",
+      "text": "noi",
+      "translation": "we",
+      "example": "Noi abitiamo qui.",
+      "exampleTranslation": "We live here.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_friend",
+      "text": "amico",
+      "translation": "friend",
+      "example": "Il mio amico legge un libro.",
+      "exampleTranslation": "My friend reads a book.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_family",
+      "text": "famiglia",
+      "translation": "family",
+      "example": "La mia famiglia è piccola.",
+      "exampleTranslation": "My family is small.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_mother",
+      "text": "madre",
+      "translation": "mother",
+      "example": "Mia madre è qui.",
+      "exampleTranslation": "My mother is here.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_father",
+      "text": "padre",
+      "translation": "father",
+      "example": "Mio padre cucina.",
+      "exampleTranslation": "My father cooks.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
+    },
+    {
+      "id": "it_person",
+      "text": "persona",
+      "translation": "person",
+      "example": "È una buona persona.",
+      "exampleTranslation": "They are a good person.",
+      "tags": [
+        "beginner",
+        "people"
+      ]
     }
   ],
   "units": []
