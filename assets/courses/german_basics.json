@@ -1125,6 +1125,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "de_places",
+          "title": "Places",
+          "wordIds": [
+            "de_house",
+            "de_school",
+            "de_shop",
+            "de_station",
+            "de_street",
+            "de_city",
+            "de_bathroom",
+            "de_hospital",
+            "de_park",
+            "de_restaurant"
+          ],
+          "exercises": [
+            {
+              "id": "de_places_1",
+              "type": "multipleChoice",
+              "prompt": "What does “Haus” mean?",
+              "options": [
+                "house",
+                "school",
+                "shop",
+                "station"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "de_places_2",
+              "type": "multipleChoice",
+              "prompt": "What does “Schule” mean?",
+              "options": [
+                "shop",
+                "station",
+                "street",
+                "school"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "de_places_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "Geschäft",
+                  "right": "shop"
+                },
+                {
+                  "left": "Bahnhof",
+                  "right": "station"
+                },
+                {
+                  "left": "Straße",
+                  "right": "street"
+                }
+              ]
+            },
+            {
+              "id": "de_places_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Die ___ ist groß.",
+              "answer": "Stadt",
+              "choices": [
+                "Toilette",
+                "Krankenhaus",
+                "Park",
+                "Stadt"
+              ]
+            },
+            {
+              "id": "de_places_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Wo ist die ___?",
+              "answer": "Toilette",
+              "choices": [
+                "Park",
+                "Restaurant",
+                "Toilette",
+                "Krankenhaus"
+              ]
+            },
+            {
+              "id": "de_places_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into German: hospital",
+              "acceptedAnswers": [
+                "Krankenhaus"
+              ]
+            },
+            {
+              "id": "de_places_7",
+              "type": "listening",
+              "audioText": "Park",
+              "acceptedAnswers": [
+                "Park"
+              ],
+              "options": [
+                "Park",
+                "Restaurant",
+                "Haus",
+                "Schule"
+              ]
+            },
+            {
+              "id": "de_places_8",
+              "type": "speaking",
+              "phrase": "Restaurant",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
