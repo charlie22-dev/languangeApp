@@ -1125,6 +1125,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "fr_places",
+          "title": "Places",
+          "wordIds": [
+            "fr_house",
+            "fr_school",
+            "fr_shop",
+            "fr_station",
+            "fr_street",
+            "fr_city",
+            "fr_bathroom",
+            "fr_hospital",
+            "fr_park",
+            "fr_restaurant"
+          ],
+          "exercises": [
+            {
+              "id": "fr_places_1",
+              "type": "multipleChoice",
+              "prompt": "What does “maison” mean?",
+              "options": [
+                "house",
+                "school",
+                "shop",
+                "station"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "fr_places_2",
+              "type": "multipleChoice",
+              "prompt": "What does “école” mean?",
+              "options": [
+                "shop",
+                "station",
+                "street",
+                "school"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "fr_places_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "magasin",
+                  "right": "shop"
+                },
+                {
+                  "left": "gare",
+                  "right": "station"
+                },
+                {
+                  "left": "rue",
+                  "right": "street"
+                }
+              ]
+            },
+            {
+              "id": "fr_places_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "La ___ est grande.",
+              "answer": "ville",
+              "choices": [
+                "toilettes",
+                "hôpital",
+                "parc",
+                "ville"
+              ]
+            },
+            {
+              "id": "fr_places_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Où sont les ___ ?",
+              "answer": "toilettes",
+              "choices": [
+                "parc",
+                "restaurant",
+                "toilettes",
+                "hôpital"
+              ]
+            },
+            {
+              "id": "fr_places_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into French: hospital",
+              "acceptedAnswers": [
+                "hôpital"
+              ]
+            },
+            {
+              "id": "fr_places_7",
+              "type": "listening",
+              "audioText": "parc",
+              "acceptedAnswers": [
+                "parc"
+              ],
+              "options": [
+                "parc",
+                "restaurant",
+                "maison",
+                "école"
+              ]
+            },
+            {
+              "id": "fr_places_8",
+              "type": "speaking",
+              "phrase": "restaurant",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
