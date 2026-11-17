@@ -1237,6 +1237,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "de_actions",
+          "title": "Actions",
+          "wordIds": [
+            "de_to_eat",
+            "de_to_drink",
+            "de_to_go",
+            "de_to_come",
+            "de_to_see",
+            "de_to_speak",
+            "de_to_read",
+            "de_to_write",
+            "de_to_listen",
+            "de_to_learn"
+          ],
+          "exercises": [
+            {
+              "id": "de_actions_1",
+              "type": "multipleChoice",
+              "prompt": "What does “essen” mean?",
+              "options": [
+                "to drink",
+                "to go",
+                "to come",
+                "to eat"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "de_actions_2",
+              "type": "multipleChoice",
+              "prompt": "What does “trinken” mean?",
+              "options": [
+                "to come",
+                "to see",
+                "to drink",
+                "to go"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "de_actions_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "gehen",
+                  "right": "to go"
+                },
+                {
+                  "left": "kommen",
+                  "right": "to come"
+                },
+                {
+                  "left": "sehen",
+                  "right": "to see"
+                }
+              ]
+            },
+            {
+              "id": "de_actions_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Ich möchte Deutsch ___.",
+              "answer": "sprechen",
+              "choices": [
+                "schreiben",
+                "hören",
+                "sprechen",
+                "lesen"
+              ]
+            },
+            {
+              "id": "de_actions_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Ich möchte ein Buch ___.",
+              "answer": "lesen",
+              "choices": [
+                "lernen",
+                "lesen",
+                "schreiben",
+                "hören"
+              ]
+            },
+            {
+              "id": "de_actions_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into German: to write",
+              "acceptedAnswers": [
+                "schreiben"
+              ]
+            },
+            {
+              "id": "de_actions_7",
+              "type": "listening",
+              "audioText": "hören",
+              "acceptedAnswers": [
+                "hören"
+              ],
+              "options": [
+                "lernen",
+                "essen",
+                "trinken",
+                "hören"
+              ]
+            },
+            {
+              "id": "de_actions_8",
+              "type": "speaking",
+              "phrase": "lernen",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
