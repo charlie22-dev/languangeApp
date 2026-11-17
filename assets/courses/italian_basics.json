@@ -1009,6 +1009,124 @@
           ]
         }
       ]
+    },
+    {
+      "id": "it_unit_2",
+      "title": "Everyday Life",
+      "lessons": [
+        {
+          "id": "it_food",
+          "title": "Food",
+          "wordIds": [
+            "it_water",
+            "it_bread",
+            "it_milk",
+            "it_rice",
+            "it_apple",
+            "it_coffee",
+            "it_tea",
+            "it_food",
+            "it_chicken",
+            "it_fish"
+          ],
+          "exercises": [
+            {
+              "id": "it_food_1",
+              "type": "multipleChoice",
+              "prompt": "What does “acqua” mean?",
+              "options": [
+                "rice",
+                "water",
+                "bread",
+                "milk"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "it_food_2",
+              "type": "multipleChoice",
+              "prompt": "What does “pane” mean?",
+              "options": [
+                "bread",
+                "milk",
+                "rice",
+                "apple"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "it_food_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "latte",
+                  "right": "milk"
+                },
+                {
+                  "left": "riso",
+                  "right": "rice"
+                },
+                {
+                  "left": "mela",
+                  "right": "apple"
+                }
+              ]
+            },
+            {
+              "id": "it_food_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Voglio un ___.",
+              "answer": "caffè",
+              "choices": [
+                "caffè",
+                "tè",
+                "cibo",
+                "pollo"
+              ]
+            },
+            {
+              "id": "it_food_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Il ___ è caldo.",
+              "answer": "tè",
+              "choices": [
+                "cibo",
+                "pollo",
+                "pesce",
+                "tè"
+              ]
+            },
+            {
+              "id": "it_food_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Italian: food",
+              "acceptedAnswers": [
+                "cibo"
+              ]
+            },
+            {
+              "id": "it_food_7",
+              "type": "listening",
+              "audioText": "pollo",
+              "acceptedAnswers": [
+                "pollo"
+              ],
+              "options": [
+                "pane",
+                "pollo",
+                "pesce",
+                "acqua"
+              ]
+            },
+            {
+              "id": "it_food_8",
+              "type": "speaking",
+              "phrase": "pesce",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
     }
   ]
 }
