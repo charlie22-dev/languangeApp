@@ -667,5 +667,124 @@
       ]
     }
   ],
-  "units": []
+  "units": [
+    {
+      "id": "fr_unit_1",
+      "title": "First Steps",
+      "lessons": [
+        {
+          "id": "fr_greetings",
+          "title": "Greetings",
+          "wordIds": [
+            "fr_hello",
+            "fr_hi",
+            "fr_good_night",
+            "fr_thank_you",
+            "fr_please",
+            "fr_yes",
+            "fr_no",
+            "fr_goodbye",
+            "fr_excuse_me",
+            "fr_see_you_soon"
+          ],
+          "exercises": [
+            {
+              "id": "fr_greetings_1",
+              "type": "multipleChoice",
+              "prompt": "What does “bonjour” mean?",
+              "options": [
+                "hello",
+                "hi",
+                "good night",
+                "thank you"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "fr_greetings_2",
+              "type": "multipleChoice",
+              "prompt": "What does “salut” mean?",
+              "options": [
+                "good night",
+                "thank you",
+                "please",
+                "hi"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "fr_greetings_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "bonne nuit",
+                  "right": "good night"
+                },
+                {
+                  "left": "merci",
+                  "right": "thank you"
+                },
+                {
+                  "left": "s'il vous plaît",
+                  "right": "please"
+                }
+              ]
+            },
+            {
+              "id": "fr_greetings_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, je veux du pain.",
+              "answer": "oui",
+              "choices": [
+                "non",
+                "au revoir",
+                "pardon",
+                "oui"
+              ]
+            },
+            {
+              "id": "fr_greetings_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, merci.",
+              "answer": "non",
+              "choices": [
+                "pardon",
+                "à bientôt",
+                "non",
+                "au revoir"
+              ]
+            },
+            {
+              "id": "fr_greetings_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into French: goodbye",
+              "acceptedAnswers": [
+                "au revoir"
+              ]
+            },
+            {
+              "id": "fr_greetings_7",
+              "type": "listening",
+              "audioText": "pardon",
+              "acceptedAnswers": [
+                "pardon"
+              ],
+              "options": [
+                "pardon",
+                "à bientôt",
+                "bonjour",
+                "salut"
+              ]
+            },
+            {
+              "id": "fr_greetings_8",
+              "type": "speaking",
+              "phrase": "à bientôt",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
