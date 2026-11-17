@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "it_basics_en",
+  "title": "Italian Basics",
+  "targetLanguage": "Italian",
+  "nativeLanguage": "English",
+  "targetLocale": "it-IT",
+  "words": [
+    {
+      "id": "it_hello",
+      "text": "ciao",
+      "translation": "hello",
+      "example": "Ciao, sono Anna.",
+      "exampleTranslation": "Hello, I am Anna.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_good_morning",
+      "text": "buongiorno",
+      "translation": "good morning",
+      "example": "Buongiorno, papà.",
+      "exampleTranslation": "Good morning, Dad.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_good_night",
+      "text": "buona notte",
+      "translation": "good night",
+      "example": "Buona notte, mamma.",
+      "exampleTranslation": "Good night, Mom.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_thank_you",
+      "text": "grazie",
+      "translation": "thank you",
+      "example": "Grazie per il caffè.",
+      "exampleTranslation": "Thank you for the coffee.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_please",
+      "text": "per favore",
+      "translation": "please",
+      "example": "Un tè, per favore.",
+      "exampleTranslation": "A tea, please.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_yes",
+      "text": "sì",
+      "translation": "yes",
+      "example": "Sì, voglio del pane.",
+      "exampleTranslation": "Yes, I want some bread.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_no",
+      "text": "no",
+      "translation": "no",
+      "example": "No, grazie.",
+      "exampleTranslation": "No, thank you.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_goodbye",
+      "text": "arrivederci",
+      "translation": "goodbye",
+      "example": "Arrivederci, a domani.",
+      "exampleTranslation": "Goodbye, see you tomorrow.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_excuse_me",
+      "text": "scusa",
+      "translation": "excuse me",
+      "example": "Scusa, dov'è la stazione?",
+      "exampleTranslation": "Excuse me, where is the station?",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "it_see_you_soon",
+      "text": "a presto",
+      "translation": "see you soon",
+      "example": "A presto, amico mio.",
+      "exampleTranslation": "See you soon, my friend.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    }
+  ],
+  "units": []
+}

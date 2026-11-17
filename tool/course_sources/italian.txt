@@ -1,0 +1,10 @@
+ciao|hello|Ciao, sono Anna.|Hello, I am Anna.
+buongiorno|good morning|Buongiorno, papà.|Good morning, Dad.
+buona notte|good night|Buona notte, mamma.|Good night, Mom.
+grazie|thank you|Grazie per il caffè.|Thank you for the coffee.
+per favore|please|Un tè, per favore.|A tea, please.
+sì|yes|Sì, voglio del pane.|Yes, I want some bread.
+no|no|No, grazie.|No, thank you.
+arrivederci|goodbye|Arrivederci, a domani.|Goodbye, see you tomorrow.
+scusa|excuse me|Scusa, dov'è la stazione?|Excuse me, where is the station?
+a presto|see you soon|A presto, amico mio.|See you soon, my friend.
