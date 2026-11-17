@@ -48,3 +48,13 @@ banheiro|bathroom|Onde fica o banheiro?|Where is the bathroom?
 hospital|hospital|O hospital fica perto.|The hospital is nearby.
 parque|park|Vamos ao parque.|Let's go to the park.
 restaurante|restaurant|O restaurante está aberto.|The restaurant is open.
+comer|to eat|Quero comer pão.|I want to eat bread.
+beber|to drink|Quero beber água.|I want to drink water.
+ir|to go|Quero ir para casa.|I want to go home.
+vir|to come|Você pode vir hoje?|Can you come today?
+ver|to see|Quero ver o parque.|I want to see the park.
+falar|to speak|Quero falar português.|I want to speak Portuguese.
+ler|to read|Eu gosto de ler.|I like to read.
+escrever|to write|Quero escrever uma carta.|I want to write a letter.
+ouvir|to listen|Eu gosto de ouvir música.|I like to listen to music.
+aprender|to learn|Quero aprender português.|I want to learn Portuguese.

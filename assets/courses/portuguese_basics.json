@@ -555,6 +555,116 @@
         "beginner",
         "places"
       ]
+    },
+    {
+      "id": "pt_to_eat",
+      "text": "comer",
+      "translation": "to eat",
+      "example": "Quero comer pão.",
+      "exampleTranslation": "I want to eat bread.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_drink",
+      "text": "beber",
+      "translation": "to drink",
+      "example": "Quero beber água.",
+      "exampleTranslation": "I want to drink water.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_go",
+      "text": "ir",
+      "translation": "to go",
+      "example": "Quero ir para casa.",
+      "exampleTranslation": "I want to go home.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_come",
+      "text": "vir",
+      "translation": "to come",
+      "example": "Você pode vir hoje?",
+      "exampleTranslation": "Can you come today?",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_see",
+      "text": "ver",
+      "translation": "to see",
+      "example": "Quero ver o parque.",
+      "exampleTranslation": "I want to see the park.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_speak",
+      "text": "falar",
+      "translation": "to speak",
+      "example": "Quero falar português.",
+      "exampleTranslation": "I want to speak Portuguese.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_read",
+      "text": "ler",
+      "translation": "to read",
+      "example": "Eu gosto de ler.",
+      "exampleTranslation": "I like to read.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_write",
+      "text": "escrever",
+      "translation": "to write",
+      "example": "Quero escrever uma carta.",
+      "exampleTranslation": "I want to write a letter.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_listen",
+      "text": "ouvir",
+      "translation": "to listen",
+      "example": "Eu gosto de ouvir música.",
+      "exampleTranslation": "I like to listen to music.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
+    },
+    {
+      "id": "pt_to_learn",
+      "text": "aprender",
+      "translation": "to learn",
+      "example": "Quero aprender português.",
+      "exampleTranslation": "I want to learn Portuguese.",
+      "tags": [
+        "beginner",
+        "actions"
+      ]
     }
   ],
   "units": []
