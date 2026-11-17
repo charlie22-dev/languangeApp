@@ -1009,6 +1009,124 @@
           ]
         }
       ]
+    },
+    {
+      "id": "pt_unit_2",
+      "title": "Everyday Life",
+      "lessons": [
+        {
+          "id": "pt_food",
+          "title": "Food",
+          "wordIds": [
+            "pt_water",
+            "pt_bread",
+            "pt_milk",
+            "pt_rice",
+            "pt_apple",
+            "pt_coffee",
+            "pt_tea",
+            "pt_food",
+            "pt_chicken",
+            "pt_fish"
+          ],
+          "exercises": [
+            {
+              "id": "pt_food_1",
+              "type": "multipleChoice",
+              "prompt": "What does “água” mean?",
+              "options": [
+                "rice",
+                "water",
+                "bread",
+                "milk"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "pt_food_2",
+              "type": "multipleChoice",
+              "prompt": "What does “pão” mean?",
+              "options": [
+                "bread",
+                "milk",
+                "rice",
+                "apple"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "pt_food_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "leite",
+                  "right": "milk"
+                },
+                {
+                  "left": "arroz",
+                  "right": "rice"
+                },
+                {
+                  "left": "maçã",
+                  "right": "apple"
+                }
+              ]
+            },
+            {
+              "id": "pt_food_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Quero um ___.",
+              "answer": "café",
+              "choices": [
+                "café",
+                "chá",
+                "comida",
+                "frango"
+              ]
+            },
+            {
+              "id": "pt_food_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "O ___ está quente.",
+              "answer": "chá",
+              "choices": [
+                "comida",
+                "frango",
+                "peixe",
+                "chá"
+              ]
+            },
+            {
+              "id": "pt_food_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Portuguese: food",
+              "acceptedAnswers": [
+                "comida"
+              ]
+            },
+            {
+              "id": "pt_food_7",
+              "type": "listening",
+              "audioText": "frango",
+              "acceptedAnswers": [
+                "frango"
+              ],
+              "options": [
+                "pão",
+                "frango",
+                "peixe",
+                "água"
+              ]
+            },
+            {
+              "id": "pt_food_8",
+              "type": "speaking",
+              "phrase": "peixe",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
     }
   ]
 }
