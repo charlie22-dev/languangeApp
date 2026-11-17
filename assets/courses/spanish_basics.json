@@ -1237,6 +1237,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "es_actions",
+          "title": "Actions",
+          "wordIds": [
+            "es_to_eat",
+            "es_to_drink",
+            "es_to_go",
+            "es_to_come",
+            "es_to_see",
+            "es_to_speak",
+            "es_to_read",
+            "es_to_write",
+            "es_to_listen",
+            "es_to_learn"
+          ],
+          "exercises": [
+            {
+              "id": "es_actions_1",
+              "type": "multipleChoice",
+              "prompt": "What does “comer” mean?",
+              "options": [
+                "to drink",
+                "to go",
+                "to come",
+                "to eat"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "es_actions_2",
+              "type": "multipleChoice",
+              "prompt": "What does “beber” mean?",
+              "options": [
+                "to come",
+                "to see",
+                "to drink",
+                "to go"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "es_actions_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "ir",
+                  "right": "to go"
+                },
+                {
+                  "left": "venir",
+                  "right": "to come"
+                },
+                {
+                  "left": "ver",
+                  "right": "to see"
+                }
+              ]
+            },
+            {
+              "id": "es_actions_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Quiero ___ español.",
+              "answer": "hablar",
+              "choices": [
+                "escribir",
+                "escuchar",
+                "hablar",
+                "leer"
+              ]
+            },
+            {
+              "id": "es_actions_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Me gusta ___.",
+              "answer": "leer",
+              "choices": [
+                "aprender",
+                "leer",
+                "escribir",
+                "escuchar"
+              ]
+            },
+            {
+              "id": "es_actions_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Spanish: to write",
+              "acceptedAnswers": [
+                "escribir"
+              ]
+            },
+            {
+              "id": "es_actions_7",
+              "type": "listening",
+              "audioText": "escuchar",
+              "acceptedAnswers": [
+                "escuchar"
+              ],
+              "options": [
+                "aprender",
+                "comer",
+                "beber",
+                "escuchar"
+              ]
+            },
+            {
+              "id": "es_actions_8",
+              "type": "speaking",
+              "phrase": "aprender",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
