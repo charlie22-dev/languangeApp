@@ -783,6 +783,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "it_people",
+          "title": "People",
+          "wordIds": [
+            "it_i",
+            "it_you",
+            "it_he",
+            "it_she",
+            "it_we",
+            "it_friend",
+            "it_family",
+            "it_mother",
+            "it_father",
+            "it_person"
+          ],
+          "exercises": [
+            {
+              "id": "it_people_1",
+              "type": "multipleChoice",
+              "prompt": "What does “io” mean?",
+              "options": [
+                "you",
+                "he",
+                "she",
+                "I"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "it_people_2",
+              "type": "multipleChoice",
+              "prompt": "What does “tu” mean?",
+              "options": [
+                "she",
+                "we",
+                "you",
+                "he"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "it_people_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "lui",
+                  "right": "he"
+                },
+                {
+                  "left": "lei",
+                  "right": "she"
+                },
+                {
+                  "left": "noi",
+                  "right": "we"
+                }
+              ]
+            },
+            {
+              "id": "it_people_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Il mio ___ legge un libro.",
+              "answer": "amico",
+              "choices": [
+                "madre",
+                "padre",
+                "amico",
+                "famiglia"
+              ]
+            },
+            {
+              "id": "it_people_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "La mia ___ è piccola.",
+              "answer": "famiglia",
+              "choices": [
+                "persona",
+                "famiglia",
+                "madre",
+                "padre"
+              ]
+            },
+            {
+              "id": "it_people_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Italian: mother",
+              "acceptedAnswers": [
+                "madre"
+              ]
+            },
+            {
+              "id": "it_people_7",
+              "type": "listening",
+              "audioText": "padre",
+              "acceptedAnswers": [
+                "padre"
+              ],
+              "options": [
+                "persona",
+                "io",
+                "tu",
+                "padre"
+              ]
+            },
+            {
+              "id": "it_people_8",
+              "type": "speaking",
+              "phrase": "persona",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
