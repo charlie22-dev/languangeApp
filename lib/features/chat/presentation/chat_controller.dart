@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../home/data/home_providers.dart';
+import '../../audio/domain/language_locale.dart';
 import '../data/chat_api.dart';
 import '../data/chat_repository.dart';
 import '../domain/chat_models.dart';
@@ -8,6 +9,8 @@ import '../domain/chat_models.dart';
 class ChatState {
   ChatState({
     required this.scenario,
+    this.courseId = 'ja_basics_en',
+    this.targetLocale = 'ja-JP',
     required List<ChatMessage> messages,
     this.sending = false,
     this.error,
@@ -16,6 +19,8 @@ class ChatState {
   }) : messages = List.unmodifiable(messages),
        savingWords = Set.unmodifiable(savingWords);
   final ChatScenario scenario;
+  final String courseId;
+  final String? targetLocale;
   final List<ChatMessage> messages;
   final bool sending;
   final String? error, wordError;
@@ -31,6 +36,8 @@ class ChatState {
     Set<String>? savingWords,
   }) => ChatState(
     scenario: scenario,
+    courseId: courseId,
+    targetLocale: targetLocale,
     messages: messages ?? this.messages,
     sending: sending ?? this.sending,
     error: clearError ? null : error ?? this.error,
@@ -50,10 +57,14 @@ class ChatController extends AsyncNotifier<ChatState> {
   Future<ChatState> build() async {
     _generation++;
     final repository = ref.watch(chatRepositoryProvider);
-    final scenario = await repository.lastScenario();
+    final course = await ref.watch(selectedCourseProvider.future);
+    final scenario = await repository.lastScenario(courseId: course.id);
     return ChatState(
       scenario: scenario,
-      messages: await repository.load(scenario),
+      courseId: course.id,
+      targetLocale:
+          course.targetLocale ?? localeForLanguage(course.targetLanguage),
+      messages: await repository.load(scenario, courseId: course.id),
     );
   }
 
@@ -66,9 +77,19 @@ class ChatController extends AsyncNotifier<ChatState> {
     final generation = ++_generation;
     state = const AsyncLoading();
     try {
-      final messages = await repository.load(scenario);
+      final messages = await repository.load(
+        scenario,
+        courseId: current.courseId,
+      );
       if (ref.mounted && generation == _generation) {
-        state = AsyncData(ChatState(scenario: scenario, messages: messages));
+        state = AsyncData(
+          ChatState(
+            scenario: scenario,
+            courseId: current.courseId,
+            targetLocale: current.targetLocale,
+            messages: messages,
+          ),
+        );
       }
     } catch (error, stack) {
       if (ref.mounted && generation == _generation) {
@@ -89,7 +110,11 @@ class ChatController extends AsyncNotifier<ChatState> {
     final generation = _generation;
     state = AsyncData(current.copyWith(sending: true, clearError: true));
     try {
-      final user = await repository.addUser(value, current.scenario);
+      final user = await repository.addUser(
+        value,
+        current.scenario,
+        courseId: current.courseId,
+      );
       if (!ref.mounted || generation != _generation) return;
       state = AsyncData(
         current.copyWith(
@@ -139,10 +164,17 @@ class ChatController extends AsyncNotifier<ChatState> {
         history.insert(0, message);
         length += message.content.runes.length;
       }
-      final turn = await api.send(history, current.scenario);
+      final turn = await api.send(
+        history,
+        current.scenario,
+        targetLocale: current.targetLocale,
+      );
       if (!ref.mounted || generation != _generation) return;
       await repository.complete(user, turn);
-      final messages = await repository.load(current.scenario);
+      final messages = await repository.load(
+        current.scenario,
+        courseId: current.courseId,
+      );
       if (ref.mounted && generation == _generation) {
         state = AsyncData(
           state.asData!.value.copyWith(messages: messages, sending: false),
@@ -173,7 +205,10 @@ class ChatController extends AsyncNotifier<ChatState> {
     state = AsyncData(current.copyWith(sending: true, clearError: true));
     try {
       await repository.discard(current.pending!.id);
-      final messages = await repository.load(current.scenario);
+      final messages = await repository.load(
+        current.scenario,
+        courseId: current.courseId,
+      );
       if (ref.mounted && generation == _generation) {
         state = AsyncData(
           current.copyWith(messages: messages, clearError: true),

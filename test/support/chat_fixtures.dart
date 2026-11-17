@@ -25,14 +25,17 @@ class FakeChatApi implements ChatApi {
   TutorTurn? response;
   final histories = <List<ChatMessage>>[];
   final scenarios = <ChatScenario>[];
+  final locales = <String?>[];
   @override
   Future<TutorTurn> send(
     List<ChatMessage> messages,
-    ChatScenario scenario,
-  ) async {
+    ChatScenario scenario, {
+    String? targetLocale,
+  }) async {
     calls++;
     histories.add(messages);
     scenarios.add(scenario);
+    locales.add(targetLocale);
     if (error != null) throw ChatFailure(error!);
     return gate?.future ?? response ?? sampleTutorTurn();
   }

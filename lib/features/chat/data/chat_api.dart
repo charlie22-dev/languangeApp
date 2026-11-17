@@ -9,7 +9,11 @@ import '../../auth/data/auth_repository.dart';
 import '../domain/chat_models.dart';
 
 abstract interface class ChatApi {
-  Future<TutorTurn> send(List<ChatMessage> messages, ChatScenario scenario);
+  Future<TutorTurn> send(
+    List<ChatMessage> messages,
+    ChatScenario scenario, {
+    String? targetLocale,
+  });
 }
 
 final chatApiProvider = FutureProvider<ChatApi>((ref) async {
@@ -32,8 +36,9 @@ class SupabaseChatApi implements ChatApi {
   @override
   Future<TutorTurn> send(
     List<ChatMessage> messages,
-    ChatScenario scenario,
-  ) async {
+    ChatScenario scenario, {
+    String? targetLocale,
+  }) async {
     _checkAccount();
     try {
       final session = client.auth.currentSession;
@@ -49,6 +54,7 @@ class SupabaseChatApi implements ChatApi {
               'messages': messages.map((m) => m.toApiJson()).toList(),
               'level': 'beginner',
               'scenario': scenario.id,
+              'targetLocale': ?targetLocale,
             },
             headers: {'Authorization': 'Bearer $token'},
           )

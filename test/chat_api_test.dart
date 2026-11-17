@@ -114,6 +114,17 @@ void main() {
       );
     });
   }
+  test(
+    'sends the active course locale to the authenticated function',
+    () async {
+      await api.send(
+        messages,
+        ChatScenario.introductions,
+        targetLocale: 'pt-BR',
+      );
+      expect(requests.single.body['targetLocale'], 'pt-BR');
+    },
+  );
   test('expired access tokens refresh before the function call', () async {
     when(() => session.isExpired).thenReturn(true);
     when(() => auth.refreshSession())

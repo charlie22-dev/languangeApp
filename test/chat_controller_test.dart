@@ -6,8 +6,10 @@ import 'package:myapp/features/chat/data/chat_api.dart';
 import 'package:myapp/features/chat/data/chat_repository.dart';
 import 'package:myapp/features/chat/presentation/chat_controller.dart';
 import 'package:myapp/features/chat/domain/chat_models.dart';
+import 'package:myapp/features/home/data/home_providers.dart';
 
 import 'support/chat_fixtures.dart';
+import 'support/phase3_fixtures.dart';
 
 void main() {
   late AppDatabase db;
@@ -18,6 +20,7 @@ void main() {
     api = FakeChatApi();
     container = ProviderContainer(
       overrides: [
+        selectedCourseProvider.overrideWith((ref) async => sampleCourse()),
         chatRepositoryProvider.overrideWithValue(ChatRepository(db)),
         chatApiProvider.overrideWith((ref) async => api),
       ],
