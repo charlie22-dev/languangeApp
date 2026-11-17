@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "de_basics_en",
+  "title": "German Basics",
+  "targetLanguage": "German",
+  "nativeLanguage": "English",
+  "targetLocale": "de-DE",
+  "words": [
+    {
+      "id": "de_hello",
+      "text": "hallo",
+      "translation": "hello",
+      "example": "Hallo, ich bin Mia.",
+      "exampleTranslation": "Hello, I am Mia.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_good_morning",
+      "text": "guten Morgen",
+      "translation": "good morning",
+      "example": "Guten Morgen, Papa.",
+      "exampleTranslation": "Good morning, Dad.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_good_night",
+      "text": "gute Nacht",
+      "translation": "good night",
+      "example": "Gute Nacht, Mama.",
+      "exampleTranslation": "Good night, Mom.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_thank_you",
+      "text": "danke",
+      "translation": "thank you",
+      "example": "Danke für das Wasser.",
+      "exampleTranslation": "Thank you for the water.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_please",
+      "text": "bitte",
+      "translation": "please",
+      "example": "Einen Kaffee, bitte.",
+      "exampleTranslation": "A coffee, please.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_yes",
+      "text": "ja",
+      "translation": "yes",
+      "example": "Ja, ich möchte Tee.",
+      "exampleTranslation": "Yes, I want tea.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_no",
+      "text": "nein",
+      "translation": "no",
+      "example": "Nein, danke.",
+      "exampleTranslation": "No, thank you.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_goodbye",
+      "text": "auf Wiedersehen",
+      "translation": "goodbye",
+      "example": "Auf Wiedersehen, bis morgen.",
+      "exampleTranslation": "Goodbye, see you tomorrow.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_excuse_me",
+      "text": "Entschuldigung",
+      "translation": "excuse me",
+      "example": "Entschuldigung, wo ist der Bahnhof?",
+      "exampleTranslation": "Excuse me, where is the station?",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    },
+    {
+      "id": "de_see_you_later",
+      "text": "bis später",
+      "translation": "see you later",
+      "example": "Bis später, mein Freund.",
+      "exampleTranslation": "See you later, my friend.",
+      "tags": [
+        "beginner",
+        "greetings"
+      ]
+    }
+  ],
+  "units": []
+}

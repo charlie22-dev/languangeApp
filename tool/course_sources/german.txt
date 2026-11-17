@@ -1,0 +1,10 @@
+hallo|hello|Hallo, ich bin Mia.|Hello, I am Mia.
+guten Morgen|good morning|Guten Morgen, Papa.|Good morning, Dad.
+gute Nacht|good night|Gute Nacht, Mama.|Good night, Mom.
+danke|thank you|Danke für das Wasser.|Thank you for the water.
+bitte|please|Einen Kaffee, bitte.|A coffee, please.
+ja|yes|Ja, ich möchte Tee.|Yes, I want tea.
+nein|no|Nein, danke.|No, thank you.
+auf Wiedersehen|goodbye|Auf Wiedersehen, bis morgen.|Goodbye, see you tomorrow.
+Entschuldigung|excuse me|Entschuldigung, wo ist der Bahnhof?|Excuse me, where is the station?
+bis später|see you later|Bis später, mein Freund.|See you later, my friend.
