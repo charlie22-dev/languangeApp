@@ -1,5 +1,5 @@
 name: myapp
-description: LingoBlob teaches beginner Japanese with lessons, flashcards and speaking practice.
+description: LingoBlob teaches six languages with lessons, flashcards and speaking practice.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -51,6 +51,11 @@ flutter:
         - asset: assets/fonts/NotoSansJP.ttf
   assets:
     - assets/courses/japanese_basics.json
+    - assets/courses/spanish_basics.json
+    - assets/courses/french_basics.json
+    - assets/courses/german_basics.json
+    - assets/courses/italian_basics.json
+    - assets/courses/portuguese_basics.json
     - assets/fonts/
     - assets/local/
     - assets/audio/
