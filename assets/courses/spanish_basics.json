@@ -667,5 +667,124 @@
       ]
     }
   ],
-  "units": []
+  "units": [
+    {
+      "id": "es_unit_1",
+      "title": "First Steps",
+      "lessons": [
+        {
+          "id": "es_greetings",
+          "title": "Greetings",
+          "wordIds": [
+            "es_hello",
+            "es_good_morning",
+            "es_good_night",
+            "es_thank_you",
+            "es_please",
+            "es_yes",
+            "es_no",
+            "es_goodbye",
+            "es_excuse_me",
+            "es_see_you_later"
+          ],
+          "exercises": [
+            {
+              "id": "es_greetings_1",
+              "type": "multipleChoice",
+              "prompt": "What does “hola” mean?",
+              "options": [
+                "hello",
+                "good morning",
+                "good night",
+                "thank you"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "es_greetings_2",
+              "type": "multipleChoice",
+              "prompt": "What does “buenos días” mean?",
+              "options": [
+                "good night",
+                "thank you",
+                "please",
+                "good morning"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "es_greetings_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "buenas noches",
+                  "right": "good night"
+                },
+                {
+                  "left": "gracias",
+                  "right": "thank you"
+                },
+                {
+                  "left": "por favor",
+                  "right": "please"
+                }
+              ]
+            },
+            {
+              "id": "es_greetings_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, quiero té.",
+              "answer": "sí",
+              "choices": [
+                "no",
+                "adiós",
+                "perdón",
+                "sí"
+              ]
+            },
+            {
+              "id": "es_greetings_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, gracias.",
+              "answer": "no",
+              "choices": [
+                "perdón",
+                "hasta luego",
+                "no",
+                "adiós"
+              ]
+            },
+            {
+              "id": "es_greetings_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Spanish: goodbye",
+              "acceptedAnswers": [
+                "adiós"
+              ]
+            },
+            {
+              "id": "es_greetings_7",
+              "type": "listening",
+              "audioText": "perdón",
+              "acceptedAnswers": [
+                "perdón"
+              ],
+              "options": [
+                "perdón",
+                "hasta luego",
+                "hola",
+                "buenos días"
+              ]
+            },
+            {
+              "id": "es_greetings_8",
+              "type": "speaking",
+              "phrase": "hasta luego",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
