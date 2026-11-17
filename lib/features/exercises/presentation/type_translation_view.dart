@@ -6,7 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/lingo_tokens.dart';
 import '../../home/data/home_providers.dart';
+import '../../audio/domain/language_locale.dart';
 import '../domain/exercise.dart';
+import '../domain/writing_hints.dart';
 
 class TypeTranslationView extends ConsumerStatefulWidget {
   const TypeTranslationView({
@@ -65,12 +67,10 @@ class _TypeTranslationViewState extends ConsumerState<TypeTranslationView> {
 
   @override
   Widget build(BuildContext context) {
-    final language = ref
-        .watch(selectedCourseProvider)
-        .asData
-        ?.value
-        .targetLanguage
-        .toLowerCase();
+    final course = ref.watch(selectedCourseProvider).asData?.value;
+    final hints = writingHints(
+      course?.targetLocale ?? localeForLanguage(course?.targetLanguage ?? ''),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -95,14 +95,13 @@ class _TypeTranslationViewState extends ConsumerState<TypeTranslationView> {
           onChanged: widget.onChanged,
           onFieldSubmitted: widget.enabled ? (_) => widget.onSubmitted() : null,
         ),
-        if (language == 'spanish' || language == 'es') ...[
+        if (hints.isNotEmpty) ...[
           const SizedBox(height: LingoSpace.s16),
           Wrap(
             spacing: LingoSpace.s8,
             runSpacing: LingoSpace.s8,
             children: [
-              for (final accent
-                  in context.l10n.text('spanishAccents').split(''))
+              for (final accent in hints.split(''))
                 LingoButton.outlined(
                   onPressed: widget.enabled ? () => append(accent) : null,
                   child: Text(accent),
