@@ -8,3 +8,13 @@ não|no|Não, obrigado.|No, thank you.
 tchau|goodbye|Tchau, até amanhã.|Goodbye, see you tomorrow.
 desculpa|excuse me|Desculpa, onde fica a estação?|Excuse me, where is the station?
 até logo|see you later|Até logo, meu amigo.|See you later, my friend.
+eu|I|Eu estou aqui.|I am here.
+você|you|Você é meu amigo.|You are my friend.
+ele|he|Ele está em casa.|He is at home.
+ela|she|Ela fala português.|She speaks Portuguese.
+nós|we|Nós moramos aqui.|We live here.
+amigo|friend|Meu amigo lê um livro.|My friend reads a book.
+família|family|Minha família é pequena.|My family is small.
+mãe|mother|Minha mãe está aqui.|My mother is here.
+pai|father|Meu pai cozinha.|My father cooks.
+pessoa|person|É uma boa pessoa.|They are a good person.
