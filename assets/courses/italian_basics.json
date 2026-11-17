@@ -895,6 +895,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "it_numbers",
+          "title": "Numbers",
+          "wordIds": [
+            "it_zero",
+            "it_one",
+            "it_two",
+            "it_three",
+            "it_four",
+            "it_five",
+            "it_six",
+            "it_seven",
+            "it_eight",
+            "it_nine"
+          ],
+          "exercises": [
+            {
+              "id": "it_numbers_1",
+              "type": "multipleChoice",
+              "prompt": "What does “zero” mean?",
+              "options": [
+                "two",
+                "three",
+                "zero",
+                "one"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "it_numbers_2",
+              "type": "multipleChoice",
+              "prompt": "What does “uno” mean?",
+              "options": [
+                "four",
+                "one",
+                "two",
+                "three"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "it_numbers_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "due",
+                  "right": "two"
+                },
+                {
+                  "left": "tre",
+                  "right": "three"
+                },
+                {
+                  "left": "quattro",
+                  "right": "four"
+                }
+              ]
+            },
+            {
+              "id": "it_numbers_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Ci sono ___ persone.",
+              "answer": "cinque",
+              "choices": [
+                "otto",
+                "cinque",
+                "sei",
+                "sette"
+              ]
+            },
+            {
+              "id": "it_numbers_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Ho ___ foto.",
+              "answer": "sei",
+              "choices": [
+                "sei",
+                "sette",
+                "otto",
+                "nove"
+              ]
+            },
+            {
+              "id": "it_numbers_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Italian: seven",
+              "acceptedAnswers": [
+                "sette"
+              ]
+            },
+            {
+              "id": "it_numbers_7",
+              "type": "listening",
+              "audioText": "otto",
+              "acceptedAnswers": [
+                "otto"
+              ],
+              "options": [
+                "zero",
+                "uno",
+                "otto",
+                "nove"
+              ]
+            },
+            {
+              "id": "it_numbers_8",
+              "type": "speaking",
+              "phrase": "nove",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
