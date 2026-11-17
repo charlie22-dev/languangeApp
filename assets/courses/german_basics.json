@@ -783,6 +783,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "de_people",
+          "title": "People",
+          "wordIds": [
+            "de_i",
+            "de_you",
+            "de_he",
+            "de_she",
+            "de_we",
+            "de_friend",
+            "de_family",
+            "de_mother",
+            "de_father",
+            "de_person"
+          ],
+          "exercises": [
+            {
+              "id": "de_people_1",
+              "type": "multipleChoice",
+              "prompt": "What does “ich” mean?",
+              "options": [
+                "you",
+                "he",
+                "she",
+                "I"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "de_people_2",
+              "type": "multipleChoice",
+              "prompt": "What does “du” mean?",
+              "options": [
+                "she",
+                "we",
+                "you",
+                "he"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "de_people_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "er",
+                  "right": "he"
+                },
+                {
+                  "left": "sie",
+                  "right": "she"
+                },
+                {
+                  "left": "wir",
+                  "right": "we"
+                }
+              ]
+            },
+            {
+              "id": "de_people_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Mein ___ liest ein Buch.",
+              "answer": "Freund",
+              "choices": [
+                "Mutter",
+                "Vater",
+                "Freund",
+                "Familie"
+              ]
+            },
+            {
+              "id": "de_people_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Meine ___ ist klein.",
+              "answer": "Familie",
+              "choices": [
+                "Person",
+                "Familie",
+                "Mutter",
+                "Vater"
+              ]
+            },
+            {
+              "id": "de_people_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into German: mother",
+              "acceptedAnswers": [
+                "Mutter"
+              ]
+            },
+            {
+              "id": "de_people_7",
+              "type": "listening",
+              "audioText": "Vater",
+              "acceptedAnswers": [
+                "Vater"
+              ],
+              "options": [
+                "Person",
+                "ich",
+                "du",
+                "Vater"
+              ]
+            },
+            {
+              "id": "de_people_8",
+              "type": "speaking",
+              "phrase": "Person",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
