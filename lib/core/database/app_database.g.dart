@@ -2236,6 +2236,18 @@ class $ChatEntriesTable extends ChatEntries
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _courseIdMeta = const VerificationMeta(
+    'courseId',
+  );
+  @override
+  late final GeneratedColumn<String> courseId = GeneratedColumn<String>(
+    'course_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('ja_basics_en'),
+  );
   static const VerificationMeta _scenarioMeta = const VerificationMeta(
     'scenario',
   );
@@ -2292,6 +2304,7 @@ class $ChatEntriesTable extends ChatEntries
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    courseId,
     scenario,
     role,
     content,
@@ -2312,6 +2325,12 @@ class $ChatEntriesTable extends ChatEntries
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('course_id')) {
+      context.handle(
+        _courseIdMeta,
+        courseId.isAcceptableOrUnknown(data['course_id']!, _courseIdMeta),
+      );
     }
     if (data.containsKey('scenario')) {
       context.handle(
@@ -2362,6 +2381,10 @@ class $ChatEntriesTable extends ChatEntries
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
+      courseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}course_id'],
+      )!,
       scenario: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}scenario'],
@@ -2393,6 +2416,7 @@ class $ChatEntriesTable extends ChatEntries
 
 class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
   final int id;
+  final String courseId;
   final String scenario;
   final String role;
   final String content;
@@ -2400,6 +2424,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
   final String metadata;
   const ChatEntryRow({
     required this.id,
+    required this.courseId,
     required this.scenario,
     required this.role,
     required this.content,
@@ -2410,6 +2435,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['course_id'] = Variable<String>(courseId);
     map['scenario'] = Variable<String>(scenario);
     map['role'] = Variable<String>(role);
     map['content'] = Variable<String>(content);
@@ -2421,6 +2447,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
   ChatEntriesCompanion toCompanion(bool nullToAbsent) {
     return ChatEntriesCompanion(
       id: Value(id),
+      courseId: Value(courseId),
       scenario: Value(scenario),
       role: Value(role),
       content: Value(content),
@@ -2436,6 +2463,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ChatEntryRow(
       id: serializer.fromJson<int>(json['id']),
+      courseId: serializer.fromJson<String>(json['courseId']),
       scenario: serializer.fromJson<String>(json['scenario']),
       role: serializer.fromJson<String>(json['role']),
       content: serializer.fromJson<String>(json['content']),
@@ -2448,6 +2476,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'courseId': serializer.toJson<String>(courseId),
       'scenario': serializer.toJson<String>(scenario),
       'role': serializer.toJson<String>(role),
       'content': serializer.toJson<String>(content),
@@ -2458,6 +2487,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
 
   ChatEntryRow copyWith({
     int? id,
+    String? courseId,
     String? scenario,
     String? role,
     String? content,
@@ -2465,6 +2495,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
     String? metadata,
   }) => ChatEntryRow(
     id: id ?? this.id,
+    courseId: courseId ?? this.courseId,
     scenario: scenario ?? this.scenario,
     role: role ?? this.role,
     content: content ?? this.content,
@@ -2474,6 +2505,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
   ChatEntryRow copyWithCompanion(ChatEntriesCompanion data) {
     return ChatEntryRow(
       id: data.id.present ? data.id.value : this.id,
+      courseId: data.courseId.present ? data.courseId.value : this.courseId,
       scenario: data.scenario.present ? data.scenario.value : this.scenario,
       role: data.role.present ? data.role.value : this.role,
       content: data.content.present ? data.content.value : this.content,
@@ -2486,6 +2518,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
   String toString() {
     return (StringBuffer('ChatEntryRow(')
           ..write('id: $id, ')
+          ..write('courseId: $courseId, ')
           ..write('scenario: $scenario, ')
           ..write('role: $role, ')
           ..write('content: $content, ')
@@ -2497,12 +2530,13 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
 
   @override
   int get hashCode =>
-      Object.hash(id, scenario, role, content, status, metadata);
+      Object.hash(id, courseId, scenario, role, content, status, metadata);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ChatEntryRow &&
           other.id == this.id &&
+          other.courseId == this.courseId &&
           other.scenario == this.scenario &&
           other.role == this.role &&
           other.content == this.content &&
@@ -2512,6 +2546,7 @@ class ChatEntryRow extends DataClass implements Insertable<ChatEntryRow> {
 
 class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
   final Value<int> id;
+  final Value<String> courseId;
   final Value<String> scenario;
   final Value<String> role;
   final Value<String> content;
@@ -2519,6 +2554,7 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
   final Value<String> metadata;
   const ChatEntriesCompanion({
     this.id = const Value.absent(),
+    this.courseId = const Value.absent(),
     this.scenario = const Value.absent(),
     this.role = const Value.absent(),
     this.content = const Value.absent(),
@@ -2527,6 +2563,7 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
   });
   ChatEntriesCompanion.insert({
     this.id = const Value.absent(),
+    this.courseId = const Value.absent(),
     required String scenario,
     required String role,
     required String content,
@@ -2537,6 +2574,7 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
        content = Value(content);
   static Insertable<ChatEntryRow> custom({
     Expression<int>? id,
+    Expression<String>? courseId,
     Expression<String>? scenario,
     Expression<String>? role,
     Expression<String>? content,
@@ -2545,6 +2583,7 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (courseId != null) 'course_id': courseId,
       if (scenario != null) 'scenario': scenario,
       if (role != null) 'role': role,
       if (content != null) 'content': content,
@@ -2555,6 +2594,7 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
 
   ChatEntriesCompanion copyWith({
     Value<int>? id,
+    Value<String>? courseId,
     Value<String>? scenario,
     Value<String>? role,
     Value<String>? content,
@@ -2563,6 +2603,7 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
   }) {
     return ChatEntriesCompanion(
       id: id ?? this.id,
+      courseId: courseId ?? this.courseId,
       scenario: scenario ?? this.scenario,
       role: role ?? this.role,
       content: content ?? this.content,
@@ -2576,6 +2617,9 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (courseId.present) {
+      map['course_id'] = Variable<String>(courseId.value);
     }
     if (scenario.present) {
       map['scenario'] = Variable<String>(scenario.value);
@@ -2599,6 +2643,7 @@ class ChatEntriesCompanion extends UpdateCompanion<ChatEntryRow> {
   String toString() {
     return (StringBuffer('ChatEntriesCompanion(')
           ..write('id: $id, ')
+          ..write('courseId: $courseId, ')
           ..write('scenario: $scenario, ')
           ..write('role: $role, ')
           ..write('content: $content, ')
@@ -4499,6 +4544,7 @@ typedef $$DailyActivitiesTableProcessedTableManager =
 typedef $$ChatEntriesTableCreateCompanionBuilder =
     ChatEntriesCompanion Function({
       Value<int> id,
+      Value<String> courseId,
       required String scenario,
       required String role,
       required String content,
@@ -4508,6 +4554,7 @@ typedef $$ChatEntriesTableCreateCompanionBuilder =
 typedef $$ChatEntriesTableUpdateCompanionBuilder =
     ChatEntriesCompanion Function({
       Value<int> id,
+      Value<String> courseId,
       Value<String> scenario,
       Value<String> role,
       Value<String> content,
@@ -4526,6 +4573,11 @@ class $$ChatEntriesTableFilterComposer
   });
   ColumnFilters<int> get id => $composableBuilder(
     column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get courseId => $composableBuilder(
+    column: $table.courseId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4569,6 +4621,11 @@ class $$ChatEntriesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get courseId => $composableBuilder(
+    column: $table.courseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get scenario => $composableBuilder(
     column: $table.scenario,
     builder: (column) => ColumnOrderings(column),
@@ -4606,6 +4663,9 @@ class $$ChatEntriesTableAnnotationComposer
   });
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get courseId =>
+      $composableBuilder(column: $table.courseId, builder: (column) => column);
 
   GeneratedColumn<String> get scenario =>
       $composableBuilder(column: $table.scenario, builder: (column) => column);
@@ -4655,6 +4715,7 @@ class $$ChatEntriesTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String> courseId = const Value.absent(),
                 Value<String> scenario = const Value.absent(),
                 Value<String> role = const Value.absent(),
                 Value<String> content = const Value.absent(),
@@ -4662,6 +4723,7 @@ class $$ChatEntriesTableTableManager
                 Value<String> metadata = const Value.absent(),
               }) => ChatEntriesCompanion(
                 id: id,
+                courseId: courseId,
                 scenario: scenario,
                 role: role,
                 content: content,
@@ -4671,6 +4733,7 @@ class $$ChatEntriesTableTableManager
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<String> courseId = const Value.absent(),
                 required String scenario,
                 required String role,
                 required String content,
@@ -4678,6 +4741,7 @@ class $$ChatEntriesTableTableManager
                 Value<String> metadata = const Value.absent(),
               }) => ChatEntriesCompanion.insert(
                 id: id,
+                courseId: courseId,
                 scenario: scenario,
                 role: role,
                 content: content,

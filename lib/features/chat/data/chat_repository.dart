@@ -31,6 +31,7 @@ class ChatRepository {
     );
     return ChatMessage(
       id: row.id,
+      courseId: row.courseId,
       scenario: ChatScenario.parse(row.scenario),
       role: row.role,
       content: row.content,
@@ -47,9 +48,10 @@ class ChatRepository {
     );
   }
 
-  Future<ChatScenario> lastScenario() async {
+  Future<ChatScenario> lastScenario({String courseId = 'ja_basics_en'}) async {
     final row =
         await (database.select(database.chatEntries)
+              ..where((r) => r.courseId.equals(courseId))
               ..orderBy([(r) => OrderingTerm.desc(r.id)])
               ..limit(1))
             .getSingleOrNull();
@@ -58,9 +60,16 @@ class ChatRepository {
         : ChatScenario.parse(row.scenario);
   }
 
-  Future<List<ChatMessage>> load(ChatScenario scenario) async =>
+  Future<List<ChatMessage>> load(
+    ChatScenario scenario, {
+    String courseId = 'ja_basics_en',
+  }) async =>
       (await (database.select(database.chatEntries)
-                ..where((r) => r.scenario.equals(scenario.id))
+                ..where(
+                  (r) =>
+                      r.scenario.equals(scenario.id) &
+                      r.courseId.equals(courseId),
+                )
                 ..orderBy([(r) => OrderingTerm.asc(r.id)]))
               .get())
           .map(_message)
@@ -70,27 +79,32 @@ class ChatRepository {
     'DELETE FROM chat_entries WHERE id NOT IN (SELECT id FROM chat_entries ORDER BY id DESC LIMIT 20)',
     updates: {database.chatEntries},
   );
-  Future<ChatMessage> addUser(String text, ChatScenario scenario) =>
-      database.transaction(() async {
-        final id = await database
-            .into(database.chatEntries)
-            .insert(
-              ChatEntriesCompanion.insert(
-                scenario: scenario.id,
-                role: 'user',
-                content: text,
-                status: const Value('pending'),
-              ),
-            );
-        await _trim();
-        return ChatMessage(
-          id: id,
-          scenario: scenario,
-          role: 'user',
-          content: text,
-          status: 'pending',
+  Future<ChatMessage> addUser(
+    String text,
+    ChatScenario scenario, {
+    String courseId = 'ja_basics_en',
+  }) => database.transaction(() async {
+    final id = await database
+        .into(database.chatEntries)
+        .insert(
+          ChatEntriesCompanion.insert(
+            courseId: Value(courseId),
+            scenario: scenario.id,
+            role: 'user',
+            content: text,
+            status: const Value('pending'),
+          ),
         );
-      });
+    await _trim();
+    return ChatMessage(
+      id: id,
+      courseId: courseId,
+      scenario: scenario,
+      role: 'user',
+      content: text,
+      status: 'pending',
+    );
+  });
   Future<void> markFailed(int id) =>
       (database.update(database.chatEntries)
             ..where((r) => r.id.equals(id) & r.status.equals('sent').not()))
@@ -125,6 +139,7 @@ class ChatRepository {
             .into(database.chatEntries)
             .insert(
               ChatEntriesCompanion.insert(
+                courseId: Value(persisted.courseId),
                 scenario: user.scenario.id,
                 role: 'assistant',
                 content: turn.reply,

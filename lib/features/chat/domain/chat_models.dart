@@ -96,6 +96,7 @@ class ChatMessage {
     required this.scenario,
     required this.role,
     required this.content,
+    this.courseId = 'ja_basics_en',
     this.status = 'sent',
     this.translation,
     List<ChatCorrection> corrections = const [],
@@ -103,6 +104,7 @@ class ChatMessage {
   }) : corrections = List.unmodifiable(corrections),
        newWords = List.unmodifiable(newWords);
   final int id;
+  final String courseId;
   final ChatScenario scenario;
   final String role, content, status;
   final String? translation;

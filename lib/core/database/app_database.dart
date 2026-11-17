@@ -103,6 +103,8 @@ class LocalProfiles extends Table {
 @DataClassName('ChatEntryRow')
 class ChatEntries extends Table {
   IntColumn get id => integer().autoIncrement()();
+  TextColumn get courseId =>
+      text().withDefault(const Constant('ja_basics_en'))();
   TextColumn get scenario => text()();
   TextColumn get role => text()();
   TextColumn get content => text()();
@@ -156,7 +158,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -186,6 +188,11 @@ class AppDatabase extends _$AppDatabase {
       if (from < 5) {
         await migrator.createTable(chatEntries);
         await migrator.createTable(savedVocabulary);
+      }
+      if (from == 5) {
+        // Earlier migrations create the current table, including this column.
+        // Existing chat history belongs to the original Japanese course.
+        await migrator.addColumn(chatEntries, chatEntries.courseId);
       }
     },
   );
