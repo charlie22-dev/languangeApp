@@ -667,5 +667,124 @@
       ]
     }
   ],
-  "units": []
+  "units": [
+    {
+      "id": "pt_unit_1",
+      "title": "First Steps",
+      "lessons": [
+        {
+          "id": "pt_greetings",
+          "title": "Greetings",
+          "wordIds": [
+            "pt_hello",
+            "pt_good_morning",
+            "pt_good_night",
+            "pt_thank_you",
+            "pt_please",
+            "pt_yes",
+            "pt_no",
+            "pt_goodbye",
+            "pt_excuse_me",
+            "pt_see_you_later"
+          ],
+          "exercises": [
+            {
+              "id": "pt_greetings_1",
+              "type": "multipleChoice",
+              "prompt": "What does “olá” mean?",
+              "options": [
+                "hello",
+                "good morning",
+                "good night",
+                "thank you"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "pt_greetings_2",
+              "type": "multipleChoice",
+              "prompt": "What does “bom dia” mean?",
+              "options": [
+                "good night",
+                "thank you",
+                "please",
+                "good morning"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "pt_greetings_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "boa noite",
+                  "right": "good night"
+                },
+                {
+                  "left": "obrigado",
+                  "right": "thank you"
+                },
+                {
+                  "left": "por favor",
+                  "right": "please"
+                }
+              ]
+            },
+            {
+              "id": "pt_greetings_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, eu quero pão.",
+              "answer": "sim",
+              "choices": [
+                "não",
+                "tchau",
+                "desculpa",
+                "sim"
+              ]
+            },
+            {
+              "id": "pt_greetings_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "___, obrigado.",
+              "answer": "não",
+              "choices": [
+                "desculpa",
+                "até logo",
+                "não",
+                "tchau"
+              ]
+            },
+            {
+              "id": "pt_greetings_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Portuguese: goodbye",
+              "acceptedAnswers": [
+                "tchau"
+              ]
+            },
+            {
+              "id": "pt_greetings_7",
+              "type": "listening",
+              "audioText": "desculpa",
+              "acceptedAnswers": [
+                "desculpa"
+              ],
+              "options": [
+                "desculpa",
+                "até logo",
+                "olá",
+                "bom dia"
+              ]
+            },
+            {
+              "id": "pt_greetings_8",
+              "type": "speaking",
+              "phrase": "até logo",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
