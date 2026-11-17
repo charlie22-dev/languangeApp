@@ -895,6 +895,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "es_numbers",
+          "title": "Numbers",
+          "wordIds": [
+            "es_zero",
+            "es_one",
+            "es_two",
+            "es_three",
+            "es_four",
+            "es_five",
+            "es_six",
+            "es_seven",
+            "es_eight",
+            "es_nine"
+          ],
+          "exercises": [
+            {
+              "id": "es_numbers_1",
+              "type": "multipleChoice",
+              "prompt": "What does “cero” mean?",
+              "options": [
+                "two",
+                "three",
+                "zero",
+                "one"
+              ],
+              "correctIndex": 2
+            },
+            {
+              "id": "es_numbers_2",
+              "type": "multipleChoice",
+              "prompt": "What does “uno” mean?",
+              "options": [
+                "four",
+                "one",
+                "two",
+                "three"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "es_numbers_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "dos",
+                  "right": "two"
+                },
+                {
+                  "left": "tres",
+                  "right": "three"
+                },
+                {
+                  "left": "cuatro",
+                  "right": "four"
+                }
+              ]
+            },
+            {
+              "id": "es_numbers_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Hay ___ personas.",
+              "answer": "cinco",
+              "choices": [
+                "ocho",
+                "cinco",
+                "seis",
+                "siete"
+              ]
+            },
+            {
+              "id": "es_numbers_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Tengo ___ fotos.",
+              "answer": "seis",
+              "choices": [
+                "seis",
+                "siete",
+                "ocho",
+                "nueve"
+              ]
+            },
+            {
+              "id": "es_numbers_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Spanish: seven",
+              "acceptedAnswers": [
+                "siete"
+              ]
+            },
+            {
+              "id": "es_numbers_7",
+              "type": "listening",
+              "audioText": "ocho",
+              "acceptedAnswers": [
+                "ocho"
+              ],
+              "options": [
+                "cero",
+                "uno",
+                "ocho",
+                "nueve"
+              ]
+            },
+            {
+              "id": "es_numbers_8",
+              "type": "speaking",
+              "phrase": "nueve",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
