@@ -445,6 +445,116 @@
         "beginner",
         "food"
       ]
+    },
+    {
+      "id": "pt_house",
+      "text": "casa",
+      "translation": "house",
+      "example": "Minha casa é pequena.",
+      "exampleTranslation": "My house is small.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_school",
+      "text": "escola",
+      "translation": "school",
+      "example": "Eu vou à escola.",
+      "exampleTranslation": "I go to school.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_shop",
+      "text": "loja",
+      "translation": "shop",
+      "example": "A loja está aberta.",
+      "exampleTranslation": "The shop is open.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_station",
+      "text": "estação",
+      "translation": "station",
+      "example": "A estação fica perto.",
+      "exampleTranslation": "The station is nearby.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_street",
+      "text": "rua",
+      "translation": "street",
+      "example": "Esta rua é tranquila.",
+      "exampleTranslation": "This street is quiet.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_city",
+      "text": "cidade",
+      "translation": "city",
+      "example": "A cidade é grande.",
+      "exampleTranslation": "The city is big.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_bathroom",
+      "text": "banheiro",
+      "translation": "bathroom",
+      "example": "Onde fica o banheiro?",
+      "exampleTranslation": "Where is the bathroom?",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_hospital",
+      "text": "hospital",
+      "translation": "hospital",
+      "example": "O hospital fica perto.",
+      "exampleTranslation": "The hospital is nearby.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_park",
+      "text": "parque",
+      "translation": "park",
+      "example": "Vamos ao parque.",
+      "exampleTranslation": "Let's go to the park.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
+    },
+    {
+      "id": "pt_restaurant",
+      "text": "restaurante",
+      "translation": "restaurant",
+      "example": "O restaurante está aberto.",
+      "exampleTranslation": "The restaurant is open.",
+      "tags": [
+        "beginner",
+        "places"
+      ]
     }
   ],
   "units": []

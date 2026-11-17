@@ -38,3 +38,13 @@ chá|tea|O chá está quente.|The tea is hot.
 comida|food|A comida está pronta.|The food is ready.
 frango|chicken|Eu como frango com arroz.|I eat chicken with rice.
 peixe|fish|Eu gosto de peixe.|I like fish.
+casa|house|Minha casa é pequena.|My house is small.
+escola|school|Eu vou à escola.|I go to school.
+loja|shop|A loja está aberta.|The shop is open.
+estação|station|A estação fica perto.|The station is nearby.
+rua|street|Esta rua é tranquila.|This street is quiet.
+cidade|city|A cidade é grande.|The city is big.
+banheiro|bathroom|Onde fica o banheiro?|Where is the bathroom?
+hospital|hospital|O hospital fica perto.|The hospital is nearby.
+parque|park|Vamos ao parque.|Let's go to the park.
+restaurante|restaurant|O restaurante está aberto.|The restaurant is open.
