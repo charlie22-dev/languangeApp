@@ -18,3 +18,13 @@ famiglia|family|La mia famiglia è piccola.|My family is small.
 madre|mother|Mia madre è qui.|My mother is here.
 padre|father|Mio padre cucina.|My father cooks.
 persona|person|È una buona persona.|They are a good person.
+zero|zero|Ho zero messaggi.|I have zero messages.
+uno|one|Ne voglio uno, per favore.|I want one, please.
+due|two|Ho due libri.|I have two books.
+tre|three|Ci sono tre sedie.|There are three chairs.
+quattro|four|Ho quattro mele.|I have four apples.
+cinque|five|Ci sono cinque persone.|There are five people.
+sei|six|Ho sei foto.|I have six photos.
+sette|seven|Una settimana ha sette giorni.|A week has seven days.
+otto|eight|Ho otto matite.|I have eight pencils.
+nove|nine|Sono le nove.|It is nine o'clock.

@@ -225,6 +225,116 @@
         "beginner",
         "people"
       ]
+    },
+    {
+      "id": "it_zero",
+      "text": "zero",
+      "translation": "zero",
+      "example": "Ho zero messaggi.",
+      "exampleTranslation": "I have zero messages.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_one",
+      "text": "uno",
+      "translation": "one",
+      "example": "Ne voglio uno, per favore.",
+      "exampleTranslation": "I want one, please.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_two",
+      "text": "due",
+      "translation": "two",
+      "example": "Ho due libri.",
+      "exampleTranslation": "I have two books.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_three",
+      "text": "tre",
+      "translation": "three",
+      "example": "Ci sono tre sedie.",
+      "exampleTranslation": "There are three chairs.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_four",
+      "text": "quattro",
+      "translation": "four",
+      "example": "Ho quattro mele.",
+      "exampleTranslation": "I have four apples.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_five",
+      "text": "cinque",
+      "translation": "five",
+      "example": "Ci sono cinque persone.",
+      "exampleTranslation": "There are five people.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_six",
+      "text": "sei",
+      "translation": "six",
+      "example": "Ho sei foto.",
+      "exampleTranslation": "I have six photos.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_seven",
+      "text": "sette",
+      "translation": "seven",
+      "example": "Una settimana ha sette giorni.",
+      "exampleTranslation": "A week has seven days.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_eight",
+      "text": "otto",
+      "translation": "eight",
+      "example": "Ho otto matite.",
+      "exampleTranslation": "I have eight pencils.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "it_nine",
+      "text": "nove",
+      "translation": "nine",
+      "example": "Sono le nove.",
+      "exampleTranslation": "It is nine o'clock.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
     }
   ],
   "units": []
