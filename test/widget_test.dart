@@ -43,6 +43,7 @@ class AppHarness {
     OnboardingSettings? settings,
     bool statsError = false,
     Course? course,
+    List<Course>? availableCourses,
     LessonCompletionRepository? completionRepository,
     ReviewRepository? reviewRepository,
     DateTime Function()? clock,
@@ -91,7 +92,7 @@ class AppHarness {
         appConfigProvider.overrideWithValue(AppConfig(appName: appName)),
         courseCatalogProvider.overrideWith((ref) async {
           if (catalogFails) throw StateError('Catalog failure');
-          return catalogGate?.future ?? [this.course];
+          return catalogGate?.future ?? availableCourses ?? [this.course];
         }),
         if (completionRepository != null)
           lessonCompletionRepositoryProvider.overrideWithValue(
