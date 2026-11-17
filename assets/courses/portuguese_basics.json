@@ -1125,6 +1125,118 @@
               "minimumScore": 0.8
             }
           ]
+        },
+        {
+          "id": "pt_places",
+          "title": "Places",
+          "wordIds": [
+            "pt_house",
+            "pt_school",
+            "pt_shop",
+            "pt_station",
+            "pt_street",
+            "pt_city",
+            "pt_bathroom",
+            "pt_hospital",
+            "pt_park",
+            "pt_restaurant"
+          ],
+          "exercises": [
+            {
+              "id": "pt_places_1",
+              "type": "multipleChoice",
+              "prompt": "What does “casa” mean?",
+              "options": [
+                "house",
+                "school",
+                "shop",
+                "station"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "pt_places_2",
+              "type": "multipleChoice",
+              "prompt": "What does “escola” mean?",
+              "options": [
+                "shop",
+                "station",
+                "street",
+                "school"
+              ],
+              "correctIndex": 3
+            },
+            {
+              "id": "pt_places_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "loja",
+                  "right": "shop"
+                },
+                {
+                  "left": "estação",
+                  "right": "station"
+                },
+                {
+                  "left": "rua",
+                  "right": "street"
+                }
+              ]
+            },
+            {
+              "id": "pt_places_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "A ___ é grande.",
+              "answer": "cidade",
+              "choices": [
+                "banheiro",
+                "hospital",
+                "parque",
+                "cidade"
+              ]
+            },
+            {
+              "id": "pt_places_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Onde fica o ___?",
+              "answer": "banheiro",
+              "choices": [
+                "parque",
+                "restaurante",
+                "banheiro",
+                "hospital"
+              ]
+            },
+            {
+              "id": "pt_places_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Portuguese: hospital",
+              "acceptedAnswers": [
+                "hospital"
+              ]
+            },
+            {
+              "id": "pt_places_7",
+              "type": "listening",
+              "audioText": "parque",
+              "acceptedAnswers": [
+                "parque"
+              ],
+              "options": [
+                "parque",
+                "restaurante",
+                "casa",
+                "escola"
+              ]
+            },
+            {
+              "id": "pt_places_8",
+              "type": "speaking",
+              "phrase": "restaurante",
+              "minimumScore": 0.8
+            }
+          ]
         }
       ]
     }
