@@ -48,3 +48,13 @@ baño|bathroom|¿Dónde está el baño?|Where is the bathroom?
 hospital|hospital|El hospital está cerca.|The hospital is nearby.
 parque|park|Vamos al parque.|Let's go to the park.
 restaurante|restaurant|El restaurante está abierto.|The restaurant is open.
+comer|to eat|Quiero comer pan.|I want to eat bread.
+beber|to drink|Quiero beber agua.|I want to drink water.
+ir|to go|Quiero ir a casa.|I want to go home.
+venir|to come|¿Puedes venir hoy?|Can you come today?
+ver|to see|Quiero ver el parque.|I want to see the park.
+hablar|to speak|Quiero hablar español.|I want to speak Spanish.
+leer|to read|Me gusta leer.|I like to read.
+escribir|to write|Quiero escribir una carta.|I want to write a letter.
+escuchar|to listen|Me gusta escuchar música.|I like to listen to music.
+aprender|to learn|Quiero aprender español.|I want to learn Spanish.
