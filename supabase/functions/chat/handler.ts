@@ -6,7 +6,21 @@ export const scenarios = {
 } as const;
 type Scenario = keyof typeof scenarios;
 type Message = { role: "user" | "assistant"; content: string };
-type Input = { messages: Message[]; level: "beginner"; scenario: Scenario };
+export const courseLanguages = {
+  "ja-JP": "Japanese",
+  "es-ES": "Spanish",
+  "fr-FR": "French",
+  "de-DE": "German",
+  "it-IT": "Italian",
+  "pt-BR": "Brazilian Portuguese",
+} as const;
+type CourseLocale = keyof typeof courseLanguages;
+type Input = {
+  messages: Message[];
+  level: "beginner";
+  scenario: Scenario;
+  targetLocale?: CourseLocale;
+};
 type Correction = { original: string; corrected: string; explanation: string };
 type NewWord = {
   text: string;
@@ -47,6 +61,13 @@ const text = (x: unknown, max: number): string => {
 export function validateInput(value: unknown): Input {
   const x = object(value);
   if (
+    x.targetLocale !== undefined &&
+    (typeof x.targetLocale !== "string" ||
+      !Object.hasOwn(courseLanguages, x.targetLocale))
+  ) {
+    throw new HttpError(400, "invalid_request");
+  }
+  if (
     x.level !== "beginner" || typeof x.scenario !== "string" ||
     !(Object.hasOwn(scenarios, x.scenario))
   ) {
@@ -69,7 +90,14 @@ export function validateInput(value: unknown): Input {
   ) {
     throw new HttpError(400, "invalid_request");
   }
-  return { level: "beginner", scenario: x.scenario as Scenario, messages };
+  return {
+    level: "beginner",
+    scenario: x.scenario as Scenario,
+    messages,
+    ...(x.targetLocale === undefined
+      ? {}
+      : { targetLocale: x.targetLocale as CourseLocale }),
+  };
 }
 async function readBody(req: Request, signal: AbortSignal): Promise<unknown> {
   if (!(req.headers.get("content-type") ?? "").includes("application/json")) {
@@ -164,6 +192,78 @@ export const outputSchema = {
 };
 
 const redirects: Record<string, Record<Scenario, [string, string]>> = {
+  French: {
+    ordering_food: [
+      "Commandons à manger. Que veux-tu manger ?",
+      "Let's order food. What would you like to eat?",
+    ],
+    introductions: [
+      "Présentons-nous. Comment t'appelles-tu ?",
+      "Let's introduce ourselves. What is your name?",
+    ],
+    directions: [
+      "Demandons notre chemin. Où veux-tu aller ?",
+      "Let's ask for directions. Where would you like to go?",
+    ],
+    shopping: [
+      "Faisons les courses. Que veux-tu acheter ?",
+      "Let's go shopping. What would you like to buy?",
+    ],
+  },
+  German: {
+    ordering_food: [
+      "Bestellen wir etwas zu essen. Was möchtest du essen?",
+      "Let's order food. What would you like to eat?",
+    ],
+    introductions: [
+      "Stellen wir uns vor. Wie heißt du?",
+      "Let's introduce ourselves. What is your name?",
+    ],
+    directions: [
+      "Fragen wir nach dem Weg. Wohin möchtest du gehen?",
+      "Let's ask for directions. Where would you like to go?",
+    ],
+    shopping: [
+      "Gehen wir einkaufen. Was möchtest du kaufen?",
+      "Let's go shopping. What would you like to buy?",
+    ],
+  },
+  Italian: {
+    ordering_food: [
+      "Ordiniamo da mangiare. Che cosa vuoi mangiare?",
+      "Let's order food. What would you like to eat?",
+    ],
+    introductions: [
+      "Presentiamoci. Come ti chiami?",
+      "Let's introduce ourselves. What is your name?",
+    ],
+    directions: [
+      "Chiediamo indicazioni. Dove vuoi andare?",
+      "Let's ask for directions. Where would you like to go?",
+    ],
+    shopping: [
+      "Facciamo acquisti. Che cosa vuoi comprare?",
+      "Let's go shopping. What would you like to buy?",
+    ],
+  },
+  "Brazilian Portuguese": {
+    ordering_food: [
+      "Vamos pedir comida. O que você quer comer?",
+      "Let's order food. What would you like to eat?",
+    ],
+    introductions: [
+      "Vamos nos apresentar. Qual é o seu nome?",
+      "Let's introduce ourselves. What is your name?",
+    ],
+    directions: [
+      "Vamos pedir informações. Aonde você quer ir?",
+      "Let's ask for directions. Where would you like to go?",
+    ],
+    shopping: [
+      "Vamos fazer compras. O que você quer comprar?",
+      "Let's go shopping. What would you like to buy?",
+    ],
+  },
   Japanese: {
     ordering_food: [
       "食べ物の注文を練習しましょう。何を食べたいですか。",
@@ -324,7 +424,11 @@ export function createChatHandler(env: Env, fetcher: typeof fetch = fetch) {
         throw new HttpError(401, "sign_in_required");
       }
       const input = validateInput(await readBody(req, controller.signal));
-      const language = env.TUTOR_LANGUAGE ?? "Japanese";
+      // Only known course locales can affect the prompt. Old clients retain
+      // their deployment's language setting; new clients select their course.
+      const language = input.targetLocale
+        ? courseLanguages[input.targetLocale]
+        : env.TUTOR_LANGUAGE ?? "Japanese";
       if (!env.GROQ_API_KEY || !redirects[language]) {
         throw new HttpError(503, "chat_not_configured");
       }
