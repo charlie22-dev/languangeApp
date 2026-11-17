@@ -48,3 +48,13 @@ Toilette|bathroom|Wo ist die Toilette?|Where is the bathroom?
 Krankenhaus|hospital|Das Krankenhaus ist in der Nähe.|The hospital is nearby.
 Park|park|Wir gehen in den Park.|We are going to the park.
 Restaurant|restaurant|Das Restaurant ist offen.|The restaurant is open.
+essen|to eat|Ich möchte Brot essen.|I want to eat bread.
+trinken|to drink|Ich möchte Wasser trinken.|I want to drink water.
+gehen|to go|Ich möchte nach Hause gehen.|I want to go home.
+kommen|to come|Kannst du heute kommen?|Can you come today?
+sehen|to see|Ich möchte den Park sehen.|I want to see the park.
+sprechen|to speak|Ich möchte Deutsch sprechen.|I want to speak German.
+lesen|to read|Ich möchte ein Buch lesen.|I want to read a book.
+schreiben|to write|Ich möchte einen Brief schreiben.|I want to write a letter.
+hören|to listen|Ich möchte Musik hören.|I want to listen to music.
+lernen|to learn|Ich möchte Deutsch lernen.|I want to learn German.
