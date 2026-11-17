@@ -1009,6 +1009,124 @@
           ]
         }
       ]
+    },
+    {
+      "id": "es_unit_2",
+      "title": "Everyday Life",
+      "lessons": [
+        {
+          "id": "es_food",
+          "title": "Food",
+          "wordIds": [
+            "es_water",
+            "es_bread",
+            "es_milk",
+            "es_rice",
+            "es_apple",
+            "es_coffee",
+            "es_tea",
+            "es_food",
+            "es_chicken",
+            "es_fish"
+          ],
+          "exercises": [
+            {
+              "id": "es_food_1",
+              "type": "multipleChoice",
+              "prompt": "What does “agua” mean?",
+              "options": [
+                "rice",
+                "water",
+                "bread",
+                "milk"
+              ],
+              "correctIndex": 1
+            },
+            {
+              "id": "es_food_2",
+              "type": "multipleChoice",
+              "prompt": "What does “pan” mean?",
+              "options": [
+                "bread",
+                "milk",
+                "rice",
+                "apple"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "id": "es_food_3",
+              "type": "matchPairs",
+              "pairs": [
+                {
+                  "left": "leche",
+                  "right": "milk"
+                },
+                {
+                  "left": "arroz",
+                  "right": "rice"
+                },
+                {
+                  "left": "manzana",
+                  "right": "apple"
+                }
+              ]
+            },
+            {
+              "id": "es_food_4",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "Quiero un ___.",
+              "answer": "café",
+              "choices": [
+                "café",
+                "té",
+                "comida",
+                "pollo"
+              ]
+            },
+            {
+              "id": "es_food_5",
+              "type": "fillInBlank",
+              "sentenceWithBlank": "El ___ está caliente.",
+              "answer": "té",
+              "choices": [
+                "comida",
+                "pollo",
+                "pescado",
+                "té"
+              ]
+            },
+            {
+              "id": "es_food_6",
+              "type": "typeTranslation",
+              "prompt": "Translate into Spanish: food",
+              "acceptedAnswers": [
+                "comida"
+              ]
+            },
+            {
+              "id": "es_food_7",
+              "type": "listening",
+              "audioText": "pollo",
+              "acceptedAnswers": [
+                "pollo"
+              ],
+              "options": [
+                "pan",
+                "pollo",
+                "pescado",
+                "agua"
+              ]
+            },
+            {
+              "id": "es_food_8",
+              "type": "speaking",
+              "phrase": "pescado",
+              "minimumScore": 0.8
+            }
+          ]
+        }
+      ]
     }
   ]
 }
