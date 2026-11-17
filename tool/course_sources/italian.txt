@@ -48,3 +48,13 @@ bagno|bathroom|Dov'è il bagno?|Where is the bathroom?
 ospedale|hospital|L'ospedale è vicino.|The hospital is nearby.
 parco|park|Andiamo al parco.|Let's go to the park.
 ristorante|restaurant|Il ristorante è aperto.|The restaurant is open.
+mangiare|to eat|Voglio mangiare pane.|I want to eat bread.
+bere|to drink|Voglio bere acqua.|I want to drink water.
+andare|to go|Voglio andare a casa.|I want to go home.
+venire|to come|Puoi venire oggi?|Can you come today?
+vedere|to see|Voglio vedere il parco.|I want to see the park.
+parlare|to speak|Voglio parlare italiano.|I want to speak Italian.
+leggere|to read|Mi piace leggere.|I like to read.
+scrivere|to write|Voglio scrivere una lettera.|I want to write a letter.
+ascoltare|to listen|Mi piace ascoltare musica.|I like to listen to music.
+imparare|to learn|Voglio imparare l'italiano.|I want to learn Italian.
