@@ -18,3 +18,13 @@ Familie|family|Meine Familie ist klein.|My family is small.
 Mutter|mother|Meine Mutter ist hier.|My mother is here.
 Vater|father|Mein Vater kocht.|My father cooks.
 Person|person|Das ist eine nette Person.|They are a nice person.
+null|zero|Ich habe null Nachrichten.|I have zero messages.
+eins|one|Ich zähle: eins, zwei, drei.|I count: one, two, three.
+zwei|two|Ich habe zwei Bücher.|I have two books.
+drei|three|Hier sind drei Stühle.|Here are three chairs.
+vier|four|Ich habe vier Äpfel.|I have four apples.
+fünf|five|Hier sind fünf Personen.|Here are five people.
+sechs|six|Ich habe sechs Fotos.|I have six photos.
+sieben|seven|Eine Woche hat sieben Tage.|A week has seven days.
+acht|eight|Ich habe acht Stifte.|I have eight pens.
+neun|nine|Es ist neun Uhr.|It is nine o'clock.

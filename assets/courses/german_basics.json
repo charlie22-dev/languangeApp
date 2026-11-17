@@ -225,6 +225,116 @@
         "beginner",
         "people"
       ]
+    },
+    {
+      "id": "de_zero",
+      "text": "null",
+      "translation": "zero",
+      "example": "Ich habe null Nachrichten.",
+      "exampleTranslation": "I have zero messages.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_one",
+      "text": "eins",
+      "translation": "one",
+      "example": "Ich zähle: eins, zwei, drei.",
+      "exampleTranslation": "I count: one, two, three.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_two",
+      "text": "zwei",
+      "translation": "two",
+      "example": "Ich habe zwei Bücher.",
+      "exampleTranslation": "I have two books.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_three",
+      "text": "drei",
+      "translation": "three",
+      "example": "Hier sind drei Stühle.",
+      "exampleTranslation": "Here are three chairs.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_four",
+      "text": "vier",
+      "translation": "four",
+      "example": "Ich habe vier Äpfel.",
+      "exampleTranslation": "I have four apples.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_five",
+      "text": "fünf",
+      "translation": "five",
+      "example": "Hier sind fünf Personen.",
+      "exampleTranslation": "Here are five people.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_six",
+      "text": "sechs",
+      "translation": "six",
+      "example": "Ich habe sechs Fotos.",
+      "exampleTranslation": "I have six photos.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_seven",
+      "text": "sieben",
+      "translation": "seven",
+      "example": "Eine Woche hat sieben Tage.",
+      "exampleTranslation": "A week has seven days.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_eight",
+      "text": "acht",
+      "translation": "eight",
+      "example": "Ich habe acht Stifte.",
+      "exampleTranslation": "I have eight pens.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
+    },
+    {
+      "id": "de_nine",
+      "text": "neun",
+      "translation": "nine",
+      "example": "Es ist neun Uhr.",
+      "exampleTranslation": "It is nine o'clock.",
+      "tags": [
+        "beginner",
+        "numbers"
+      ]
     }
   ],
   "units": []
